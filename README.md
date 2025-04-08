@@ -7,13 +7,13 @@
 2.  _Nguyễn Hưng Thịnh_  
     MSSV: **23120200**
 
-## Đề tài được chọn
+## Thông tin chi tiết đồ án
 
 ## Cách thức quản lý nhóm
 
 ## Timeline
 
-## Thông tin chi tiết đồ án
+## Đề tài được chọn
 
 ### ...
 
