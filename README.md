@@ -9,6 +9,8 @@
 
 ## Thông tin chi tiết đồ án
 
+### Yêu cầu
+
 ## Cách thức quản lý nhóm
 
 ## Timeline
