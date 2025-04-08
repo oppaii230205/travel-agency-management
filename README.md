@@ -1,4 +1,4 @@
-# travel-agency-management
+# Project Proposal
 
 ## Thành viên nhóm
 
@@ -19,7 +19,7 @@
 
 _Đường dẫn đề tài tham khảo_: [https://www.codewithc.com/travel-agency-management-system-in-c-with-mysql/#function-newtraveltrip]
 
-_Mô tả sơ lược:_ Bằng việc kết nối với cơ sở dữ liệu, phần mềm có khả năng quản lí các thông tin liên quan đến người dùng, chuyến đi,... và lưu trữ trực tiếp trên cơ sở dữ liệu. Các thao tác như truy vấn, thay đổi, xóa,... cũng đều được ghi nhận và cập nhật tương ứng, đảm bảo tính nhất quán của chương trình.
+_Mô tả sơ lược:_ Xây dựng một hệ thống quản lí các chuyến đi hiện có, thông tin khách hàng cũng như các chuyến đi họ đã đặt cho một hãng kinh doanh dịch vụ du lịch. Bằng việc kết nối với cơ sở dữ liệu, phần mềm có khả năng quản lí các thông tin liên quan đến người dùng, chuyến đi,... và lưu trữ trực tiếp trên cơ sở dữ liệu. Các thao tác như truy vấn, thay đổi, xóa,... cũng đều được ghi nhận và cập nhật tương ứng, đảm bảo tính nhất quán của chương trình.
 
 ### Tính năng chính
 
@@ -106,6 +106,25 @@ _Mô tả sơ lược:_ Bằng việc kết nối với cơ sở dữ liệu, ph
    - Đối với mỗi loại người dùng cụ thể (VD: quản trị viên, người dùng thường,...) sẽ có các quyền khác nhau, thay vì có thể thực hiện được mọi chức năng như trong mã nguồn có sẵn. VD: người dùng thường chỉ có thể tạo lập, cập nhật thông tin của họ, chứ không thể thay đổi thông tin của người dùng khác.
 
 ### Kiến trúc phần mềm
+
+- Kiến trúc phần mềm được sử dụng trong đồ án: **Mô hình 3-layer**
+- Giới thiệu mô hình: gồm có 3 phần chính (hay còn gọi là lớp)
+
+  - **Presentation Layer (GUI):** Lớp này có nhiệm vụ chính giao tiếp với người dùng. Nó gồm các thành phần giao diện và thực hiện các công việc như nhập liệu, hiển thị dữ liêu, kiểm tra tính đúng đắn dữ liệu trước khi gọi lớp Business Logic Layer (BLL).
+  - **Business Logic Layer (BLL):** Layer này phân ra 2 thành nhiệm vụ:
+
+    - Đây là nơi đáp ứng các yêu cầu thao tác dữ liệu của GUI layer, xử lý chính nguồn dữ liệu từ Presentation Layer trước khi truyền xuống Data Access Layer và lưu xuống hệ quản trị CSDL.
+    - Đây còn là nơi kiểm tra các ràng buộc, tính toàn vẹn và hợp lệ dữ liệu, thực hiện tính toán và xử lý các yêu cầu nghiệp vụ, trước khi trả kết quả về Presentation Layer.
+
+  - **Data Access Layer (DAL):** Lớp này có chức năng giao tiếp với hệ quản trị CSDL như thực hiện các công việc liên quan đến lưu trữ và truy vấn dữ liệu ( tìm kiếm, thêm, xóa, sửa,…).
+
+- Ưu điểm:
+
+  - Việc phân chia thành từng lớp giúp cho code được tường minh hơn. Nhờ vào việc chia ra từng lớp đảm nhận các chức năng khác nhau và riêng biệt như giao diện, xử lý, truy vấn thay vì để tất cả lại một chỗ. Nhằm giảm sự kết dính (_decoupling_).
+  - Dễ bảo trì: Khi được phân chia, thì một thành phần của hệ thống sẽ dễ thay đổi. Việc thay đổi này có thể được cô lập trong 1 lớp, hoặc ảnh hưởng đến lớp gần nhất mà không ảnh hưởng đến cả chương trình.
+  - Dễ phát triển, tái sử dụng: Khi chúng ta muốn thêm một chức năng nào đó thì việc lập trình theo một mô hình sẽ dễ dàng hơn vì chúng ta đã có chuẩn để tuân theo.
+  - Dễ bàn giao: Nếu mọi người đều theo một quy chuẩn đã được định sẵn, thì công việc bàn giao, tương tác với nhau sẽ dễ dàng hơn và tiết kiệm được nhiều thời gian.
+  - Dễ phân phối khối lượng công việc. Mỗi một nhóm, một bộ phận sẽ nhận một nhiệm vụ trong mô hình 3 lớp. Việc phân chia rõ ràng như thế sẽ giúp các lập trình viên kiểm soát được khối lượng công việc của mình.
 
 ### Các nguyên tắc và nguyên lí OOP đã tuân thủ
 
