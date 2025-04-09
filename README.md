@@ -38,7 +38,14 @@
 
 ## Đề tài được chọn: [**Travel Agency Management System**](https://www.codewithc.com/travel-agency-management-system-in-c-with-mysql/)
 
-### Kiến trúc phần mềm
+### Tình trạng hiện tại
+
+- Tổ chức mã nguồn còn rời rạc, thiếu tính liên kết.
+- Giao diện console app, chưa thực sự thân thiện & gần gũi với người dùng.
+- Thiết kế cơ sở dữ liệu còn đơn giản, chưa thực sự chứa đựng đầy đủ thông tin cần thiết.
+- Logic chương trình còn sơ khai, chưa hình thành được các luồng sự kiện chính sẽ xuất hiện.
+
+### Kiến trúc phần mềm áp dụng
 
 - Kiến trúc phần mềm được sử dụng trong đồ án: **Mô hình 3-layer**
 - Giới thiệu mô hình: gồm có 3 phần chính (hay còn gọi là **lớp**)
