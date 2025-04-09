@@ -22,7 +22,8 @@
    c. Kiểm thử bằng unit test. Cần tạo ra test plan, các test case và test report
 
 4. Tạo ra các tài liệu mô tả kiến trúc phần mềm, mô tả các module:
-   a. Vẽ class diagram
+
+   a. Vẽ class diagram  
    b. Tạo tài liệu mô tả về các lớp, ý nghĩa các hàm
 
 ### Cách thức đánh giá
