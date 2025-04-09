@@ -92,6 +92,15 @@
    - Thông tin 1 bản ghi đánh giá bao gồm: đoạn văn đánh giá (text), điểm rating (1-5), thời gian tạo, chuyến đi được đánh giá, người đánh giá.
    - Chức năng hiển thị các bài đánh giá cho từng chuyến đi cụ thể, hiển thị các bài đánh giá của người dùng hiện đang đăng nhập.
 
+5. Xuất hóa đơn khi khách hàng xác nhận
+   - Mỗi khi khách hàng xác nhận chuyến đi hệ thống sẽ tự động tính toán chi phí và xuất ra hóa đơn ra file .txt.
+   - Hóa đơn bao gồm: Tên khách hàng, số điện thoại, ngày lập, thông tin chuyến đi, tổng thành tiền.
+6. Hiển thị thời tiết tại điểm đến
+   - Hiển thị thời tiết 5 ngày tiếp theo tại điểm đến trong chuyến đi đang được khách hàng lựa chọn.
+   - Thông tin hiển thị bao gồm: Tên điểm đến, ngày dự đoán, nhiệt độ dự đoán, trạng thái thời tiết.
+7. Chuyển đổi ngôn ngữ hiển thị
+   - Trên giao diện phần mềm cung cấp tính năng chuyển đổi giữa hai ngôn ngữ Việt - Anh.
+   
 ### Các nguyên tắc và nguyên lí OOP đã tuân thủ
 
 _(sẽ hoàn thiện sau)_
