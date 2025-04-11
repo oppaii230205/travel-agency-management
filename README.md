@@ -108,7 +108,7 @@
    - Thông tin hiển thị bao gồm: Tên điểm đến, ngày dự đoán, nhiệt độ dự đoán, trạng thái thời tiết.
 7. Chuyển đổi ngôn ngữ hiển thị
    - Trên giao diện phần mềm cung cấp tính năng chuyển đổi giữa hai ngôn ngữ Việt - Anh.
-   
+
 ### Các nguyên tắc và nguyên lí OOP đã tuân thủ
 
 _(sẽ hoàn thiện sau)_
