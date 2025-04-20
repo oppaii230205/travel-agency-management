@@ -2,20 +2,24 @@
 
 bool DBConnection::connectToDatabase() {
     QSqlDatabase db = QSqlDatabase::addDatabase("QODBC");
-
-    // DSN-less connection
-    QString connectionString = "Driver={ODBC Driver 18 for SQL Server};"
-                               "Server=LAPTOP-EMC6ONQH\\NHTHINH;"
-                               "Database=cpp_travelagency_db;"
-                               "Uid=sa;"                        // <-- use SQL Server account
-                               "Pwd=Tinhthinh69@;"             // <-- change this!
-                               "Encrypt=no;";
+    
+    // Chuỗi kết nối cho Azure SQL (tương đương với phiên bản C)
+    QString connectionString = 
+        "Driver={ODBC Driver 18 for SQL Server};"
+        "Server=tcp:hcmus-194200-project.database.windows.net,1433;"
+        "Database=TripAgency;"
+        "Uid=hcmustripagency@hcmus-194200-project;"
+        "Pwd=Hcmus-194200;"
+        "Encrypt=yes;"
+        "TrustServerCertificate=no;"
+        "Connection Timeout=30;";
 
     db.setDatabaseName(connectionString);
 
     if (!db.open()) {
         qDebug() << "Database connection failed:" << db.lastError().text();
-        QMessageBox::critical(nullptr, "Database Connection Error", db.lastError().text());
+        QMessageBox::critical(nullptr, "Database Connection Error", 
+                            "Connection failed:\n" + db.lastError().text());
         return false;
     }
 
