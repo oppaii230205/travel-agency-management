@@ -29,6 +29,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         DBConnection.cpp
         newtripdialog.h newtripdialog.cpp newtripdialog.ui
         DBConnection.h
+        DatabaseManager.h
+        DatabaseManager.cpp
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET TravelAgencyGUI APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
