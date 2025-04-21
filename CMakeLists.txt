@@ -26,9 +26,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(TravelAgencyGUI
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
-        DBConnection.cpp
         newtripdialog.h newtripdialog.cpp newtripdialog.ui
-        DBConnection.h
         DatabaseManager.h
         DatabaseManager.cpp
     )

@@ -1,5 +1,5 @@
 #include "mainwindow.h"
-#include "DBConnection.h"
+#include "DatabaseManager.h"
 
 #include <QApplication>
 #include <QLocale>
@@ -9,10 +9,11 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    // Try to connect to database
-    if (!DBConnection::connectToDatabase()) {
-        QMessageBox::critical(nullptr, "Database Error", "Failed to connect to the database.");
-        return -1; // Exit if connection failed
+    // Khởi tạo database
+    DatabaseManager& dbManager = DatabaseManager::getInstance();
+    if (!dbManager.connect()) {
+        QMessageBox::critical(nullptr, "Database Error", "Failed to connect to database");
+        return -1;
     }
 
     QTranslator translator;
