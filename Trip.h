@@ -6,20 +6,34 @@
 
 class Trip {
 private:
-    int _id;
-    QString _departure;
-    QString _destination;
-    double _price;
+    int _tripId;
+    QString _tripName;
+    int _duration; // in days
+    int _maxGroupSize;
+    QString _difficulty;
+    int _price;
+    QString _summary;
+    QString _description;
 public:
-    Trip(int id, const QString& departure, const QString& destination, double price);
+    Trip(int tripId, const QString& tripName, int duration, int maxGroupSize, const QString& difficulty,
+         int price, const QString& summary, const QString& description);
 
-    int getId() const;
-    QString getDeparture() const; 
-    QString getDestination() const;
-    double getPrice() const; 
-    void setDeparture(const QString& departure); 
-    void setDestination(const QString& destination); 
-    void setPrice(double price); 
+    int getTripId() const;
+    QString getTripName() const;
+    int getDuration() const;
+    int getMaxGroupSize() const;
+    QString getDifficulty() const;
+    int getPrice() const;
+    QString getSummary() const;
+    QString getDescription() const;
+
+    void setTripName(const QString& tripName);
+    void setDuration(int duration);
+    void setMaxGroupSize(int maxGroupSize);
+    void setDifficulty(const QString& difficulty);
+    void setPrice(int price);
+    void setSummary(const QString& summary);
+    void setDescription(const QString& description);
 };
 
 #endif // TRIP_H

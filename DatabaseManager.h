@@ -8,8 +8,8 @@
 
 class DatabaseManager {
 private:
-    QSqlDatabase db;
-    static DatabaseManager* instance;
+    QSqlDatabase _db;
+    static DatabaseManager* _instance;
     DatabaseManager(); // Private constructor
 
 public:

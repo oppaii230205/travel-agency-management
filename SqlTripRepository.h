@@ -10,11 +10,17 @@ public:
 
     // Triển khai các phương thức từ interface
     QList<Trip> getAllTrips() override;
+
+    Trip getTripById(int id) override;
+
     bool addTrip(const Trip& trip) override;
-    // ... các phương thức khác
+
+    bool updateTrip(const Trip& trip) override;
+
+    bool deleteTrip(int id) override;
 
 private:
-    DatabaseManager& dbManager; // Tham chiếu đến DatabaseManager
+    DatabaseManager& _dbManager; // Tham chiếu đến DatabaseManager
 };
 
 #endif // SQLTRIPREPOSITORY_H

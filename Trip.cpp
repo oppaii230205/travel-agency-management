@@ -1,18 +1,23 @@
 #include "Trip.h"
 
-Trip::Trip(int id, const QString& departure, const QString& destination, double price)
-        : _id(id), _departure(departure), _destination(destination), _price(price) {}
+Trip::Trip(int tripId, const QString& tripName, int duration, int maxGroupSize, const QString& difficulty,
+    int price, const QString& summary, const QString& description)
+   : _tripId(tripId), _tripName(tripName), _duration(duration), _maxGroupSize(maxGroupSize),
+     _difficulty(difficulty), _price(price), _summary(summary), _description(description) {}
 
-int Trip::getId() const { return _id; }
+int Trip::getTripId() const { return _tripId; }
+QString Trip::getTripName() const { return _tripName; }
+int Trip::getDuration() const { return _duration; }
+int Trip::getMaxGroupSize() const { return _maxGroupSize; }
+QString Trip::getDifficulty() const { return _difficulty; }
+int Trip::getPrice() const { return _price; }
+QString Trip::getSummary() const { return _summary; }
+QString Trip::getDescription() const { return _description; }
 
-QString Trip::getDeparture() const { return _departure; }
-
-QString Trip::getDestination() const { return _destination; }
-
-double Trip::getPrice() const { return _price; }
-
-void Trip::setDeparture(const QString& departure) { _departure = departure; }
-
-void Trip::setDestination(const QString& destination) { _destination = destination; }
-
-void Trip::setPrice(double price) { _price = price; }
+void Trip::setTripName(const QString& tripName) { _tripName = tripName; }
+void Trip::setDuration(int duration) { _duration = duration; }
+void Trip::setMaxGroupSize(int maxGroupSize) { _maxGroupSize = maxGroupSize; }
+void Trip::setDifficulty(const QString& difficulty) { _difficulty = difficulty; }
+void Trip::setPrice(int price) { _price = price; }
+void Trip::setSummary(const QString& summary) { _summary = summary; }
+void Trip::setDescription(const QString& description) { _description = description; }

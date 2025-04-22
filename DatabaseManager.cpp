@@ -1,35 +1,35 @@
 #include "DatabaseManager.h"
 
-DatabaseManager* DatabaseManager::instance = nullptr;
+DatabaseManager* DatabaseManager::_instance = nullptr;
 
 DatabaseManager::DatabaseManager() {
-    db = QSqlDatabase::addDatabase("QODBC");
+    _db = QSqlDatabase::addDatabase("QODBC");
     QString connectionString = "Driver={ODBC Driver 18 for SQL Server};"
                                "Server=LAPTOP-EMC6ONQH\\NHTHINH;"
                                "Database=cpp_travelagency_db;"
                                "Uid=sa;"
                                "Pwd=Tinhthinh69@;"
                                "Encrypt=no;";
-    db.setDatabaseName(connectionString);
+    _db.setDatabaseName(connectionString);
 }
 
 DatabaseManager::~DatabaseManager() {
-    if (db.isOpen()) {
-        db.close();
+    if (_db.isOpen()) {
+        _db.close();
     }
-    instance = nullptr;
+    _instance = nullptr;
 }
 
 DatabaseManager& DatabaseManager::getInstance() {
-    if (!instance) {
-        instance = new DatabaseManager();
+    if (!_instance) {
+        _instance = new DatabaseManager();
     }
-    return *instance;
+    return *_instance;
 }
 
 bool DatabaseManager::connect() {
-    if (!db.open()) {
-        qDebug() << "Database connection failed:" << db.lastError().text();
+    if (!_db.open()) {
+        qDebug() << "Database connection failed:" << _db.lastError().text();
         return false;
     }
     qDebug() << "Database connected successfully.";
@@ -37,5 +37,5 @@ bool DatabaseManager::connect() {
 }
 
 QSqlDatabase DatabaseManager::getDatabase() const {
-    return db;
+    return _db;
 }
