@@ -1,5 +1,7 @@
 #include "Trip.h"
 
+Trip::Trip(): _tripId(0), _tripName(""), _duration(0), _maxGroupSize(0), _difficulty(""), _price(0), _summary(""), _description(""){}
+
 Trip::Trip(int tripId, const QString& tripName, int duration, int maxGroupSize, const QString& difficulty,
     int price, const QString& summary, const QString& description)
    : _tripId(tripId), _tripName(tripName), _duration(duration), _maxGroupSize(maxGroupSize),
