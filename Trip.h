@@ -15,6 +15,7 @@ private:
     QString _summary;
     QString _description;
 public:
+    Trip() = default; // Default constructor
     Trip(int tripId, const QString& tripName, int duration, int maxGroupSize, const QString& difficulty,
          int price, const QString& summary, const QString& description);
 
