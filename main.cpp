@@ -1,31 +1,21 @@
-#include "mainwindow.h"
+#include "MainWindow.h"
 #include "DatabaseManager.h"
-
+#include "SqlTripRepository.h"
+#include "TripService.h"
 #include <QApplication>
-#include <QLocale>
-#include <QTranslator>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-
-    // Khởi tạo database
-    DatabaseManager& dbManager = DatabaseManager::getInstance();
-    if (!dbManager.connect()) {
-        QMessageBox::critical(nullptr, "Database Error", "Failed to connect to database");
-        return -1;
-    }
-
-    QTranslator translator;
-    const QStringList uiLanguages = QLocale::system().uiLanguages();
-    for (const QString &locale : uiLanguages) {
-        const QString baseName = "TravelAgencyGUI_" + QLocale(locale).name();
-        if (translator.load(":/i18n/" + baseName)) {
-            a.installTranslator(&translator);
-            break;
-        }
-    }
-    MainWindow w;
+    
+    // Khởi tạo các dependency
+    DatabaseManager& db = DatabaseManager::getInstance();
+    SqlTripRepository repository(db);
+    TripService service(&repository);
+    
+    // Truyền service vào MainWindow
+    MainWindow w(&service);
     w.show();
+    
     return a.exec();
 }
