@@ -1,6 +1,8 @@
 #include "AddTripDialog.h"
 #include "ui_AddTripDialog.h"
 
+#include "QDebug"
+
 AddTripDialog::AddTripDialog(TripService* service, QWidget* parent)
     : QDialog(parent), ui(new Ui::AddTripDialog), _tripService(service)
 {

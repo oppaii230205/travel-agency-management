@@ -56,7 +56,7 @@ Trip SqlTripRepository::getTripById(int tripId) {
 
 bool SqlTripRepository::addTrip(const Trip& trip) {
     QSqlQuery query(_dbManager.getDatabase());
-    query.prepare("INSERT TRIP (tripName, duration, maxGroupSize, difficulty, price, summary) VALUES (:tripName, :duration, :maxGroupSize, :difficulty, :price, :summary)");
+    query.prepare("INSERT TRIP (tripName, duration, maxGroupSize, difficulty, price, summary, description) VALUES (:tripName, :duration, :maxGroupSize, :difficulty, :price, :summary, :description)");
     // query.bindValue(":tripId", trip.getTripId());
     query.bindValue(":tripName", trip.getTripName());
     query.bindValue(":duration", trip.getDuration());
