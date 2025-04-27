@@ -1,6 +1,9 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
+
 #include "AddTripDialog.h"
+#include "TripListDialog.h"
+
 #include <QMessageBox>
 #include <QTableWidgetItem>
 #include <iostream>
@@ -55,10 +58,15 @@ void MainWindow::refreshTripList()
 
 void MainWindow::on_btnAddTrip_clicked()
 {
-    std::cout << "Add Trip Clicked\n";
     AddTripDialog dialog(_tripService, this);
     dialog.exec(); // Hiển thị dialog dạng modal
 }
+
+void MainWindow::on_btnShowTrips_clicked() {
+    TripListDialog dialog(_tripService, this);
+    dialog.exec(); // Hiển thị dialog dạng modal    
+}
+
 
 void MainWindow::onTripAdded(const Trip& newTrip)
 {

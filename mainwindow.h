@@ -18,6 +18,7 @@ public:
 
 private slots:
     void on_btnAddTrip_clicked();
+    void on_btnShowTrips_clicked();
     // void on_btnRefresh_clicked();
     void onTripAdded(const Trip& newTrip);
     void onErrorOccurred(const QString& message);

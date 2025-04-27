@@ -19,12 +19,25 @@
      <rect>
       <x>20</x>
       <y>30</y>
-      <width>80</width>
-      <height>18</height>
+      <width>81</width>
+      <height>31</height>
      </rect>
     </property>
     <property name="text">
      <string>Add Trip</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btnShowTrips">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>30</y>
+      <width>81</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Show Trips</string>
     </property>
    </widget>
   </widget>
