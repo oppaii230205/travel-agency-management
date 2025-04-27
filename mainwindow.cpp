@@ -1,13 +1,15 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
+#include "AddTripDialog.h"
 #include <QMessageBox>
 #include <QTableWidgetItem>
+#include <iostream>
 
 MainWindow::MainWindow(TripService* tripService, QWidget* parent)
     : QMainWindow(parent), ui(new Ui::MainWindow), _tripService(tripService)
 {
     ui->setupUi(this);
-    setupTableWidget();
+    // setupTableWidget();
     
     // Kết nối signal-slot
     connect(_tripService, &TripService::tripAdded,
@@ -15,9 +17,16 @@ MainWindow::MainWindow(TripService* tripService, QWidget* parent)
     connect(_tripService, &TripService::errorOccurred,
             this, &MainWindow::onErrorOccurred);
             
-    refreshTripList();
+    // refreshTripList();
 }
 
+MainWindow::~MainWindow()
+{
+    delete ui; // Quan trọng: Giải phóng bộ nhớ của UI
+    // Giải phóng các tài nguyên khác nếu có
+}
+
+/*
 void MainWindow::setupTableWidget()
 {
     ui->tableTrips->setColumnCount(5);
@@ -42,23 +51,18 @@ void MainWindow::refreshTripList()
         ui->tableTrips->setItem(row, 4, new QTableWidgetItem(QString::number(trip.getDuration())));
     }
 }
+*/
 
 void MainWindow::on_btnAddTrip_clicked()
 {
-    // Lấy dữ liệu từ UI (giả sử đã có các QLineEdit, QComboBox...)
-    QString name = ui->txtName->text();
-    QString difficulty = ui->comboDifficulty->currentText();
-    int price = ui->spinPrice->value();
-    int duration = ui->spinDuration->value();
-    
-    Trip newTrip(0, name, duration, 0, difficulty, price, "", "");
-    
-    _tripService->createTrip(newTrip); // Business Layer xử lý
+    std::cout << "Add Trip Clicked\n";
+    AddTripDialog dialog(_tripService, this);
+    dialog.exec(); // Hiển thị dialog dạng modal
 }
 
 void MainWindow::onTripAdded(const Trip& newTrip)
 {
-    refreshTripList();
+    // refreshTripList();
     QMessageBox::information(this, "Thành công", "Đã thêm chuyến đi mới!");
 }
 

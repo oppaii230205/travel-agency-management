@@ -18,13 +18,13 @@ public:
 
 private slots:
     void on_btnAddTrip_clicked();
-    void on_btnRefresh_clicked();
+    // void on_btnRefresh_clicked();
     void onTripAdded(const Trip& newTrip);
     void onErrorOccurred(const QString& message);
 
 private:
-    void refreshTripList();
-    void setupTableWidget();
+    // void refreshTripList();
+    // void setupTableWidget();
     
     Ui::MainWindow *ui;
     TripService* _tripService;

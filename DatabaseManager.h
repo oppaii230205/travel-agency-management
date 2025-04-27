@@ -16,7 +16,7 @@ public:
     ~DatabaseManager();
     static DatabaseManager& getInstance();
     bool connect();
-    QSqlDatabase getDatabase() const;
+    QSqlDatabase& getDatabase();
 };
 
 #endif // DATABASEMANAGER_H

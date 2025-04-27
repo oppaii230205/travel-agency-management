@@ -34,6 +34,11 @@ bool TripService::createTrip(const Trip& trip) {
         return false;
     }
 
+    if (trip.getTripId() != 0) {
+        qWarning() << "Warning: Trip ID should be 0 for new trips";
+        // Vẫn có thể tiếp tục vì DB sẽ bỏ qua ID
+    }
+
     bool success = _repository->addTrip(trip);
     if (success) {
         emit tripAdded(trip);

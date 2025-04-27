@@ -6,15 +6,15 @@
 #include "SqlTripRepository.h"
 
 SqlTripRepository::SqlTripRepository(DatabaseManager& dbManager) : _dbManager(dbManager) {
-    // Khởi tạo kết nối đến cơ sở dữ liệu nếu cần thiết
-    // if (!_dbManager.isConnected()) {
-    //     _dbManager.connectToDatabase();
-    // }
+    if (!_dbManager.getDatabase().isOpen()) {
+        qCritical() << "Database is not open!";
+        // Xử lý lỗi tại đây (throw exception hoặc thông báo)
+    }
 }
 
 QList<Trip> SqlTripRepository::getAllTrips() {
     QList<Trip> trips;
-    QSqlQuery query("SELECT * FROM TRIP");
+    QSqlQuery query("SELECT * FROM TRIP", _dbManager.getDatabase());
     
     while (query.next()) {
         Trip trip(
@@ -34,7 +34,7 @@ QList<Trip> SqlTripRepository::getAllTrips() {
 }
 
 Trip SqlTripRepository::getTripById(int tripId) {
-    QSqlQuery query;
+    QSqlQuery query(_dbManager.getDatabase());
     query.prepare("SELECT * FROM TRIP WHERE tripId = :tripId");
     query.bindValue(":tripId", tripId);
     
@@ -55,9 +55,9 @@ Trip SqlTripRepository::getTripById(int tripId) {
 }
 
 bool SqlTripRepository::addTrip(const Trip& trip) {
-    QSqlQuery query;
-    query.prepare("INSERT TRIP (tripId, tripName, duration, maxGroupSize, difficulty, price, summary) VALUES (:tripId, :tripName, :duration, :maxGroupSize, :difficulty, :price, :summary)");
-    query.bindValue(":tripId", trip.getTripId());
+    QSqlQuery query(_dbManager.getDatabase());
+    query.prepare("INSERT TRIP (tripName, duration, maxGroupSize, difficulty, price, summary) VALUES (:tripName, :duration, :maxGroupSize, :difficulty, :price, :summary)");
+    // query.bindValue(":tripId", trip.getTripId());
     query.bindValue(":tripName", trip.getTripName());
     query.bindValue(":duration", trip.getDuration());
     query.bindValue(":maxGroupSize", trip.getMaxGroupSize());
@@ -76,10 +76,7 @@ bool SqlTripRepository::addTrip(const Trip& trip) {
 }
 
 bool SqlTripRepository::updateTrip(const Trip& trip) {
-    QSqlQuery query;
-    query.prepare("UPDATE travelagencytrips_tb SET t_trip = :name WHERE t_id = :id");
-    
-    QSqlQuery query;
+    QSqlQuery query(_dbManager.getDatabase());
     query.prepare("UPDATE TRIP SET tripName = :tripName, duration = :duration, maxGroupSize = :maxGroupSize, difficulty = :difficulty, price = :price, summary = :summary, decription = :description WHERE tripId = :tripId");
     query.bindValue(":tripId", trip.getTripId());
     query.bindValue(":tripName", trip.getTripName());
@@ -101,7 +98,7 @@ bool SqlTripRepository::updateTrip(const Trip& trip) {
 }
 
 bool SqlTripRepository::deleteTrip(int tripId) {
-    QSqlQuery query;
+    QSqlQuery query(_dbManager.getDatabase());
     query.prepare("DELETE FROM TRIP WHERE tripId = :tripId");
     query.bindValue(":tripId", tripId);
     
