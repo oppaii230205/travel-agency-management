@@ -40,4 +40,3 @@ bool User::isValid() const{
     && !_role.isEmpty()
     && validEmail;
 }
-

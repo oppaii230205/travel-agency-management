@@ -6,9 +6,9 @@
 
 class SqlUserRepository: public UserRepository{
     private:
-        QSqlDatabase& _database;
+        const QSqlDatabase& _database;
     public:
-        explicit SqlUserRepository(QSqlDatabase& db);
+        explicit SqlUserRepository(const QSqlDatabase& db);
 
         bool addUser(const User& user);
         QSharedPointer<User> getUserByEmail(const QString& email);

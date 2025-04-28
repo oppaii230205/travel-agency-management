@@ -4,6 +4,10 @@
 #include <QApplication>
 #include <QLocale>
 #include <QTranslator>
+#include "SqlUserRepository.h"
+#include "loginwindow.h"
+#include "authservice.h"
+
 
 int main(int argc, char *argv[])
 {
@@ -25,6 +29,11 @@ int main(int argc, char *argv[])
             break;
         }
     }
+
+    auto userRepo = QSharedPointer<SqlUserRepository>::create(dbManager.getDatabase());
+    auto authService = QSharedPointer<AuthService>::create(userRepo);
+    LoginWindow loginWindow(authService, nullptr);
+    loginWindow.show();
     MainWindow w;
     w.show();
     return a.exec();

@@ -12,8 +12,8 @@ class UserRepository {
         virtual bool addUser(const User& user) = 0;
         virtual QSharedPointer<User> getUserByEmail(const QString& email) = 0;
         virtual QList<User> getAllUsers() = 0;
-        virtual bool UpdateUser(const User& user) = 0;
-        virtual bool DeleteUser(const QString& email) = 0;
+        virtual bool updateUser(const User& user) = 0;
+        virtual bool deleteUser(const QString& email) = 0;
 
         virtual bool userExists(const QString& email) = 0;
 };
