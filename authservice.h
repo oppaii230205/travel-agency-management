@@ -21,8 +21,8 @@ signals:
     void signupFailed(const QString& reason);
 
 private:
-    QSharedPointer<UserRepository> m_userRepository;
-    QSharedPointer<User> m_currentUser;
+    QSharedPointer<UserRepository> _userRepository;
+    QSharedPointer<User> _currentUser;
 };
 
 #endif // AUTHSERVICE_H
