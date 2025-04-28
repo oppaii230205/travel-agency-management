@@ -12,6 +12,13 @@ DatabaseManager::DatabaseManager() {
                                "Encrypt=yes;"
                                "TrustServerCertificate=no;"
                                "Connection Timeout=30;";
+    // QString connectionString = "Driver={ODBC Driver 18 for SQL Server};"
+    //                            "Server=LAPTOP-EMC6ONQH\\NHTHINH;"
+    //                            "Database=cpp_travelagency_db;"
+    //                            "Uid=sa;"                        // <-- use SQL Server account
+    //                            "Pwd=Tinhthinh69@;"             // <-- change this!
+    //                            "Encrypt=no;";
+
     _db.setDatabaseName(connectionString);
 }
 
@@ -38,6 +45,9 @@ bool DatabaseManager::connect() {
     return true;
 }
 
-QSqlDatabase DatabaseManager::getDatabase() const {
+QSqlDatabase& DatabaseManager::getDatabase() {
+    if (!_db.isOpen()) {
+        _db.open(); // Tự động mở lại nếu bị đóng
+    }
     return _db;
 }

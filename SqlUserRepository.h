@@ -2,13 +2,13 @@
 #define _SQLUSERREPOSITORY_H_
 
 #include "UserRepository.h"
-#include <QSqlDatabase>
+#include "DatabaseManager.h"
 
 class SqlUserRepository: public UserRepository{
     private:
-        const QSqlDatabase& _database;
+        DatabaseManager& _dbManager;
     public:
-        explicit SqlUserRepository(const QSqlDatabase& db);
+        explicit SqlUserRepository(DatabaseManager& dbManager);
 
         bool addUser(const User& user);
         QSharedPointer<User> getUserByEmail(const QString& email);

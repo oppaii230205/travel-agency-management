@@ -29,22 +29,27 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         newtripdialog.h newtripdialog.cpp newtripdialog.ui
         DatabaseManager.h
         DatabaseManager.cpp
+        TripService.h
+        TripService.cpp
         TripRepository.h
+        UserRepository.h
         SqlTripRepository.h
         SqlTripRepository.cpp
+        SqlUserRepository.h
+        SqlUserRepository.cpp
         Trip.h
         Trip.cpp
         User.h
         User.cpp
-        UserRepository.h
-        SqlUserRepository.h SqlUserRepository.cpp
+        AddTripDialog.h AddTripDialog.cpp AddTripDialog.ui
+        AddTripDialog.cpp
+        TripListDialog.h TripListDialog.cpp TripListDialog.ui
+        loginwindow.h
+        loginwindow.cpp
+        signupwindow.h 
+        signupwindow.cpp
+        authservice.h 
         authservice.cpp
-        authservice.h
-        loginwindow.h loginwindow.cpp
-        signupwindow.h signupwindow.cpp
-        login_window.ui
-        signup_window.ui
-
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET TravelAgencyGUI APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

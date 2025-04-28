@@ -4,14 +4,20 @@
 #include <QSqlError>
 #include <QDebug>
 
-SqlUserRepository::SqlUserRepository(const QSqlDatabase& db) : _database(db){}
+//Do "User" là từ khóa riêng của SQL server nên đặt vào []
+
+SqlUserRepository::SqlUserRepository(DatabaseManager& dbManager) : _dbManager(dbManager){
+    if (!_dbManager.getDatabase().isOpen()) {
+        qCritical() << "Database is not open!";
+    }
+}
 
 bool SqlUserRepository::addUser(const User& user){
     if(!user.isValid()){
         qWarning() << "Invalid user data";
         return false;
     }
-    QSqlQuery query(_database);
+    QSqlQuery query(_dbManager.getDatabase());
     query.prepare("INSERT INTO [USER] (email, password, name, role) VALUES (:email, :password, :name, :role)");
     query.bindValue(":email", user.email());
     query.bindValue(":password", user.password());
@@ -22,7 +28,7 @@ bool SqlUserRepository::addUser(const User& user){
 }
 
 QSharedPointer<User> SqlUserRepository::getUserByEmail(const QString& email){
-    QSqlQuery query(_database);
+    QSqlQuery query(_dbManager.getDatabase());
     query.prepare("Select * FROM [USER] WHERE email = :email");
     query.bindValue(":email", email);
     if(!executeQuery(query) || !query.next()){
@@ -33,7 +39,7 @@ QSharedPointer<User> SqlUserRepository::getUserByEmail(const QString& email){
 
 QList<User> SqlUserRepository::getAllUsers(){
     QList<User> users;
-    QSqlQuery query("SELECT * FROM [USER]", _database);
+    QSqlQuery query("SELECT * FROM [USER]", _dbManager.getDatabase());
     if(executeQuery(query)){
         while(query.next()){
             users.append(mapResultToUser(query));
@@ -48,7 +54,7 @@ bool SqlUserRepository::updateUser(const User& user){
         return false;
     }
 
-    QSqlQuery query(_database);
+    QSqlQuery query(_dbManager.getDatabase());
     query.prepare("UPDATE [USER] SET password = :password, name = :name, role = :role WHERE email = :email");
     query.bindValue(":password", user.password());
     query.bindValue(":name", user.name());
@@ -59,7 +65,7 @@ bool SqlUserRepository::updateUser(const User& user){
 }
 
 bool SqlUserRepository::deleteUser(const QString& email) {
-    QSqlQuery query(_database);
+    QSqlQuery query(_dbManager.getDatabase());
     query.prepare("DELETE FROM [USER] WHERE email = :email");
     query.bindValue(":email", email);
     
@@ -67,7 +73,7 @@ bool SqlUserRepository::deleteUser(const QString& email) {
 }
 
 bool SqlUserRepository::userExists(const QString& email) {
-    QSqlQuery query(_database);
+    QSqlQuery query(_dbManager.getDatabase());
     query.prepare("SELECT COUNT(*) FROM [USER] WHERE email = :email");
     query.bindValue(":email", email);
     

@@ -26,7 +26,7 @@ bool AuthService::signup(const QString& email, const QString& password, const QS
         return false;
     }
 
-    User newUser(email, password, name, "customer"); // Mặc định role là "customer"
+    User newUser(email, password, name, "customer"); // Mặc định role là "customer"!! Cho nhập role thì lỏ vcl :v
     if (!m_userRepository->addUser(newUser)) {
         emit signupFailed("Lỗi khi tạo tài khoản");
         return false;

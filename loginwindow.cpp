@@ -6,11 +6,12 @@
 LoginWindow::LoginWindow(QSharedPointer<AuthService> authService, QWidget *parent)
     : QDialog(parent), ui(new Ui::QDialog), m_authService(authService) {
     ui->setupUi(this);
-
+    setWindowTitle("Đăng Nhập");
     connect(m_authService.data(), &AuthService::loginSuccess,
             this, &LoginWindow::handleLoginSuccess);
     connect(m_authService.data(), &AuthService::loginFailed,
             this, &LoginWindow::handleLoginFailed);
+    connect(this, &QDialog::rejected, this, &LoginWindow::onLoginRejected);
 
     // Ẩn mk
     ui->passwordEdit->setEchoMode(QLineEdit::Password);
@@ -43,12 +44,20 @@ void LoginWindow::on_signupButton_clicked() {
 }
 
 void LoginWindow::handleLoginSuccess() {
-    QMessageBox::information(this, "Thành công", "Đăng nhập thành công!");
     // TODO: Mở cửa sổ chính của ứng dụng
+    // Định gọi MainWindow nhưng đưa ra main rồi =))
     qDebug() << "User logged in:" << m_authService->getCurrentUser()->name();
-    this->close();
+
+    disconnect(this, &QDialog::rejected, this, &LoginWindow::onLoginRejected);
+    emit loginSuccess();
+    this->accept();
 }
 
 void LoginWindow::handleLoginFailed(const QString& reason) {
     QMessageBox::critical(this, "Lỗi đăng nhập", reason);
+}
+
+void LoginWindow::onLoginRejected() {
+    emit loginAborted();  // Phát tín hiệu khi người dùng nhấn tắt bảng đăng nhập
+    qDebug() << "Người dùng đã hủy đăng nhập";
 }

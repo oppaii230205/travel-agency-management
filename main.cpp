@@ -1,40 +1,44 @@
-#include "mainwindow.h"
+#include "MainWindow.h"
 #include "DatabaseManager.h"
-
+#include "SqlTripRepository.h"
+#include "TripService.h"
 #include <QApplication>
-#include <QLocale>
-#include <QTranslator>
 #include "SqlUserRepository.h"
 #include "loginwindow.h"
-#include "authservice.h"
 
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-
-    // Khởi tạo database
-    DatabaseManager& dbManager = DatabaseManager::getInstance();
-    if (!dbManager.connect()) {
-        QMessageBox::critical(nullptr, "Database Error", "Failed to connect to database");
-        return -1;
-    }
-
-    QTranslator translator;
-    const QStringList uiLanguages = QLocale::system().uiLanguages();
-    for (const QString &locale : uiLanguages) {
-        const QString baseName = "TravelAgencyGUI_" + QLocale(locale).name();
-        if (translator.load(":/i18n/" + baseName)) {
-            a.installTranslator(&translator);
-            break;
-        }
-    }
-
-    auto userRepo = QSharedPointer<SqlUserRepository>::create(dbManager.getDatabase());
-    auto authService = QSharedPointer<AuthService>::create(userRepo);
+    
+    // Khởi tạo các dependency
+    DatabaseManager& db = DatabaseManager::getInstance();
+    SqlTripRepository repository(db);
+    TripService service(&repository);
+    
+    //Smart pointer
+    QSharedPointer<SqlUserRepository> userRepo = QSharedPointer<SqlUserRepository>::create(db);
+    QSharedPointer<AuthService> authService = QSharedPointer<AuthService>::create(userRepo);
     LoginWindow loginWindow(authService, nullptr);
+
+    // Truyền service vào MainWindow
+    MainWindow w(&service);
+
+    //Nhận tín hiệu loginSuccess -> tắt bảng login -> mở MainWindow
+    QObject::connect(&loginWindow, &LoginWindow::loginSuccess, [&](){
+        loginWindow.close();
+        //Lấy user authService->getCurrentUser()
+        w.show();
+
+    });
+
+    // Khi người dùng nhấn nút 'x' để tắt bảng Login -> thông báo hủy đăng nhập -> tắt chương trình
+    QObject::connect(&loginWindow, &LoginWindow::loginAborted, [&]() {
+        QMessageBox::information(nullptr, "Thông báo", "Bạn đã hủy đăng nhập");
+        QApplication::quit();
+    });
+
     loginWindow.show();
-    MainWindow w;
-    w.show();
+
     return a.exec();
 }

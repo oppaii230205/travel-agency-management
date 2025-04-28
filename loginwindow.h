@@ -15,11 +15,16 @@ public:
     explicit LoginWindow(QSharedPointer<AuthService> authService, QWidget *parent = nullptr);
     ~LoginWindow();
 
+signals:
+    void loginSuccess();
+    void loginAborted();
+
 private slots:
     void on_loginButton_clicked();
     void on_signupButton_clicked();
     void handleLoginSuccess();
     void handleLoginFailed(const QString& reason);
+    void onLoginRejected();
 
 private:
     Ui::QDialog *ui;
