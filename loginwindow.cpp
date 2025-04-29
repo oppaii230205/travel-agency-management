@@ -61,3 +61,4 @@ void LoginWindow::onLoginRejected() {
     emit loginAborted();  // Phát tín hiệu khi người dùng nhấn tắt bảng đăng nhập
     qDebug() << "Người dùng đã hủy đăng nhập";
 }
+

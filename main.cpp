@@ -18,6 +18,7 @@ int main(int argc, char *argv[])
     
     QSharedPointer<AuthService> authService = QSharedPointer<AuthService>::create(userRepository);
     QSharedPointer<TripService> tripService = QSharedPointer<TripService>::create(tripRepository);
+    QSharedPointer<UserService> userService = QSharedPointer<UserService>::create(userRepository);
     
     LoginWindow loginWindow(authService, nullptr);
     QSharedPointer<MainWindow> mainWindow; // Khai báo bên ngoài lambda
@@ -27,7 +28,7 @@ int main(int argc, char *argv[])
         loginWindow.close();
 
         // Tạo MainWindow sau khi login thành công
-        mainWindow =  QSharedPointer<MainWindow>::create(authService, tripService);
+        mainWindow =  QSharedPointer<MainWindow>::create(userService, authService, tripService);
         mainWindow->show();
     });
 

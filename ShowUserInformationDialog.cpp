@@ -1,13 +1,13 @@
-#include "ShowUserInfomationDialog.h"
-#include "ui_ShowUserInfomationDialog.h"
+#include "ShowUserInformationDialog.h"
+#include "ui_ShowUserInformationDialog.h"
 #include <QMessageBox>
 
-ShowUserInfomationDialog::ShowUserInfomationDialog(QSharedPointer<UserService> userService, const QString& email, QWidget *parent) : QDialog(parent), ui(new Ui::ShowUserInfomationDialog), _userService(userService), _email(email){
+ShowUserInformationDialog::ShowUserInformationDialog(QSharedPointer<UserService> userService, const QString& email, QWidget *parent) : QDialog(parent), ui(new Ui::ShowUserInformationDialog), _userService(userService), _email(email){
     ui->setupUi(this);
     setWindowTitle("Thông tin người dùng");
 
-    connect(ui->saveButton, &QPushButton::clicked, this, &ShowUserInformationDialog::onSaveClicked);
-    connect(ui->cancelButton, &QPushButton::clicked, this, &ShowUserInformationDialog::onCancelClicked);
+    connect(ui->ptnSave, &QPushButton::clicked, this, &ShowUserInformationDialog::on_btnSave_clicked);
+    connect(ui->ptnCancel, &QPushButton::clicked, this, &ShowUserInformationDialog::on_btnCancel_clicked);
 
     loadUserData();
 
@@ -16,12 +16,12 @@ ShowUserInfomationDialog::ShowUserInfomationDialog(QSharedPointer<UserService> u
     ui->lineEditRole->setEchoMode(QLineEdit::Password);
 }
 
-ShowUserInfomationDialog::~ShowUserInfomationDialog()
+ShowUserInformationDialog::~ShowUserInformationDialog()
 {
     delete ui;
 }
 
-void ShowUserInfomationDialog::loadUserData(){
+void ShowUserInformationDialog::loadUserData(){
     auto user = _userService->getUserByEmail(_email);
     if(user){
         ui->lineEditEmail->setText(user->email());
@@ -31,8 +31,8 @@ void ShowUserInfomationDialog::loadUserData(){
     }
 }
 
-void ShowUserInfomationDialog::onSaveClicked(){
-    QString newName = ui->lineEditEmail->text().trimmed();
+void ShowUserInformationDialog::on_btnSave_clicked(){
+    QString newName = ui->lineEditName->text();
     QString newPassword = ui->lineEditPass->text();
 
     if(newName.isEmpty()){
@@ -49,7 +49,7 @@ void ShowUserInfomationDialog::onSaveClicked(){
     }
 }
 
-void ShowUserInformationDialog::onCancelClicked()
+void ShowUserInformationDialog::on_btnCancel_clicked()
 {
     reject();
 }

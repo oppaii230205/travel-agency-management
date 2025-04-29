@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>ShowUserInfomationDialog</class>
- <widget class="QDialog" name="ShowUserInfomationDialog">
+ <class>ShowUserInformationDialog</class>
+ <widget class="QDialog" name="ShowUserInformationDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
+    <width>374</width>
     <height>300</height>
    </rect>
   </property>
@@ -70,7 +70,7 @@
     <rect>
      <x>109</x>
      <y>87</y>
-     <width>108</width>
+     <width>171</width>
      <height>24</height>
     </rect>
    </property>
@@ -80,12 +80,12 @@
     <rect>
      <x>109</x>
      <y>120</y>
-     <width>108</width>
+     <width>171</width>
      <height>24</height>
     </rect>
    </property>
   </widget>
-  <widget class="QPushButton" name="ptnName">
+  <widget class="QPushButton" name="ptnSave">
    <property name="geometry">
     <rect>
      <x>90</x>
@@ -98,7 +98,7 @@
     <string>Save Changes</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="ptnButtonCancel">
+  <widget class="QPushButton" name="ptnCancel">
    <property name="geometry">
     <rect>
      <x>200</x>
@@ -116,7 +116,7 @@
     <rect>
      <x>109</x>
      <y>153</y>
-     <width>108</width>
+     <width>171</width>
      <height>24</height>
     </rect>
    </property>
@@ -126,7 +126,7 @@
     <rect>
      <x>109</x>
      <y>54</y>
-     <width>108</width>
+     <width>171</width>
      <height>24</height>
     </rect>
    </property>
