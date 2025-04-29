@@ -13,6 +13,7 @@ public:
     bool login(const QString& email, const QString& password);
     bool signup(const QString& email, const QString& password, const QString& name);
     QSharedPointer<User> getCurrentUser() const;
+    bool hasPermission(const QString& requiredRole) const;
 
 signals:
     void loginSuccess();

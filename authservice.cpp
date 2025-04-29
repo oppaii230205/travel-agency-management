@@ -39,3 +39,7 @@ bool AuthService::signup(const QString& email, const QString& password, const QS
 QSharedPointer<User> AuthService::getCurrentUser() const {
     return _currentUser;
 }
+
+bool AuthService::hasPermission(const QString& requiredRole) const {
+    return _currentUser && _currentUser->role() == requiredRole;
+}

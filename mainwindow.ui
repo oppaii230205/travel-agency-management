@@ -17,8 +17,8 @@
    <widget class="QPushButton" name="btnAddTrip">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>30</y>
+      <x>40</x>
+      <y>100</y>
       <width>81</width>
       <height>31</height>
      </rect>
@@ -30,14 +30,27 @@
    <widget class="QPushButton" name="btnShowTrips">
     <property name="geometry">
      <rect>
-      <x>120</x>
-      <y>30</y>
+      <x>250</x>
+      <y>100</y>
       <width>81</width>
       <height>31</height>
      </rect>
     </property>
     <property name="text">
      <string>Show Trips</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelWelcome">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>40</y>
+      <width>91</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Hello, Anonymous!</string>
     </property>
    </widget>
   </widget>
