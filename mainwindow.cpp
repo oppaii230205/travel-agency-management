@@ -8,8 +8,8 @@
 #include <QTableWidgetItem>
 #include <iostream>
 
-MainWindow::MainWindow(TripService* tripService, QWidget* parent)
-    : QMainWindow(parent), ui(new Ui::MainWindow), _tripService(tripService)
+MainWindow::MainWindow(TripService* tripService, QSharePointer<UserService> userService, QWidget* parent)
+    : QMainWindow(parent), ui(new Ui::MainWindow), _tripService(tripService), _userService(userService)
 {
     ui->setupUi(this);
     // setupTableWidget();
@@ -66,6 +66,7 @@ void MainWindow::on_btnShowTrips_clicked() {
     TripListDialog dialog(_tripService, this);
     dialog.exec(); // Hiển thị dialog dạng modal    
 }
+
 
 
 void MainWindow::onTripAdded(const Trip& newTrip)

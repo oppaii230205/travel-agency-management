@@ -50,6 +50,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         signupwindow.cpp
         authservice.h 
         authservice.cpp
+        UserService.h UserService.cpp
+        ShowUserInfomationDialog.h ShowUserInfomationDialog.cpp ShowUserInfomationDialog.ui
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET TravelAgencyGUI APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
