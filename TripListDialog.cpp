@@ -4,7 +4,7 @@
 #include <QSortFilterProxyModel>
 #include <QMenu>
 
-TripListDialog::TripListDialog(TripService* service, QWidget* parent)
+TripListDialog::TripListDialog(QSharedPointer<TripService> service, QWidget* parent)
     : QDialog(parent),
     ui(new Ui::TripListDialog),
     _tripService(service),

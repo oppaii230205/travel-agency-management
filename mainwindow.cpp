@@ -6,18 +6,17 @@
 
 #include <QMessageBox>
 #include <QTableWidgetItem>
-#include <iostream>
 
-MainWindow::MainWindow(TripService* tripService, QSharePointer<UserService> userService, QWidget* parent)
-    : QMainWindow(parent), ui(new Ui::MainWindow), _tripService(tripService), _userService(userService)
+MainWindow::MainWindow(QSharedPointer<AuthService> authService, QSharedPointer<TripService> tripService, QWidget* parent)
+    : QMainWindow(parent), ui(new Ui::MainWindow), _authService(authService), _tripService(tripService)
 {
     ui->setupUi(this);
-    // setupTableWidget();
+    updateUI();
     
     // Kết nối signal-slot
-    connect(_tripService, &TripService::tripAdded,
+    connect(_tripService.data(), &TripService::tripAdded,
             this, &MainWindow::onTripAdded);
-    connect(_tripService, &TripService::errorOccurred,
+    connect(_tripService.data(), &TripService::errorOccurred,
             this, &MainWindow::onErrorOccurred);
             
     // refreshTripList();
@@ -29,32 +28,16 @@ MainWindow::~MainWindow()
     // Giải phóng các tài nguyên khác nếu có
 }
 
-/*
-void MainWindow::setupTableWidget()
-{
-    ui->tableTrips->setColumnCount(5);
-    ui->tableTrips->setHorizontalHeaderLabels(
-        {"ID", "Tên chuyến đi", "Độ khó", "Giá", "Số ngày"});
-    ui->tableTrips->horizontalHeader()->setStretchLastSection(true);
-}
-
-void MainWindow::refreshTripList()
-{
-    ui->tableTrips->setRowCount(0);
-    QList<Trip> trips = _tripService->getAllTrips();
-    
-    for (const Trip& trip : trips) {
-        int row = ui->tableTrips->rowCount();
-        ui->tableTrips->insertRow(row);
-        
-        ui->tableTrips->setItem(row, 0, new QTableWidgetItem(QString::number(trip.getTripId())));
-        ui->tableTrips->setItem(row, 1, new QTableWidgetItem(trip.getTripName()));
-        ui->tableTrips->setItem(row, 2, new QTableWidgetItem(trip.getDifficulty()));
-        ui->tableTrips->setItem(row, 3, new QTableWidgetItem(QString::number(trip.getPrice())));
-        ui->tableTrips->setItem(row, 4, new QTableWidgetItem(QString::number(trip.getDuration())));
+void MainWindow::updateUI() {
+    QSharedPointer<User> currentUser = _authService->getCurrentUser();
+    // Cập nhật UI ngay lần đầu
+    if (auto user = _authService->getCurrentUser()) {
+        ui->labelWelcome->setText("Xin chào, " + user->name());
+    } else {
+        qWarning() << "No user logged in!"; // Debug nếu cần
     }
 }
-*/
+
 
 void MainWindow::on_btnAddTrip_clicked()
 {

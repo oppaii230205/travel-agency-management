@@ -11,7 +11,7 @@ class TripService : public QObject
     Q_OBJECT
 
 public:
-    explicit TripService(TripRepository* repository, QObject* parent = nullptr);
+    explicit TripService(QSharedPointer<TripRepository> repository, QObject* parent = nullptr);
 
     // Basic CRUD operations
     QList<Trip> getAllTrips();
@@ -32,7 +32,7 @@ signals:
     void errorOccurred(const QString& errorMessage);
 
 private:
-    TripRepository* _repository;
+    QSharedPointer<TripRepository> _repository;
     bool validateTrip(const Trip& trip) const;
 };
 

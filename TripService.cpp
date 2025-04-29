@@ -1,7 +1,7 @@
 #include "TripService.h"
 #include <QDebug>
 
-TripService::TripService(TripRepository* repository, QObject* parent)
+TripService::TripService(QSharedPointer<TripRepository> repository, QObject* parent)
     : QObject(parent), _repository(repository) {
     Q_ASSERT(repository != nullptr); // Đảm bảo repository không null
 }

@@ -13,6 +13,7 @@ public:
     bool login(const QString& email, const QString& password);
     bool signup(const QString& email, const QString& password, const QString& name);
     QSharedPointer<User> getCurrentUser() const;
+    bool hasPermission(const QString& requiredRole) const;
 
 signals:
     void loginSuccess();
@@ -21,8 +22,8 @@ signals:
     void signupFailed(const QString& reason);
 
 private:
-    QSharedPointer<UserRepository> m_userRepository;
-    QSharedPointer<User> m_currentUser;
+    QSharedPointer<UserRepository> _userRepository;
+    QSharedPointer<User> _currentUser;
 };
 
 #endif // AUTHSERVICE_H

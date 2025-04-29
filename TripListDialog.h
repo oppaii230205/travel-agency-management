@@ -14,7 +14,7 @@ class TripListDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit TripListDialog(TripService* service, QWidget* parent = nullptr);
+    explicit TripListDialog(QSharedPointer<TripService> service, QWidget* parent = nullptr);
     ~TripListDialog();
 
 private slots:
@@ -30,7 +30,7 @@ private:
 
 private:
     Ui::TripListDialog *ui;
-    TripService* _tripService;
+    QSharedPointer<TripService> _tripService;
     QStandardItemModel* _model; // Model quản lý dữ liệu
 
 private:

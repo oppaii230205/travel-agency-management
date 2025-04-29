@@ -11,7 +11,7 @@ class AddTripDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit AddTripDialog(TripService* service, QWidget* parent = nullptr);
+    explicit AddTripDialog(QSharedPointer<TripService> service, QWidget* parent = nullptr);
     ~AddTripDialog();
 
 private slots:
@@ -20,5 +20,5 @@ private slots:
 
 private:
     Ui::AddTripDialog* ui;
-    TripService* _tripService;
+    QSharedPointer<TripService> _tripService;
 };

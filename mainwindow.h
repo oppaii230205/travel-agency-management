@@ -3,8 +3,7 @@
 
 #include <QMainWindow>
 #include "TripService.h"
-#include "UserService.h"
-#include <QSharedPointer>
+#include "authservice.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -15,8 +14,11 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    MainWindow(TripService* tripService,QSharedPointer<UserService> userService, QWidget* parent = nullptr);
+    MainWindow(QSharedPointer<AuthService> authService, QSharedPointer<TripService> tripService, QWidget* parent = nullptr);
     ~MainWindow();
+
+public:
+    void updateUI();
 
 private slots:
     void on_btnAddTrip_clicked();
@@ -27,13 +29,9 @@ private slots:
     void onErrorOccurred(const QString& message);
 
 private:
-    // void refreshTripList();
-    // void setupTableWidget();
-    
     Ui::MainWindow *ui;
-    TripService* _tripService;
-    QSharedPointer<UserService> _userService;
-
+    QSharedPointer<AuthService> _authService;  // Truyền qua DI
+    QSharedPointer<TripService> _tripService;
 };
 
 #endif // MAINWINDOW_H
