@@ -14,7 +14,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    MainWindow(QSharedPointer<AuthService> authService, TripService* tripService, QWidget* parent = nullptr);
+    MainWindow(QSharedPointer<AuthService> authService, QSharedPointer<TripService> tripService, QWidget* parent = nullptr);
     ~MainWindow();
 
 public:
@@ -30,7 +30,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     QSharedPointer<AuthService> _authService;  // Truyền qua DI
-    TripService* _tripService;
+    QSharedPointer<TripService> _tripService;
 };
 
 #endif // MAINWINDOW_H

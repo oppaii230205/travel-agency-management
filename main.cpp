@@ -13,14 +13,13 @@ int main(int argc, char *argv[])
     
     // Khởi tạo các dependency
     DatabaseManager& db = DatabaseManager::getInstance();
-    SqlTripRepository tripRepository(db);
-    TripService tripService(&tripRepository);
+    QSharedPointer<SqlTripRepository> tripRepository = QSharedPointer<SqlTripRepository>::create(db);
+    QSharedPointer<SqlUserRepository> userRepository = QSharedPointer<SqlUserRepository>::create(db);
     
-    //Smart pointer
-    QSharedPointer<SqlUserRepository> userRepo = QSharedPointer<SqlUserRepository>::create(db);
-    QSharedPointer<AuthService> authService = QSharedPointer<AuthService>::create(userRepo);
+    QSharedPointer<AuthService> authService = QSharedPointer<AuthService>::create(userRepository);
+    QSharedPointer<TripService> tripService = QSharedPointer<TripService>::create(tripRepository);
+    
     LoginWindow loginWindow(authService, nullptr);
-
     QSharedPointer<MainWindow> mainWindow; // Khai báo bên ngoài lambda
 
     // Kết nối signal loginSuccess để tạo MainWindow sau khi login
@@ -28,7 +27,7 @@ int main(int argc, char *argv[])
         loginWindow.close();
 
         // Tạo MainWindow sau khi login thành công
-        mainWindow =  QSharedPointer<MainWindow>::create(authService, &tripService);
+        mainWindow =  QSharedPointer<MainWindow>::create(authService, tripService);
         mainWindow->show();
     });
 

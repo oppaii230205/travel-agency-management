@@ -7,16 +7,16 @@
 #include <QMessageBox>
 #include <QTableWidgetItem>
 
-MainWindow::MainWindow(QSharedPointer<AuthService> authService, TripService* tripService, QWidget* parent)
+MainWindow::MainWindow(QSharedPointer<AuthService> authService, QSharedPointer<TripService> tripService, QWidget* parent)
     : QMainWindow(parent), ui(new Ui::MainWindow), _authService(authService), _tripService(tripService)
 {
     ui->setupUi(this);
     updateUI();
     
     // Kết nối signal-slot
-    connect(_tripService, &TripService::tripAdded,
+    connect(_tripService.data(), &TripService::tripAdded,
             this, &MainWindow::onTripAdded);
-    connect(_tripService, &TripService::errorOccurred,
+    connect(_tripService.data(), &TripService::errorOccurred,
             this, &MainWindow::onErrorOccurred);
             
     // refreshTripList();

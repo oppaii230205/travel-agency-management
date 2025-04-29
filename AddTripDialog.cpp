@@ -3,7 +3,7 @@
 
 #include "QDebug"
 
-AddTripDialog::AddTripDialog(TripService* service, QWidget* parent)
+AddTripDialog::AddTripDialog(QSharedPointer<TripService> service, QWidget* parent)
     : QDialog(parent), ui(new Ui::AddTripDialog), _tripService(service)
 {
     ui->setupUi(this);
