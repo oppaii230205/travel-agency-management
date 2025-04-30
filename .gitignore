@@ -1,4 +1,4 @@
 .vscode
 build
 .cache
-CMakeList.txt.user
+CMakeList.txt.user*
