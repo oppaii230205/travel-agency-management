@@ -3,12 +3,13 @@
 
 #include "AddTripDialog.h"
 #include "TripListDialog.h"
+#include "ShowUserInformationDialog.h"
 
 #include <QMessageBox>
 #include <QTableWidgetItem>
 
-MainWindow::MainWindow(QSharedPointer<AuthService> authService, QSharedPointer<TripService> tripService, QWidget* parent)
-    : QMainWindow(parent), ui(new Ui::MainWindow), _authService(authService), _tripService(tripService)
+MainWindow::MainWindow(QSharedPointer<UserService> userService, QSharedPointer<AuthService> authService, QSharedPointer<TripService> tripService, QWidget* parent)
+    : QMainWindow(parent), ui(new Ui::MainWindow), _userService(userService), _authService(authService), _tripService(tripService)
 {
     ui->setupUi(this);
     updateUI();
@@ -52,6 +53,17 @@ void MainWindow::on_btnShowTrips_clicked() {
 }
 
 
+void MainWindow::on_btnShowUserInfomation_clicked()
+{
+
+    QString currentUserEmail = _authService->getCurrentUser()->email(); // Cần implement hàm này
+
+
+    ShowUserInformationDialog Dialog(_userService, currentUserEmail, this);
+    Dialog.exec();
+}
+
+
 void MainWindow::onTripAdded(const Trip& newTrip)
 {
     // refreshTripList();
@@ -62,3 +74,4 @@ void MainWindow::onErrorOccurred(const QString& message)
 {
     QMessageBox::critical(this, "Lỗi", message);
 }
+
