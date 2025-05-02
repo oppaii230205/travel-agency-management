@@ -52,12 +52,87 @@
 - Giới thiệu mô hình: gồm có 3 phần chính (hay còn gọi là **lớp**)
 
   - **Presentation Layer (GUI):** Lớp này có nhiệm vụ chính giao tiếp với người dùng. Nó gồm các thành phần giao diện và thực hiện các công việc như nhập liệu, hiển thị dữ liêu, kiểm tra tính đúng đắn dữ liệu trước khi gọi lớp Business Logic Layer (BLL).
+
   - **Business Logic Layer (BLL):** Layer này phân ra 2 thành nhiệm vụ:
 
     - Đây là nơi đáp ứng các yêu cầu thao tác dữ liệu của GUI layer, xử lý chính nguồn dữ liệu từ Presentation Layer trước khi truyền xuống Data Access Layer và lưu xuống hệ quản trị CSDL.
     - Đây còn là nơi kiểm tra các ràng buộc, tính toàn vẹn và hợp lệ dữ liệu, thực hiện tính toán và xử lý các yêu cầu nghiệp vụ, trước khi trả kết quả về Presentation Layer.
 
   - **Data Access Layer (DAL):** Lớp này có chức năng giao tiếp với hệ quản trị CSDL như thực hiện các công việc liên quan đến lưu trữ và truy vấn dữ liệu ( tìm kiếm, thêm, xóa, sửa,…).
+
+#### Chi tiết mô tả kiến trúc phần mềm
+
+- Presentation Layer (GUI)
+
+  Trách nhiệm:
+
+  - Giao tiếp trực tiếp với người dùng thông qua giao diện đồ họa (Qt Widgets).
+
+  - Hiển thị dữ liệu từ Business Logic Layer (BLL) và chuyển tương tác người dùng (nhấn nút, nhập liệu) xuống BLL.
+
+  Thành phần chính:
+
+  - LoginWindow: Xử lý đăng nhập/đăng ký, kết nối với AuthService.
+
+  - MainWindow: Cửa sổ chính hiển thị chức năng theo vai trò người dùng (admin/customer).
+
+  - Các Dialog (AddTripDialog, TripListDialog,...): Tạo giao diện cụ thể cho từng nghiệp vụ.
+
+- Business Logic Layer (BLL)
+
+  Trách nhiệm:
+
+  - Xử lý nghiệp vụ: kiểm tra quyền, validate dữ liệu, tính toán.
+
+  - Đóng vai trò trung gian giữa GUI và Data Access Layer (DAL).
+
+  Thành phần chính:
+
+  - AuthService:
+
+    - Quản lý đăng nhập, phân quyền (admin/customer)..
+
+  - TripService, UserService,...:
+
+    - Kiểm tra quyền trước khi thực hiện các chức năng.
+
+    - Chuyển dữ liệu hợp lệ xuống DAL.
+
+- Data Access Layer (DAL)
+
+  Trách nhiệm:
+
+  - Giao tiếp với database: thực thi truy vấn SQL, ánh xạ dữ liệu thành đối tượng.
+
+  - Đảm bảo tính toàn vẹn dữ liệu.
+
+  Thành phần chính:
+
+  - Repository Pattern:
+
+    - SqlUserRepository: Quản lý truy vấn liên quan đến bảng User.
+
+    - SqlTripRepository: Xử lý các thao tác với bảng Trip.
+
+  - DatabaseManager:
+
+    - Quản lý kết nối database dùng Singleton Pattern.
+
+    - Hỗ trợ transaction và bắt lỗi SQL.
+
+- Ví dụ tương tác giữa các lớp:
+
+  - GUI gọi phương thức từ BLL (ví dụ: tripService->addTrip(trip)).
+  - BLL kiểm tra nghiệp vụ, gọi DAL để lưu dữ liệu.
+  - DAL thực thi SQL và trả kết quả ngược lên BLL → GUI.
+
+  ```mermaid
+   flowchart TD
+      A[Presentation Layer] -->|Request| B[Business Logic Layer]
+      B -->|Validate| C[Data Access Layer]
+      C -->|SQL Query| D[(Database)]
+      D -->|Result| C --> B --> A
+  ```
 
 ### Các tính năng chính đã có
 
