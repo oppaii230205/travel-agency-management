@@ -5,6 +5,7 @@
 #include "TripService.h"
 #include "authservice.h"
 #include "UserService.h"
+#include "loginwindow.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -25,10 +26,13 @@ private slots:
     void on_btnAddTrip_clicked();
     void on_btnShowTrips_clicked();
     void on_btnShowUserInfomation_clicked();
+    void handleLogoutRequest();
     // void on_btnRefresh_clicked();
     void onTripAdded(const Trip& newTrip);
     void onErrorOccurred(const QString& message);
-
+    void handleLogout();
+signals:
+    void logoutCompleted();
 private:
     Ui::MainWindow *ui;
     QSharedPointer<AuthService> _authService;  // Truyền qua DI

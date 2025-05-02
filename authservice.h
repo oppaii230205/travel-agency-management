@@ -20,6 +20,9 @@ signals:
     void loginFailed(const QString& reason);
     void signupSuccess();
     void signupFailed(const QString& reason);
+    void logoutPerformed();
+public slots:
+    void logout();
 
 private:
     QSharedPointer<UserRepository> _userRepository;

@@ -12,15 +12,17 @@ MainWindow::MainWindow(QSharedPointer<UserService> userService, QSharedPointer<A
     : QMainWindow(parent), ui(new Ui::MainWindow), _userService(userService), _authService(authService), _tripService(tripService)
 {
     ui->setupUi(this);
-    updateUI();
     
     // Kết nối signal-slot
     connect(_tripService.data(), &TripService::tripAdded,
             this, &MainWindow::onTripAdded);
     connect(_tripService.data(), &TripService::errorOccurred,
             this, &MainWindow::onErrorOccurred);
-            
+    connect(ui->btnLogOut, &QPushButton::clicked, this, &MainWindow::handleLogoutRequest);
+
+    connect(_authService.data(), &AuthService::logoutPerformed, this, &MainWindow::handleLogout);
     // refreshTripList();
+    updateUI();
 }
 
 MainWindow::~MainWindow()
@@ -74,4 +76,24 @@ void MainWindow::onErrorOccurred(const QString& message)
 {
     QMessageBox::critical(this, "Lỗi", message);
 }
+
+void MainWindow::handleLogoutRequest()
+{
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, "Xác nhận", "Bạn có chắc muốn đăng xuất?",
+                                  QMessageBox::Yes|QMessageBox::No);
+    if (reply == QMessageBox::Yes) {
+        _authService->logout();
+    }
+}
+
+
+void MainWindow::handleLogout()
+{
+    this->hide();
+    emit logoutCompleted();
+}
+
+
+
 

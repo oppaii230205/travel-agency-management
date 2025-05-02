@@ -36,6 +36,11 @@ bool AuthService::signup(const QString& email, const QString& password, const QS
     return true;
 }
 
+void AuthService::logout() {
+    _currentUser.reset();
+    emit logoutPerformed();
+}
+
 QSharedPointer<User> AuthService::getCurrentUser() const {
     return _currentUser;
 }
