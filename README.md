@@ -72,11 +72,11 @@
 
   Thành phần chính:
 
-  - LoginWindow: Xử lý đăng nhập/đăng ký, kết nối với AuthService.
+  - `LoginWindow`: Xử lý đăng nhập/đăng ký, kết nối với AuthService.
 
-  - MainWindow: Cửa sổ chính hiển thị chức năng theo vai trò người dùng (admin/customer).
+  - `MainWindow`: Cửa sổ chính hiển thị chức năng theo vai trò người dùng (admin/customer).
 
-  - Các Dialog (AddTripDialog, TripListDialog,...): Tạo giao diện cụ thể cho từng nghiệp vụ.
+  - Các Dialog (`AddTripDialog`, `TripListDialog`,...): Tạo giao diện cụ thể cho từng nghiệp vụ.
 
 - Business Logic Layer (BLL)
 
@@ -88,11 +88,11 @@
 
   Thành phần chính:
 
-  - AuthService:
+  - `AuthService`:
 
     - Quản lý đăng nhập, phân quyền (admin/customer)..
 
-  - TripService, UserService,...:
+  - `TripService`, `UserService`,...:
 
     - Kiểm tra quyền trước khi thực hiện các chức năng.
 
@@ -110,11 +110,11 @@
 
   - Repository Pattern:
 
-    - SqlUserRepository: Quản lý truy vấn liên quan đến bảng User.
+    - `SqlUserRepository`: Quản lý truy vấn liên quan đến bảng User.
 
-    - SqlTripRepository: Xử lý các thao tác với bảng Trip.
+    - `SqlTripRepository`: Xử lý các thao tác với bảng Trip.
 
-  - DatabaseManager:
+  - `DatabaseManager`:
 
     - Quản lý kết nối database dùng Singleton Pattern.
 
@@ -185,8 +185,6 @@
    - Trên giao diện phần mềm cung cấp tính năng chuyển đổi giữa hai ngôn ngữ Việt - Anh.
 
 ### Các nguyên tắc và nguyên lí OOP đã tuân thủ
-
-_(sẽ hoàn thiện sau)_
 
 ### Các Design Pattern đã áp dụng
 
