@@ -192,7 +192,7 @@
 
 **1. Single Responsibility Principle (SRP)**
 
-**Mục tiêu**: Mỗi lớp chỉ có một trách nhiệm duy nhất, dễ dàng quản lí & kiểm soát chương trình.
+**Định nghĩa**: Mỗi lớp chỉ có một trách nhiệm duy nhất, dễ dàng quản lí & kiểm soát chương trình.
 
 **Ví dụ áp dụng trong đồ án:**
 
@@ -204,8 +204,8 @@
   ```cpp
   class SqlTripRepository {
   public:
-  bool addTrip(const Trip& trip); // Chỉ thực hiện các thao tác CRUD vào DB
-  QList<Trip> getAllTrips(); // Không chứa logic nghiệp vụ
+   bool addTrip(const Trip& trip); // Chỉ thực hiện các thao tác CRUD vào DB
+   QList<Trip> getAllTrips(); // Không chứa logic nghiệp vụ
   };
 
   ```
@@ -288,7 +288,7 @@
 
 **2. Open / Closed Principle (OCP)**
 
-**Mục tiêu**: Có thể mở rộng các lớp nhưng không sửa đổi code có sẵn.
+**Định nghĩa**: Có thể mở rộng các lớp nhưng không sửa đổi code có sẵn.
 
 **Ví dụ áp dụng trong đồ án:**
 
@@ -323,7 +323,7 @@
 
 **3. Liskov Substitution Principle (LSP)**
 
-**Mục tiêu**: Lớp con phải thay thế được lớp cha mà không phá vỡ chương trình.
+**Định nghĩa**: Lớp con phải thay thế được lớp cha mà không phá vỡ chương trình.
 
 **Ví dụ áp dụng trong đồ án:**
 
@@ -335,7 +335,7 @@
 
 **4. Interface Segregation Principle (ISP)**
 
-**Mục tiêu**: Client không nên phụ thuộc vào interface mà nó không dùng.
+**Định nghĩa**: Client không nên phụ thuộc vào interface mà nó không dùng.
 
 **Ví dụ áp dụng trong đồ án:**
 
@@ -373,38 +373,134 @@
 
 **5. Dependency Inversion Principle (DIP)**
 
-**Mục tiêu**: Thay vì để module cấp cao không phụ thuộc vào module cấp thấp, cả hai nên phụ thuộc vào abstraction.
+**Định nghĩa**: Thay vì để module cấp cao không phụ thuộc vào module cấp thấp, cả hai nên phụ thuộc vào abstraction.
 
 **Ví dụ áp dụng trong đồ án:**
 
-- Thêm service mới (ví dụ: `BookingService`, `PaymentService`) bằng cách inject vào GUI thông qua constructor, không cần sửa `MainWindow`.
+- Định nghĩa abstraction (interface) cho repository.
 
   - Code minh họa:
 
   ```cpp
-  MainWindow::MainWindow(QSharedPointer<AuthService> authService,
-                     QSharedPointer<TripService> tripService,
-                     QSharedPointer<BookingService> bookingService)
-  ```
-
-- Mở rộng/Thay đổi kiểu database
-
-  - Trách nhiệm duy nhất: Sử dụng interface `TripRepository`, `UserRepository` để sau này có thể thêm kiểu cơ sở dữ liệu phi quan hệ (Ví dụ: `MongoTripRepository`) vào chương trình, không ảnh hưởng đến các lớp khác.
-
-  - Code minh họa:
-
-  ```cpp
-   class TripService {
-   private:
-      QSharedPointer<TripRepository> _repository; // sử dụng interface thay vì concrete class
-      bool validateTrip(const Trip& trip) const;
-
+   // ✅ Đúng DIP
+   class UserRepository {
    public:
-      explicit TripService(QSharedPointer<TripRepository> repository, QObject* parent = nullptr);
+      virtual QSharedPointer<User> getUserByEmail(const QString& email) = 0;
+      virtual bool addUser(const User& user) = 0;
    };
   ```
 
-- Lợi ích: Chương trình sẽ cho phép mở rộng thêm các tính năng một cách dễ dàng, linh hoạt để đáp ứng nhu cầu của khách hàng, trong khi không cho phép thay đổi code có sẵn - điều sẽ rất dễ gây ra các bug không mong muốn.
+- Module cấp cao (AuthService) phụ thuộc vào interface.
+
+  - Code minh họa:
+
+  ```cpp
+   class AuthService {
+   private:
+      QSharedPointer<UserRepository> _userRepo; // Phụ thuộc vào abstraction
+   public:
+      AuthService(QSharedPointer<UserRepository> repo) : _userRepo(repo) {}
+   };
+  ```
+
+- Module cấp thấp (`SqlUserRepository`) _implement_ interface.
+
+  - Code minh họa:
+
+  ```cpp
+   class SqlUserRepository : public UserRepository {
+   public:
+      QSharedPointer<User> getUserByEmail(const QString& email) override {
+         // Logic truy vấn từ SQL database
+      }
+   };
+  ```
+
+- Sơ đồ mô tả luồng chương trình
+
+  ```mermaid
+  sequenceDiagram
+   participant GUI as MainWindow
+   participant BLL as AuthService
+   participant DAL as SqlUserRepository
+   GUI->>BLL: login("user@example.com", "pass123")
+   BLL->>DAL: getUserByEmail("user@example.com")
+   DAL-->>BLL: User object
+   BLL-->>GUI: Kết quả đăng nhập
+  ```
+
+- Cài đặt code
+
+  - `MainWindow` gọi `AuthService` (cấp cao).
+  - `AuthService` gọi `UserRepository` (abstraction), không biết chi tiết là SQL hay NoSQL.
+
+- Ví dụ mở rộng (sử dụng NoSQL Database)
+
+  ```cpp
+  class MongoUserRepository : public UserRepository {
+  public:
+     QSharedPointer<User> getUserByEmail(const QString& email) override {
+        // Logic truy vấn từ MongoDB
+     }
+  };
+
+  // Trong main.cpp
+  auto userRepo = QSharedPointer<MongoUserRepository>::create();
+  auto authService = QSharedPointer<AuthService>::create(userRepo);
+  ```
+
+- Lợi ích: Giảm coupling giữa các lớp. Dễ dàng thay thế, mở rộng module mà không cần sửa code hiện có.
+
+#### Nguyên lí Dependency Injection (DI)
+
+**Định nghĩa**: Cung cấp các dependency (phụ thuộc) từ bên ngoài vào một lớp thay vì để lớp tự khởi tạo chúng.
+
+**Ví dụ áp dụng trong đồ án:**
+
+- Khởi Tạo Dependency: Trong `main.cpp`, tất cả dependency được khởi tạo và inject vào các lớp cần thiết.
+
+  ```cpp
+  int main() {
+   // 1. Khởi tạo repository
+   auto userRepo = QSharedPointer<SqlUserRepository>::create(DatabaseManager::getInstance());
+
+   // 2. Inject repository vào AuthService
+   auto authService = QSharedPointer<AuthService>::create(userRepo);
+
+   // 3. Inject AuthService vào LoginWindow
+   LoginWindow loginWindow(authService);
+  }
+  ```
+
+- DI Trong Service Layer: `TripService` nhận `TripRepository` qua constructor.
+
+  ```cpp
+  class TripService {
+  private:
+     QSharedPointer<TripRepository> _tripRepo;
+  public:
+     TripService(QSharedPointer<TripRepository> repo) : _tripRepo(repo) {}
+
+     bool addTrip(const Trip& trip) {
+        return _tripRepo->addTrip(trip); // Gọi abstraction, không phụ thuộc implementation
+     }
+  };
+  ```
+
+- DI Trong UI Layer: `MainWindow` nhận các service qua constructor.
+
+  ```cpp
+  MainWindow::MainWindow(QSharedPointer<AuthService> authService,
+                       QSharedPointer<TripService> tripService)
+     : _authService(authService), _tripService(tripService)
+  {
+     // Kết nối signal-slot
+     connect(_tripService.data(), &TripService::tripAdded,
+           this, &MainWindow::onTripAdded);
+  }
+  ```
+
+**Lợi ích**: DI là xương sống của kiến trúc phần mềm hiện đại, giúp đồ án trở nên linh hoạt, dễ bảo trì. Đây còn là nền tảng để áp dụng nguyên tắc SOLID. Kết hợp cùng Interface để tuân thủ _Dependency Inversion Principle (DIP)_ và _Smart Pointer_ để quản lí vùng nhớ an toàn.
 
 ### Các Design Pattern đã áp dụng
 
