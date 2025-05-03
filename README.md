@@ -186,6 +186,226 @@
 
 ### Các nguyên tắc và nguyên lí OOP đã tuân thủ
 
+#### Nguyên tắc SOLID
+
+Đồ án tuân thủ nghiêm ngặt 5 nguyên tắc SOLID để đảm bảo tính mở rộng và dễ bảo trì:
+
+**1. Single Responsibility Principle (SRP)**
+
+**Mục tiêu**: Mỗi lớp chỉ có một trách nhiệm duy nhất, dễ dàng quản lí & kiểm soát chương trình.
+
+**Ví dụ áp dụng trong đồ án:**
+
+- Lớp `SqlTripRepository`, `SqlUserRepository`,...
+
+  - Trách nhiệm duy nhất: Thực hiện các thao tác CRUD với bảng `Trip`, `User` trong database.
+  - Code minh họa:
+
+  ```cpp
+  class SqlTripRepository {
+  public:
+  bool addTrip(const Trip& trip); // Chỉ thực hiện các thao tác CRUD vào DB
+  QList<Trip> getAllTrips(); // Không chứa logic nghiệp vụ
+  };
+
+  ```
+
+- Lớp `TripService`, `UserService`, `AuthService`,...
+
+  - Trách nhiệm duy nhất: Chứa các thông tin nghiệp vụ (tính toán, kiểm tra quyền, validation,...), giải quyết bài toán thực tế của phần mềm. Chứa các chức năng, yêu cầu cụ thể phục vụ cho người sử dụng phần mềm.
+
+  - Code minh họa:
+
+  ```cpp
+  class TripService {
+  public:
+   // Basic CRUD operations, lấy dữ liệu thông qua các lớp Repository trước đó, không liên quan đến database thực sự.
+   QList<Trip> getAllTrips();
+
+   // Business logic methods
+   QList<Trip> findTripsByDifficulty(const QString& difficulty);
+
+   // Validation
+   bool validateTrip(const Trip& trip) const;
+  }
+  ```
+
+- Lớp `AddTripDialog`, `TripListDialog`, `ShowUserInformationDialog`,...
+
+  - Trách nhiệm duy nhất: Định nghĩa giao diện để người dùng có thể tương tác với phần mềm. Không liên quan đến logic nghiệp vụ và database của phần mềm.
+
+  - Code minh họa:
+
+  ```cpp
+   namespace Ui {
+   class TripListDialog;
+   }
+
+   class TripListDialog : public QDialog
+   {
+      Q_OBJECT
+
+   private:
+      void setupModel();
+      void refreshTripList();
+      void setupActions(); // Thêm hàm thiết lập actions
+
+   private:
+      Ui::TripListDialog *ui; // Đặc trưng của Qt khi làm C++ GUI App
+      QSharedPointer<TripService> _tripService; // Lấy/Đẩy dữ liệu thông qua lớp Service
+      QStandardItemModel* _model; // Model quản lý dữ liệu
+   };
+  ```
+
+- Lớp `Trip`, `User`, ...
+
+  - Trách nhiệm duy nhất: Đây là các model của phần mềm (hay _Data Transfer Object - DTO_), chỉ dùng để chứa dữ liệu và đi qua các tầng trong kiến trúc phần mềm.
+
+  - Code minh họa:
+
+  ```cpp
+   class User {
+      private:
+         QString _email;
+         QString _password;
+         QString _name;
+         QString _role;
+      public:
+         User();
+         User(const QString& email, const QString& password, const QString& name, const QString& role);
+
+         QString email() const;
+         // other getters...
+
+         void setEmail(const QString& email);
+         // other setters...
+
+         bool isValid() const;
+   };
+  ```
+
+- Lợi ích: Trong quá trình phát triển phần mềm, nếu cần thay đổi database schema (thêm ảnh, thông tin, thêm logic nghiệp vụ, chức năng...) thì chỉ cần sửa ở một số lớp cụ thể mà không làm ảnh hưởng tới toàn bộ chương trình.
+
+**2. Open / Closed Principle (OCP)**
+
+**Mục tiêu**: Có thể mở rộng các lớp nhưng không sửa đổi code có sẵn.
+
+**Ví dụ áp dụng trong đồ án:**
+
+- Thêm service mới (ví dụ: `BookingService`, `PaymentService`) bằng cách inject vào GUI thông qua constructor, không cần sửa `MainWindow`.
+
+  - Code minh họa:
+
+  ```cpp
+  MainWindow::MainWindow(QSharedPointer<AuthService> authService,
+                     QSharedPointer<TripService> tripService,
+                     QSharedPointer<BookingService> bookingService)
+  ```
+
+- Mở rộng/Thay đổi kiểu database
+
+  - Trách nhiệm duy nhất: Sử dụng interface `TripRepository`, `UserRepository` để sau này có thể thêm kiểu cơ sở dữ liệu phi quan hệ (Ví dụ: `MongoTripRepository`) vào chương trình, không ảnh hưởng đến các lớp khác.
+
+  - Code minh họa:
+
+  ```cpp
+   class TripService {
+   private:
+      QSharedPointer<TripRepository> _repository; // sử dụng interface thay vì concrete class
+      bool validateTrip(const Trip& trip) const;
+
+   public:
+      explicit TripService(QSharedPointer<TripRepository> repository, QObject* parent = nullptr);
+   };
+  ```
+
+- Lợi ích: Chương trình sẽ **cho phép** mở rộng thêm các tính năng một cách dễ dàng, linh hoạt để đáp ứng nhu cầu của khách hàng, trong khi **không cho phép** thay đổi code có sẵn - điều sẽ rất dễ gây ra các bug không mong muốn.
+
+**3. Liskov Substitution Principle (LSP)**
+
+**Mục tiêu**: Lớp con phải thay thế được lớp cha mà không phá vỡ chương trình.
+
+**Ví dụ áp dụng trong đồ án:**
+
+- Các repository (`SqlUserRepository`, `SqlTripRepository`) đều kế thừa từ interface (`UserRepository`, `TripRepository`), đảm bảo có thể hoán đổi khi cần chuyển từ SQL sang NoSQL. _(đã trình bày ở nguyên tắc 2 - Open/Closed Principle)_
+
+- Sử dụng cho Testing: Dù là `SqlUserRepository` hay `MockUserRepository` (dùng cho test), `AuthService` vẫn hoạt động đúng.
+
+- Lợi ích: Liskov Substitution Principle (LSP) giúp đảm bảo rằng lớp con có thể thay thế lớp cha mà không làm thay đổi hành vi của hệ thống, từ đó giúp hệ thống ổn định, dễ mở rộng và tránh lỗi do kế thừa sai cách.
+
+**4. Interface Segregation Principle (ISP)**
+
+**Mục tiêu**: Client không nên phụ thuộc vào interface mà nó không dùng.
+
+**Ví dụ áp dụng trong đồ án:**
+
+- Interface **nhỏ, chuyên biệt**: Tách thành 2 interface `TripRepository` và `UserRepository` thay vì một interface lớn `Repository`.
+
+- Vì `AuthService` chỉ cần các thông tin và các hàm liên quan đến `User` như `addUser()`, `getUserByEmail()`,... nên chỉ cần tiêm dependency `UserRepository` vào `AuthService`, giảm sự phụ thuộc thừa.
+
+  - Code minh họa:
+
+  ```cpp
+   // ✅ Đúng ISP
+   class IUserRepository {
+   public:
+      virtual bool addUser(const User& user) = 0;
+      virtual QSharedPointer<User> getUserByEmail(const QString& email) = 0;
+   };
+
+   class ITripRepository {
+   public:
+      virtual bool addTrip(const Trip& trip) = 0;
+      virtual QList<Trip> getAllTrips() = 0;
+   };
+
+   //.......
+   // Các service
+   class AuthService {
+   private:
+      QSharedPointer<UserRepository> _userRepository; // chỉ phụ thuộc vào UserRepository
+      QSharedPointer<User> _currentUser; // lưu lại user hiện tại
+   };
+
+  ```
+
+- Lợi ích: Giúp giảm sự phụ thuộc thừa cho chương trình (`AuthService` chỉ phụ thuộc vào `UserRepository`, không biết gì về `TripRepository`), cũng như dễ bảo trì cho chương trình (Thêm/xóa phương thức trong `TripRepository` không làm hỏng `AuthService`).
+
+**5. Dependency Inversion Principle (DIP)**
+
+**Mục tiêu**: Thay vì để module cấp cao không phụ thuộc vào module cấp thấp, cả hai nên phụ thuộc vào abstraction.
+
+**Ví dụ áp dụng trong đồ án:**
+
+- Thêm service mới (ví dụ: `BookingService`, `PaymentService`) bằng cách inject vào GUI thông qua constructor, không cần sửa `MainWindow`.
+
+  - Code minh họa:
+
+  ```cpp
+  MainWindow::MainWindow(QSharedPointer<AuthService> authService,
+                     QSharedPointer<TripService> tripService,
+                     QSharedPointer<BookingService> bookingService)
+  ```
+
+- Mở rộng/Thay đổi kiểu database
+
+  - Trách nhiệm duy nhất: Sử dụng interface `TripRepository`, `UserRepository` để sau này có thể thêm kiểu cơ sở dữ liệu phi quan hệ (Ví dụ: `MongoTripRepository`) vào chương trình, không ảnh hưởng đến các lớp khác.
+
+  - Code minh họa:
+
+  ```cpp
+   class TripService {
+   private:
+      QSharedPointer<TripRepository> _repository; // sử dụng interface thay vì concrete class
+      bool validateTrip(const Trip& trip) const;
+
+   public:
+      explicit TripService(QSharedPointer<TripRepository> repository, QObject* parent = nullptr);
+   };
+  ```
+
+- Lợi ích: Chương trình sẽ cho phép mở rộng thêm các tính năng một cách dễ dàng, linh hoạt để đáp ứng nhu cầu của khách hàng, trong khi không cho phép thay đổi code có sẵn - điều sẽ rất dễ gây ra các bug không mong muốn.
+
 ### Các Design Pattern đã áp dụng
 
 _(sẽ hoàn thiện sau)_
@@ -233,3 +453,7 @@ _(sẽ hoàn thiện sau)_
 | Hoàn thành nhật kí, báo cáo, tài liệu giới thiệu | 8                    | Tài liệu hoàn chỉnh phục vụ báo cáo |
 
 ---
+
+```
+
+```
