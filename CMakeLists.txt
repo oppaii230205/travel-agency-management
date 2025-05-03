@@ -45,9 +45,9 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         TripListDialog.h TripListDialog.cpp TripListDialog.ui
         loginwindow.h
         loginwindow.cpp
-        signupwindow.h 
+        signupwindow.h
         signupwindow.cpp
-        authservice.h 
+        authservice.h
         authservice.cpp
         UserService.h UserService.cpp
         ShowUserInformationDialog.h ShowUserInformationDialog.cpp ShowUserInformationDialog.ui

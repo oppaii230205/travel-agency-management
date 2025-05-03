@@ -192,6 +192,175 @@ _(sẽ hoàn thiện sau)_
 
 _(sẽ hoàn thiện sau)_
 
+### Đảm bảo chất lượng
+Thực hiện Mock test với các chức năng đã được sử dụng
+
+\- Trước khi kiểm thử thực hiện tách phần Logic và UI để đảm bảo độ ổn định cao và dễ dàng trong quá trình kiểm thử chức năng.
+
+\- Kiểm thử các lớp và hàm liên quan đến SqlUserRepository
+
+Thực hiện kiểm thử thủ công bằng cách tạo ra các lớp kiểm thử kế thừa lớp “UserRepository” mô phỏng lại các hàm đã sử dụng (**deleteUser**, **updateUser**, **getUserByEmail,** **userExists, deleteUser**) mà không làm ảnh hưởng đến cơ sở dữ liệu.
+
+\-AuthService:
+
+Lớp kiểm thử MockUserRepository:
+___
+class MockUserRepository : public UserRepository {
+
+public:
+
+QMap&lt;QString, User&gt; users;
+
+bool addUser(const User& user) override {
+ >if (users.contains(user.email())) {
+return false;
+}
+users.insert(user.email(), user);
+return true;
+}
+
+QSharedPointer&lt;User&gt; getUserByEmail(const QString& email) override {
+ >if (users.contains(email)) {
+return QSharedPointer&lt;User&gt;::create(users.value(email));
+}
+return nullptr;
+}
+
+QList&lt;User&gt; getAllUsers() override {
+ >return users.values(); 
+}
+
+bool updateUser(const User& user) override {
+>if (!users.contains(user.email())) {
+return false;
+}
+users.insert(user.email(), user);
+return true;
+}
+
+bool deleteUser(const QString& email) override {
+>return users.remove(email) > 0;
+}
+
+bool userExists(const QString& email) override {
+>return users.contains(email);
+}
+};
+___
+Dựa trên lớp kiểm thử MockUserRepository ta thu được kết quả với các hàm đã được dùng với UserService:
+
+| STT | Hàm kiểm thử | Trường hợp | Kết quả trả về | Kết quả kiểm thử |
+| --- | --- | --- | --- | --- |
+| 1   | getUserByEmail(email) | Email tồn tại | Thực thi thành công | PASS |
+| 2   | getUserByEmail(email) | Email không tồn tại | Thông báo không tìm thấy tài khoảng | PASS |
+| 3   | updateUser(email, newData) | Email tồn tại – Cập nhật toàn bộ thông tin | Cập nhật thành công | PASS |
+| 4   | updateUser(email, newData) | Email tồn tại – Cập nhật một phần thông tin | Cập nhật thành công | PASS |
+| 5   | updateUser(email, newData) | Email không tồn tại | Cập nhật thất bại | PASS |
+
+Dựa trên lớp kiểm thử MockUserRepository ta thu được kết quả với các hàm đã được dùng với AuthService:
+
+| STT | Hàm kiểm thử | Trường hợp | Kết quả trả về | Kết quả kiểm thử |
+| --- | --- | --- | --- | --- |
+| 1   | login(email, password) bao gồm userExists và addUser | Đăng nhập hợp lệ | Thực thi thành công | PASS |
+| 2   | login(email, password) bao gồm userExists và addUser | Sai mật khẩu | Thông báo sai thông tin đăng nhập | PASS |
+| 3   | login(email, password) bao gồm userExists và addUser | Email không tồn tại | Thông báo sai thông tin đăng nhập | PASS |
+| 4   | signup(email, password, name) | Đăng ký hợp lệ | Thực thi thành công | PASS |
+| 5   | signup(email, password, name) | Email không hợp lệ | Thông báo đăng ký không thành công | PASS |
+
+Đánh giá kiểm thử các lớp và hàm liên quan đên UserRepository
+
+- Tổng số test case: 10
+- Số lượng test case thành công: 10
+- Số lượng test case thất bại: 0
+- Tỷ lệ thành công: 100%
+
+→ Các test case thành công cho thấy các chức năng hoạt động đúng như mong đợi.
+
+\- Kiểm thử các lớp và hàm liên quan đến TripRepository
+
+Thực hiện kiểm thử thủ công bằng cách tạo ra các lớp kiểm thử kế thừa lớp “TripRepository” mô phỏng lại các hàm đã sử dụng (**getAllTrips**, **getTripById**, **addTrip,** **updateTrip, deleteTrip**) mà không làm ảnh hưởng đến cơ sở dữ liệu.
+
+Lớp kiểm thử TripRepository:
+
+class MockTripRepository : public TripRepository {
+
+public:
+
+QList&lt;Trip&gt; trips;
+
+bool shouldFail = false;
+
+QList&lt;Trip&gt; getAllTrips() override {
+>if (shouldFail) {
+throw std::runtime_error("Mock database error");
+}
+return trips;
+}
+
+Trip getTripById(int tripId) override {
+>for (const Trip& trip : trips) {
+if (trip.getTripId() == tripId) {
+return trip;
+}
+}
+return Trip();
+}
+
+bool addTrip(const Trip& trip) override {
+>if (shouldFail) {
+return false;
+}
+trips.append(trip);
+return true;
+}
+
+bool updateTrip(const Trip& trip) override {
+>if (shouldFail) {
+return false;
+}
+for (int i = 0; i < trips.size(); ++i) {
+if (trips\[i\].getTripId() == trip.getTripId()) {
+trips\[i\] = trip;
+return true;
+}
+}
+return false;
+}
+
+bool deleteTrip(int tripId) override {
+>if (shouldFail) {
+return false;
+}
+for (int i = 0; i < trips.size(); ++i) {
+if (trips\[i\].getTripId() == tripId) {
+trips.removeAt(i);
+return true;
+}
+}
+return false;
+}
+};
+
+Dựa trên lớp kiểm thử TripRepository ta thu được kết quả với các hàm đã được dùng với TripService
+
+| STT | Hàm kiểm thử | Trường hợp | Kết quả trả về | Kết quả kiểm thử |
+| --- | --- | --- | --- | --- |
+| 1   | createTrip(trip) | Nhập thông tin hợp lệ | Thực thi thành công | PASS |
+| 2   | createTrip(trip) | Nhập thông tin không hợp lệ | Thông báo thuộc tính lỗi | PASS |
+| 3   | createTrip(trip) | Thông tin trùng lặp | Thông báo trùng lặp | PASS |
+| 4   | getAllTrips() | Không | Toàn bộ thông tin các Trip | PASS |
+
+Đánh giá kiểm thử các lớp và hàm liên quan đên TripRepository
+
+- Tổng số test case: 4
+- Số lượng test case thành công: 4
+- Số lượng test case thất bại: 0
+- Tỷ lệ thành công: 100%
+
+→ Các test case thành công cho thấy các chức năng hoạt động đúng như mong đợi.
+
+Kết luận: Các chức năng đã được sử dụng hoạt động đúng theo yêu cầu, đảm bảo tính chính xác.
+
 ## Timeline & Tasks
 
 ### Giai đoạn: 3/4 – 9/4
