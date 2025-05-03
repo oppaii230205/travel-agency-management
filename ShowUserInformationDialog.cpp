@@ -13,7 +13,7 @@ ShowUserInformationDialog::ShowUserInformationDialog(QSharedPointer<UserService>
 
     ui->lineEditEmail->setReadOnly(true);
     ui->lineEditRole->setReadOnly(true);
-    ui->lineEditRole->setEchoMode(QLineEdit::Password);
+    //ui->lineEditRole->setEchoMode(QLineEdit::Password);
 }
 
 ShowUserInformationDialog::~ShowUserInformationDialog()
