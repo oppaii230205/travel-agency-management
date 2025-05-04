@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "authservice.h"
+#include "constants.h"
 
 namespace Ui {
 class SignupWindow;
@@ -12,7 +13,7 @@ class SignupWindow : public QDialog {
     Q_OBJECT
 
 public:
-    explicit SignupWindow(QSharedPointer<AuthService> authService, QWidget *parent = nullptr);
+    explicit SignupWindow(QSharedPointer<AuthService> authService, QWidget* parent = nullptr);
     ~SignupWindow();
 
 signals:
@@ -25,8 +26,8 @@ private slots:
     void handleSignupFailed(const QString& reason);
 
 private:
-    Ui::SignupWindow *ui;
-    QSharedPointer<AuthService> m_authService;
+    Ui::SignupWindow* ui;
+    QSharedPointer<AuthService> _authService;
 };
 
 

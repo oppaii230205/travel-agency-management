@@ -34,7 +34,7 @@ private slots:
 signals:
     void logoutCompleted();
 private:
-    Ui::MainWindow *ui;
+    Ui::MainWindow* ui;
     QSharedPointer<AuthService> _authService;  // Truyền qua DI
     QSharedPointer<TripService> _tripService;
     QSharedPointer<UserService> _userService;

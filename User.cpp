@@ -33,7 +33,7 @@ void User::setRole(const QString& role){
 }
 
 bool User::isValid() const{
-    bool validEmail = _email.contains('@') && _email.indexOf('.', _email.indexOf('@')) > _email.indexOf('@');
+    bool validEmail = (_email.contains('@')) && (_email.indexOf('.', _email.indexOf('@')) > _email.indexOf('@'));
     return !_email.isEmpty() 
     && !_password.isEmpty() 
     && !_name.isEmpty()

@@ -15,7 +15,7 @@ class ShowUserInformationDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit ShowUserInformationDialog(QSharedPointer<UserService> userService, const QString &email, QWidget *parent = nullptr);
+    explicit ShowUserInformationDialog(QSharedPointer<UserService> userService, const QString& email, QWidget* parent = nullptr);
     ~ShowUserInformationDialog();
 
 private slots:
@@ -24,7 +24,7 @@ private slots:
 
 private:
     void loadUserData();
-    Ui::ShowUserInformationDialog *ui;
+    Ui::ShowUserInformationDialog* ui;
     QSharedPointer<UserService> _userService;
     QString _email;
 };

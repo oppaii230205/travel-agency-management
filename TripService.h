@@ -5,6 +5,7 @@
 #include <QList>
 #include "Trip.h"
 #include "TripRepository.h"
+#include "constants.h"
 
 class TripService : public QObject
 {

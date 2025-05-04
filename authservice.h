@@ -8,7 +8,7 @@
 class AuthService : public QObject {
     Q_OBJECT
 public:
-    explicit AuthService(QSharedPointer<UserRepository> userRepo, QObject *parent = nullptr);
+    explicit AuthService(QSharedPointer<UserRepository> userRepo, QObject* parent = nullptr);
     AuthService() = default;
     bool login(const QString& email, const QString& password);
     bool signup(const QString& email, const QString& password, const QString& name);
