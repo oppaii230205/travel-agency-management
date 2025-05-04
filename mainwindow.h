@@ -5,6 +5,7 @@
 #include "TripService.h"
 #include "authservice.h"
 #include "UserService.h"
+#include "BookingService.h"
 #include "loginwindow.h"
 
 QT_BEGIN_NAMESPACE
@@ -16,7 +17,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    MainWindow(QSharedPointer<UserService> userService, QSharedPointer<AuthService> authService, QSharedPointer<TripService> tripService, QWidget* parent = nullptr);
+    MainWindow(QSharedPointer<UserService> userService, QSharedPointer<AuthService> authService, QSharedPointer<TripService> tripService, QSharedPointer<BookingService> bookingService, QWidget* parent = nullptr);
     ~MainWindow();
 
 public:
@@ -38,6 +39,7 @@ private:
     QSharedPointer<AuthService> _authService;  // Truyền qua DI
     QSharedPointer<TripService> _tripService;
     QSharedPointer<UserService> _userService;
+    QSharedPointer<BookingService> _bookingService;
 };
 
 #endif // MAINWINDOW_H
