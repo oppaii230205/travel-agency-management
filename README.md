@@ -284,7 +284,7 @@
    };
   ```
 
-- Lợi ích: Trong quá trình phát triển phần mềm, nếu cần thay đổi database schema (thêm ảnh, thông tin, thêm logic nghiệp vụ, chức năng...) thì chỉ cần sửa ở một số lớp cụ thể mà không làm ảnh hưởng tới toàn bộ chương trình.
+**Lợi ích:** Trong quá trình phát triển phần mềm, nếu cần thay đổi database schema (thêm ảnh, thông tin, thêm logic nghiệp vụ, chức năng...) thì chỉ cần sửa ở một số lớp cụ thể mà không làm ảnh hưởng tới toàn bộ chương trình.
 
 **2. Open / Closed Principle (OCP)**
 
@@ -319,7 +319,7 @@
    };
   ```
 
-- Lợi ích: Chương trình sẽ **cho phép** mở rộng thêm các tính năng một cách dễ dàng, linh hoạt để đáp ứng nhu cầu của khách hàng, trong khi **không cho phép** thay đổi code có sẵn - điều sẽ rất dễ gây ra các bug không mong muốn.
+**Lợi ích:** Chương trình sẽ **cho phép** mở rộng thêm các tính năng một cách dễ dàng, linh hoạt để đáp ứng nhu cầu của khách hàng, trong khi **không cho phép** thay đổi code có sẵn - điều sẽ rất dễ gây ra các bug không mong muốn.
 
 **3. Liskov Substitution Principle (LSP)**
 
@@ -331,7 +331,7 @@
 
 - Sử dụng cho Testing: Dù là `SqlUserRepository` hay `MockUserRepository` (dùng cho test), `AuthService` vẫn hoạt động đúng.
 
-- Lợi ích: Liskov Substitution Principle (LSP) giúp đảm bảo rằng lớp con có thể thay thế lớp cha mà không làm thay đổi hành vi của hệ thống, từ đó giúp hệ thống ổn định, dễ mở rộng và tránh lỗi do kế thừa sai cách.
+**Lợi ích:** Liskov Substitution Principle (LSP) giúp đảm bảo rằng lớp con có thể thay thế lớp cha mà không làm thay đổi hành vi của hệ thống, từ đó giúp hệ thống ổn định, dễ mở rộng và tránh lỗi do kế thừa sai cách.
 
 **4. Interface Segregation Principle (ISP)**
 
@@ -347,13 +347,13 @@
 
   ```cpp
    // ✅ Đúng ISP
-   class IUserRepository {
+   class UserRepository {
    public:
       virtual bool addUser(const User& user) = 0;
       virtual QSharedPointer<User> getUserByEmail(const QString& email) = 0;
    };
 
-   class ITripRepository {
+   class TripRepository {
    public:
       virtual bool addTrip(const Trip& trip) = 0;
       virtual QList<Trip> getAllTrips() = 0;
@@ -369,7 +369,7 @@
 
   ```
 
-- Lợi ích: Giúp giảm sự phụ thuộc thừa cho chương trình (`AuthService` chỉ phụ thuộc vào `UserRepository`, không biết gì về `TripRepository`), cũng như dễ bảo trì cho chương trình (Thêm/xóa phương thức trong `TripRepository` không làm hỏng `AuthService`).
+**Lợi ích:** Giúp giảm sự phụ thuộc thừa cho chương trình (`AuthService` chỉ phụ thuộc vào `UserRepository`, không biết gì về `TripRepository`), cũng như dễ bảo trì cho chương trình (Thêm/xóa phương thức trong `TripRepository` không làm hỏng `AuthService`).
 
 **5. Dependency Inversion Principle (DIP)**
 
@@ -449,7 +449,7 @@
   auto authService = QSharedPointer<AuthService>::create(userRepo);
   ```
 
-- Lợi ích: Giảm coupling giữa các lớp. Dễ dàng thay thế, mở rộng module mà không cần sửa code hiện có.
+**Lợi ích:** Giảm coupling giữa các lớp. Dễ dàng thay thế, mở rộng module mà không cần sửa code hiện có.
 
 #### Nguyên lí Dependency Injection (DI)
 
@@ -504,7 +504,100 @@
 
 ### Các Design Pattern đã áp dụng
 
-_(sẽ hoàn thiện sau)_
+**1. Singleton Pattern**
+
+**Mục đích:** Đảm bảo chỉ có một instance duy nhất của một lớp trong toàn bộ ứng dụng.
+
+**Ví dụ áp dụng trong đồ án:**
+
+- Lớp `DatabaseManager`: Quản lý kết nối database toàn cục.
+
+  - Code minh họa:
+
+    ```cpp
+    class DatabaseManager {
+    private:
+       static DatabaseManager* _instance; // Biến static
+       DatabaseManager() {} // Constructor private
+
+    public:
+       static DatabaseManager& getInstance() {
+          if (!_instance) _instance = new DatabaseManager();
+          return *_instance;
+       }
+    };
+    ```
+
+  - Ví dụ sử dụng:
+
+    ```cpp
+    // Truy cập database từ bất kỳ đâu
+    DatabaseManager& db = DatabaseManager::getInstance();
+    QSqlDatabase connection = db.getConnection();
+    ```
+
+**Lợi ích:** Tiết kiệm tài nguyên kết nối đến database. Đảm bảo tính nhất quán của dữ liệu, tránh trường hợp xung đột khi có nhiều hơn 1 instance cùng ghi vào một database.
+
+**2. Repository Pattern**
+
+**Mục đích:** Tách biệt logic truy cập dữ liệu khỏi logic nghiệp vụ.
+
+**Ví dụ áp dụng trong đồ án:**
+
+- Các lớp `SqlUserRepository`, `SqlTripRepository`.
+
+  - Code minh họa:
+
+    ```cpp
+    class UserRepository {
+    public:
+       virtual bool addUser(const User& user) = 0;
+       virtual QSharedPointer<User> getUserByEmail(const QString& email) = 0;
+    };
+
+    class SqlUserRepository : public UserRepository {
+    public:
+       bool addUser(const User& user) override {
+          // Logic thêm user vào SQL database
+       }
+    };
+    ```
+
+  - Ví dụ sử dụng:
+
+    ```cpp
+    auto userRepo = QSharedPointer<SqlUserRepository>::create(DatabaseManager::getInstance());
+    AuthService authService(userRepo);
+    ```
+
+**Lợi ích:** Dễ dàng thay đổi database (SQL → NoSQL, hoặc sử dụng file text,...) mà không ảnh hưởng đến service layer. Chuyên biệt chức năng của từng tầng, giúp kiểm soát & phát triển phần mềm dễ dàng hơn.
+
+**3. Observer Pattern**
+
+**Mục đích:** Giúp các đối tượng phản ứng với sự kiện từ đối tượng khác.
+
+**Ví dụ áp dụng trong đồ án:**
+
+- **Signal-Slot trong Qt**: Kết nối giữa GUI và service layer.
+
+  - Code minh họa:
+
+    ```cpp
+    // TripService phát signal khi có lỗi
+    class TripService : public QObject {
+       Q_OBJECT
+    signals:
+       void errorOccurred(const QString& message);
+    };
+
+    // MainWindow lắng nghe signal
+    MainWindow::MainWindow(QSharedPointer<TripService> tripService) {
+       connect(tripService.data(), &TripService::errorOccurred,
+             this, &MainWindow::showError);
+    }
+    ```
+
+**Lợi ích:** Giảm coupling giữa GUI và business logic. Đồng thời, GUI sẽ được tự động cập nhật khi dữ liệu thay đổi.
 
 
 ### Hướng dẫn Coding Invention
@@ -754,6 +847,7 @@ int main() {
 
 
 ### Đảm bảo chất lượng
+
 Thực hiện Mock test với các chức năng đã được sử dụng
 
 \- Trước khi kiểm thử thực hiện tách phần Logic và UI để đảm bảo độ ổn định cao và dễ dàng trong quá trình kiểm thử chức năng.
@@ -765,6 +859,9 @@ Thực hiện kiểm thử thủ công bằng cách tạo ra các lớp kiểm t
 \-AuthService:
 
 Lớp kiểm thử MockUserRepository:
+
+---
+
 ```cpp
 class MockUserRepository : public UserRepository {
 
@@ -773,6 +870,13 @@ public:
 QMap&lt;QString, User&gt; users;
 
 bool addUser(const User& user) override {
+
+> if (users.contains(user.email())) {
+> return false;
+> }
+> users.insert(user.email(), user);
+> return true;
+> }
    if (users.contains(user.email())) {
       return false;
    }
@@ -781,6 +885,12 @@ bool addUser(const User& user) override {
 }
 
 QSharedPointer&lt;User&gt; getUserByEmail(const QString& email) override {
+
+> if (users.contains(email)) {
+> return QSharedPointer&lt;User&gt;::create(users.value(email));
+> }
+> return nullptr;
+> }
    if (users.contains(email)) {
    return QSharedPointer&lt;User&gt;::create(users.value(email));
    }
@@ -788,10 +898,20 @@ QSharedPointer&lt;User&gt; getUserByEmail(const QString& email) override {
 }
 
 QList&lt;User&gt; getAllUsers() override {
-   return users.values(); 
+
+> return users.values();
+> }
+   return users.values();
 }
 
 bool updateUser(const User& user) override {
+
+> if (!users.contains(user.email())) {
+> return false;
+> }
+> users.insert(user.email(), user);
+> return true;
+> }
    if (!users.contains(user.email())) {
    return false;
    }
@@ -800,33 +920,44 @@ bool updateUser(const User& user) override {
 }
 
 bool deleteUser(const QString& email) override {
+
+> return users.remove(email) > 0;
+> }
    return users.remove(email) > 0;
 }
 
 bool userExists(const QString& email) override {
+
+> return users.contains(email);
+> }
+> };
+
+---
+
    return users.contains(email);
    }
 };
 ```
+
 Dựa trên lớp kiểm thử MockUserRepository ta thu được kết quả với các hàm đã được dùng với UserService:
 
-| STT | Hàm kiểm thử | Trường hợp | Kết quả trả về | Kết quả kiểm thử |
-| --- | --- | --- | --- | --- |
-| 1   | getUserByEmail(email) | Email tồn tại | Thực thi thành công | PASS |
-| 2   | getUserByEmail(email) | Email không tồn tại | Thông báo không tìm thấy tài khoảng | PASS |
-| 3   | updateUser(email, newData) | Email tồn tại – Cập nhật toàn bộ thông tin | Cập nhật thành công | PASS |
-| 4   | updateUser(email, newData) | Email tồn tại – Cập nhật một phần thông tin | Cập nhật thành công | PASS |
-| 5   | updateUser(email, newData) | Email không tồn tại | Cập nhật thất bại | PASS |
+| STT | Hàm kiểm thử               | Trường hợp                                  | Kết quả trả về                      | Kết quả kiểm thử |
+| --- | -------------------------- | ------------------------------------------- | ----------------------------------- | ---------------- |
+| 1   | getUserByEmail(email)      | Email tồn tại                               | Thực thi thành công                 | PASS             |
+| 2   | getUserByEmail(email)      | Email không tồn tại                         | Thông báo không tìm thấy tài khoảng | PASS             |
+| 3   | updateUser(email, newData) | Email tồn tại – Cập nhật toàn bộ thông tin  | Cập nhật thành công                 | PASS             |
+| 4   | updateUser(email, newData) | Email tồn tại – Cập nhật một phần thông tin | Cập nhật thành công                 | PASS             |
+| 5   | updateUser(email, newData) | Email không tồn tại                         | Cập nhật thất bại                   | PASS             |
 
 Dựa trên lớp kiểm thử MockUserRepository ta thu được kết quả với các hàm đã được dùng với AuthService:
 
-| STT | Hàm kiểm thử | Trường hợp | Kết quả trả về | Kết quả kiểm thử |
-| --- | --- | --- | --- | --- |
-| 1   | login(email, password) bao gồm userExists và addUser | Đăng nhập hợp lệ | Thực thi thành công | PASS |
-| 2   | login(email, password) bao gồm userExists và addUser | Sai mật khẩu | Thông báo sai thông tin đăng nhập | PASS |
-| 3   | login(email, password) bao gồm userExists và addUser | Email không tồn tại | Thông báo sai thông tin đăng nhập | PASS |
-| 4   | signup(email, password, name) | Đăng ký hợp lệ | Thực thi thành công | PASS |
-| 5   | signup(email, password, name) | Email không hợp lệ | Thông báo đăng ký không thành công | PASS |
+| STT | Hàm kiểm thử                                         | Trường hợp          | Kết quả trả về                     | Kết quả kiểm thử |
+| --- | ---------------------------------------------------- | ------------------- | ---------------------------------- | ---------------- |
+| 1   | login(email, password) bao gồm userExists và addUser | Đăng nhập hợp lệ    | Thực thi thành công                | PASS             |
+| 2   | login(email, password) bao gồm userExists và addUser | Sai mật khẩu        | Thông báo sai thông tin đăng nhập  | PASS             |
+| 3   | login(email, password) bao gồm userExists và addUser | Email không tồn tại | Thông báo sai thông tin đăng nhập  | PASS             |
+| 4   | signup(email, password, name)                        | Đăng ký hợp lệ      | Thực thi thành công                | PASS             |
+| 5   | signup(email, password, name)                        | Email không hợp lệ  | Thông báo đăng ký không thành công | PASS             |
 
 Đánh giá kiểm thử các lớp và hàm liên quan đên UserRepository
 
@@ -842,6 +973,7 @@ Dựa trên lớp kiểm thử MockUserRepository ta thu được kết quả v�
 Thực hiện kiểm thử thủ công bằng cách tạo ra các lớp kiểm thử kế thừa lớp “TripRepository” mô phỏng lại các hàm đã sử dụng (**getAllTrips**, **getTripById**, **addTrip,** **updateTrip, deleteTrip**) mà không làm ảnh hưởng đến cơ sở dữ liệu.
 
 Lớp kiểm thử TripRepository:
+
 ```cpp
 class MockTripRepository : public TripRepository {
 
@@ -905,12 +1037,12 @@ bool deleteTrip(int tripId) override {
 
 Dựa trên lớp kiểm thử TripRepository ta thu được kết quả với các hàm đã được dùng với TripService
 
-| STT | Hàm kiểm thử | Trường hợp | Kết quả trả về | Kết quả kiểm thử |
-| --- | --- | --- | --- | --- |
-| 1   | createTrip(trip) | Nhập thông tin hợp lệ | Thực thi thành công | PASS |
-| 2   | createTrip(trip) | Nhập thông tin không hợp lệ | Thông báo thuộc tính lỗi | PASS |
-| 3   | createTrip(trip) | Thông tin trùng lặp | Thông báo trùng lặp | PASS |
-| 4   | getAllTrips() | Không | Toàn bộ thông tin các Trip | PASS |
+| STT | Hàm kiểm thử     | Trường hợp                  | Kết quả trả về             | Kết quả kiểm thử |
+| --- | ---------------- | --------------------------- | -------------------------- | ---------------- |
+| 1   | createTrip(trip) | Nhập thông tin hợp lệ       | Thực thi thành công        | PASS             |
+| 2   | createTrip(trip) | Nhập thông tin không hợp lệ | Thông báo thuộc tính lỗi   | PASS             |
+| 3   | createTrip(trip) | Thông tin trùng lặp         | Thông báo trùng lặp        | PASS             |
+| 4   | getAllTrips()    | Không                       | Toàn bộ thông tin các Trip | PASS             |
 
 Đánh giá kiểm thử các lớp và hàm liên quan đên TripRepository
 
@@ -966,6 +1098,10 @@ Kết luận: Các chức năng đã được sử dụng hoạt động đúng 
 | Hoàn thành nhật kí, báo cáo, tài liệu giới thiệu | 8                    | Tài liệu hoàn chỉnh phục vụ báo cáo |
 
 ---
+
+```
+
+```
 
 ```
 
