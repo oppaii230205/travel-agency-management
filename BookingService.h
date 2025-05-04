@@ -1,0 +1,4 @@
+#ifndef BOOKINGSERVICE_H
+#define BOOKINGSERVICE_H
+
+#endif // BOOKINGSERVICE_H
