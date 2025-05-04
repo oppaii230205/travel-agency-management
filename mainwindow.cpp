@@ -35,7 +35,7 @@ void MainWindow::updateUI() {
     QSharedPointer<User> currentUser = _authService->getCurrentUser();
     // Cập nhật UI ngay lần đầu
     if (auto user = _authService->getCurrentUser()) {
-        ui->labelWelcome->setText("Xin chào, " + user->name());
+        ui->labelWelcome->setText("Hello, " + user->name());
         ui->btnAddTrip->setVisible(_authService->hasPermission("admin")); // Ẩn nút nếu không phải admin
     } else {
         qWarning() << "No user logged in!"; // Debug nếu cần
