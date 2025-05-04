@@ -848,6 +848,56 @@ int main() {
 
 ### Đảm bảo chất lượng
 
+#### Single Branch Workflow
+
+**1\. Giới Thiệu Chung**
+
+Single Branch Workflow (Quy trình làm việc một nhánh) là một cách tiếp cận đơn giản trong quản lý mã nguồn bằng Git, nơi toàn bộ dự án chỉ sử dụng **một nhánh chính duy nhất** (thường là main hoặc master). Mọi thay đổi đều được commit trực tiếp lên nhánh này mà không tạo các nhánh phụ (feature branches).
+
+**Đối tượng phù hợp**
+- Dự án cá nhân nhỏ
+- Prototype hoặc demo nhanh
+- Team nhỏ (2-3 người) làm việc trên cùng một tính năng
+- Dự án không yêu cầu code review phức tạp
+
+**2\. Đặc Điểm Chính**
+**Ưu điểm**
+
+- **Đơn giản, dễ triển khai**: Không cần quản lý nhiều nhánh, giảm phức tạp khi merge.
+- **Lịch sử commit thẳng (linear history)**: Dễ theo dõi thay đổi vì không có merge commit.
+- **Phù hợp CI/CD**: Mọi commit đều có thể trigger build/deploy ngay lập tức.
+- **Tốc độ nhanh**: Không mất thời gian tạo/tách nhánh, phù hợp cho dự án cần release nhanh.
+
+**Nhược điểm**
+- **Không phù hợp cho dự án lớn**: Khó quản lý khi nhiều người cùng làm nhiều tính năng song song.
+- **Rủi ro cao**: Code chưa hoàn thiện có thể ảnh hưởng đến nhánh chính.
+- **Khó review code**: Không có Pull Request/Merge Request để kiểm tra trước khi tích hợp.
+
+**3\. Cách Thức Hoạt Động**
+
+**Quy trình cơ bản**
+
+**Khởi tạo dự án**
+```bash
+git init
+git checkout -b main  # Tạo nhánh chính
+```
+**Làm việc trực tiếp trên** main
+```bash
+git add .
+git commit -m "Thêm tính năng X"
+git push origin main
+```
+**Không tạo nhánh phụ**, mọi thay đổi đều đẩy thẳng lên main.
+
+**4\. Kết Luận**
+
+Single Branch Workflow là lựa chọn tối ưu cho:
+
+- **Cá nhân** làm dự án nhỏ, không cần phân nhánh.
+- **Team startup** cần release nhanh, ít quy trình.
+- **Prototyping** hoặc demo POC (Proof of Concept).
+
 #### Thực hiện Unit Test với các lớp đã được sử dụng
 
 \- Trước khi kiểm thử thực hiện tách phần Logic và UI để đảm bảo độ ổn định cao và dễ dàng trong quá trình kiểm thử chức năng.
