@@ -6,12 +6,11 @@
 
 class Booking {
 public:
-    Booking(const QString& userEmail = "", int tripId = 0, const QDateTime& bookingDate = QDateTime::currentDateTime())
-        : _tripId(tripId), _userEmail(userEmail), _bookingDate(bookingDate) {}
+    Booking(const QString& userEmail = "", int tripId = 0, const QDateTime& bookingDate = QDateTime::currentDateTime());
 
-    int getTripId() const { return _tripId; }
-    QString getUserEmail() const { return _userEmail; }
-    QDateTime getBookingDate() const { return _bookingDate; }
+    int getTripId() const;
+    QString getUserEmail() const;
+    QDateTime getBookingDate() const;
 
 private:
     QString _userEmail;

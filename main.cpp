@@ -5,6 +5,8 @@
 #include <QApplication>
 #include "SqlUserRepository.h"
 #include "loginwindow.h"
+#include "BookingService.h"
+#include "SqlBookingRepository.h"
 
 
 int main(int argc, char* argv[])
@@ -15,10 +17,12 @@ int main(int argc, char* argv[])
     DatabaseManager& db = DatabaseManager::getInstance();
     QSharedPointer<SqlTripRepository> tripRepository = QSharedPointer<SqlTripRepository>::create(db);
     QSharedPointer<SqlUserRepository> userRepository = QSharedPointer<SqlUserRepository>::create(db);
-    
+    QSharedPointer<SqlBookingRepository> bookingRepository = QSharedPointer<SqlBookingRepository>::create(db);
+
     QSharedPointer<AuthService> authService = QSharedPointer<AuthService>::create(userRepository);
     QSharedPointer<TripService> tripService = QSharedPointer<TripService>::create(tripRepository);
     QSharedPointer<UserService> userService = QSharedPointer<UserService>::create(userRepository);
+    QSharedPointer<BookingService> bookingService = QSharedPointer<BookingService>::create(bookingRepository, tripService, authService);
     
     LoginWindow loginWindow(authService, nullptr);
     QSharedPointer<MainWindow> mainWindow; // Khai báo bên ngoài lambda
@@ -36,7 +40,7 @@ int main(int argc, char* argv[])
         loginWindow.hide();
 
         // Tạo MainWindow sau khi login thành công
-        mainWindow =  QSharedPointer<MainWindow>::create(userService, authService, tripService);
+        mainWindow =  QSharedPointer<MainWindow>::create(userService, authService, tripService, bookingService);
         mainWindow->show();
     });
 

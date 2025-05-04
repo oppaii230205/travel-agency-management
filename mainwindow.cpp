@@ -8,8 +8,8 @@
 #include <QMessageBox>
 #include <QTableWidgetItem>
 
-MainWindow::MainWindow(QSharedPointer<UserService> userService, QSharedPointer<AuthService> authService, QSharedPointer<TripService> tripService, QWidget* parent)
-    : QMainWindow(parent), ui(new Ui::MainWindow), _userService(userService), _authService(authService), _tripService(tripService)
+MainWindow::MainWindow(QSharedPointer<UserService> userService, QSharedPointer<AuthService> authService, QSharedPointer<TripService> tripService, QSharedPointer<BookingService> bookingService, QWidget* parent)
+    : QMainWindow(parent), ui(new Ui::MainWindow), _userService(userService), _authService(authService), _tripService(tripService), _bookingService(bookingService)
 {
     ui->setupUi(this);
     
@@ -18,7 +18,7 @@ MainWindow::MainWindow(QSharedPointer<UserService> userService, QSharedPointer<A
             this, &MainWindow::onTripAdded);
     connect(_tripService.data(), &TripService::errorOccurred,
             this, &MainWindow::onErrorOccurred);
-    connect(ui->btnLogOut, &QPushButton::clicked, this, &MainWindow::handleLogoutRequest);
+    // connect(ui->btnLogOut, &QPushButton::clicked, this, &MainWindow::handleLogoutRequest);
 
     connect(_authService.data(), &AuthService::logoutPerformed, this, &MainWindow::handleLogout);
     // refreshTripList();
@@ -50,7 +50,7 @@ void MainWindow::on_btnAddTrip_clicked()
 }
 
 void MainWindow::on_btnShowTrips_clicked() {
-    TripListDialog dialog(_tripService, this);
+    TripListDialog dialog(_tripService, _bookingService, this);
     dialog.exec(); // Hiển thị dialog dạng modal    
 }
 
