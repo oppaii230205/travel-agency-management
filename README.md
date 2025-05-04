@@ -347,13 +347,13 @@
 
   ```cpp
    // ✅ Đúng ISP
-   class IUserRepository {
+   class UserRepository {
    public:
       virtual bool addUser(const User& user) = 0;
       virtual QSharedPointer<User> getUserByEmail(const QString& email) = 0;
    };
 
-   class ITripRepository {
+   class TripRepository {
    public:
       virtual bool addTrip(const Trip& trip) = 0;
       virtual QList<Trip> getAllTrips() = 0;
