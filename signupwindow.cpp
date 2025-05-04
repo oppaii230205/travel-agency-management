@@ -3,14 +3,14 @@
 #include <QMessageBox>
 #include <QRegularExpression>
 
-SignupWindow::SignupWindow(QSharedPointer<AuthService> authService, QWidget *parent)
-    : QDialog(parent), ui(new Ui::SignupWindow), m_authService(authService) {
+SignupWindow::SignupWindow(QSharedPointer<AuthService> authService, QWidget* parent)
+    : QDialog(parent), ui(new Ui::SignupWindow), _authService(authService) {
     ui->setupUi(this);
     setWindowTitle("Đăng ký tài khoản");
 
-    connect(m_authService.data(), &AuthService::signupSuccess,
+    connect(_authService.data(), &AuthService::signupSuccess,
             this, &SignupWindow::handleSignupSuccess);
-    connect(m_authService.data(), &AuthService::signupFailed,
+    connect(_authService.data(), &AuthService::signupFailed,
             this, &SignupWindow::handleSignupFailed);
 
     // Ẩn mk
@@ -29,7 +29,7 @@ void SignupWindow::on_signupButton_clicked() {
     QString name = ui->nameEdit->text();
 
     // Validate input
-    if (email.isEmpty() || password.isEmpty() || name.isEmpty()) {
+    if ((email.isEmpty()) || (password.isEmpty()) || (name.isEmpty())) {
         QMessageBox::warning(this, "Lỗi", "Vui lòng nhập đầy đủ thông tin");
         return;
     }
@@ -39,7 +39,7 @@ void SignupWindow::on_signupButton_clicked() {
         return;
     }
 
-    if (password.length() < 6) {
+    if (password.length() < minPasswordLength) {
         QMessageBox::warning(this, "Lỗi", "Mật khẩu phải có ít nhất 6 ký tự");
         return;
     }
@@ -50,7 +50,7 @@ void SignupWindow::on_signupButton_clicked() {
         return;
     }
 
-    m_authService->signup(email, password, name);
+    _authService->signup(email, password, name);
 }
 
 void SignupWindow::on_backButton_clicked() {

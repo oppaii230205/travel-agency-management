@@ -599,6 +599,253 @@
 
 **Lợi ích:** Giảm coupling giữa GUI và business logic. Đồng thời, GUI sẽ được tự động cập nhật khi dữ liệu thay đổi.
 
+
+### Hướng dẫn Coding Invention
+
+#### Mục đích
+
+- Tăng tính rõ ràng, bảo trì
+- Giảm lỗi tiềm ẩn
+- Tối ưu hiệu năng
+- Tuân thủ best practices từ C++ Core Guidelines
+
+#### Các quy tắc cần tuân thủ
+
+Quản lý Header Files (SF)
+- SF.7: Không dùng “using namespace” ở global scope trong header file
+- SF.8: Luôn dùng #include guards
+- SF.12: Dùng “” cho file local, <> cho system/library
+
+Ví dụ:
+```cpp
+//SF.8: #include guard
+#ifndef MATH_UTILS_H
+#define MATH_UTILS_H
+
+//SF.7: Không dùng 'using namespace' ở global scope
+
+//SF.12: Include thư viện hệ thống với <>
+#include <cmath>
+double squareRoot(double x) {
+    return std::sqrt(x);  // Không cần 'using namespace std'
+}
+
+#endif // MATH_UTILS_H
+```
+Style & Readability (NL)
+- NL.21 / ES.10: Khai báo một biến mỗi dòng
+- NL.18: Dùng C++-style declarator
+- NL.5: Tránh mã hóa kiểu vào tên biến
+
+Ví dụ:
+```cpp
+#include <string>
+
+int main() {
+    std::string userName = "John";
+    int userId = 12345;
+    int* pointer = nullptr;
+    //NL.18: C++-style declarator (đặt * và & sát kiểu dữ liệu)
+    //NL.5: Không mã hóa kiểu vào tên biến
+    //NL.21: Mỗi biến khai báo trên 1 dòng
+    
+    return 0;
+}
+```
+Khởi tạo & Phạm vi Biến (ES)
+- ES.20: Luôn khởi tạo biến
+- ES.21: Khai báo biến gần nơi dùng nhất
+- ES.22: Chỉ khai báo khi có giá trị khởi tạo
+- NR.1: Không bắt buộc khai báo ở đầu hàm
+
+Ví dụ:
+```cpp
+#include <iostream>
+#include <vector>
+#include <random>
+
+int main() {
+    //ES.20: Luôn khởi tạo biến ngay khi khai báo
+    const int maxAttempts = 3;  // Khởi tạo ngay
+    std::vector<int> numbers = {1, 2, 3};  // Khởi tạo ngay
+
+    //NR.1: Không bắt buộc khai báo tất cả biến ở đầu hàm
+    for (int i = 0; i < maxAttempts; ++i) {
+        //ES.21: Khai báo biến gần nơi dùng nhất
+        std::random_device rd;
+        std::mt19937 gen(rd());
+
+        //ES.22: Chỉ khai báo khi có giá trị khởi tạo
+        const int randomValue = std::uniform_int_distribution<>(1, 100)(gen);
+
+        std::cout << "Lần thử " << i + 1 << ": " << randomValue << '\n';
+
+        if (randomValue > 50) {
+            //ES.21: Khai báo biến ngay khi cần
+            const std::string successMsg = "Thành công!";
+            std::cout << successMsg << '\n';
+            break;
+        }
+    }
+
+    return 0;
+}
+```
+Xử lý Lỗi & Logic (F, NR)
+- NR.3: Ưu tiên dùng exception thay vì error code
+- F.56: Tránh lồng điều kiện không cần thiết
+- NR.2: Không bắt buộc một return duy nhất
+
+Ví dụ:
+```cpp
+#include <iostream>
+#include <stdexcept>
+#include <string>
+
+// Hàm đăng nhập sử dụng exception (NR.3)
+void login(const std::string& username, const std::string& password) {
+    if (username.empty()) {
+        throw std::invalid_argument("Tên đăng nhập không được trống");
+    }
+    if (password.empty()) {
+        throw std::invalid_argument("Mật khẩu không được trống");
+    }
+    if (password.length() < 6) {
+        throw std::runtime_error("Mật khẩu phải có ít nhất 6 ký tự");
+    }
+    
+    std::cout << "Đăng nhập thành công!\n";
+}
+
+int main() {
+    try {
+        std::string username = "user123";
+        std::string password = "pass";  // Mật khẩu ngắn để demo lỗi
+
+        // F.56: Tránh lồng điều kiện không cần thiết bằng cách dùng early return
+        if (username == "admin") {
+            std::cout << "Chào admin!\n";
+            return 0;  // NR.2: Không bắt buộc 1 return duy nhất
+        }
+
+        login(username, password);
+
+        // Các xử lý khác...
+        std::cout << "Thực hiện các thao tác...\n";
+        return 0;  // NR.2: Có thể có nhiều return
+
+    } catch (const std::exception& e) {  // NR.3: Bắt exception
+        std::cerr << "Lỗi: " << e.what() << "\n";
+        return 1;
+    }
+}
+```
+Hằng số & So sánh (ES)
+- ES.45: Tránh magic numbers, dùng hằng số
+- Const on left: Đặt hằng số bên trái phép so sánh
+- ES.47: Dùng “nullptr” thay vì “0” hay ”NULL”
+
+Ví dụ:
+```cpp
+#include <iostream>
+#include <memory>
+
+int main() {
+    // ES.45: Dùng hằng số thay magic numbers
+    constexpr int MAX_RETRIES = 3;
+    constexpr int MIN_PASSWORD_LENGTH = 6;
+    constexpr int ADMIN_ID = 42;
+
+    // ES.47: Dùng nullptr thay vì NULL/0
+    std::unique_ptr<int> ptr = nullptr;
+
+    // Const on left: hằng số bên trái phép so sánh
+    if (nullptr == ptr) {
+        ptr = std::make_unique<int>(ADMIN_ID);
+    }
+
+    int userInput;
+    std::cout << "Nhập mật khẩu mới: ";
+    std::cin >> userInput;
+
+    // ES.45 + Const on left
+    if (MIN_PASSWORD_LENGTH <= userInput) {
+        std::cout << "Mật khẩu hợp lệ!\n";
+    } else {
+        std::cout << "Mật khẩu phải có ít nhất " 
+                  << MIN_PASSWORD_LENGTH << " ký tự\n";
+    }
+
+    // Const on left
+    if (ADMIN_ID == *ptr) {
+        std::cout << "Xin chào Admin!\n";
+    }
+
+    return 0;
+}
+```
+Biểu thức & Toán tử (ES)
+- ES.41: Dùng ngoặc đơn khi nghi ngờ độ ưu tiên
+- ES.43: Tránh biểu thức có thứ tự tính không xác định
+- ES.87: Không thêm “== true” hay ”!= false” thừa
+
+Ví dụ:
+```cpp
+#include <iostream>
+#include <vector>
+
+int main() {
+    // ES.41: Dùng ngoặc đơn khi nghi ngờ độ ưu tiên
+    int a = 5, b = 3, c = 2;
+    int result = (a + b) * c;  // Rõ ràng về thứ tự tính toán
+    std::cout << "Kết quả: " << result << "\n";
+
+    // ES.43: Tránh biểu thức có thứ tự tính không xác định
+    int j = 0;
+    nums[j] = j + 10;    //Đảm bảo thứ tự rõ ràng
+    j++;
+
+    // ES.87: Không thêm == true/!= false thừa
+    bool isValid = true;
+    if (isValid) {       //Tốt - không dùng (isValid == true)
+        std::cout << "Dữ liệu hợp lệ\n";
+    }
+
+    if (!isValid) {      //Tốt - không dùng (isValid == false)
+        std::cout << "Dữ liệu không hợp lệ\n";
+    }
+
+    return 0;
+}
+```
+I/O & Hiệu suất (SL)
+- SL.io.50: Tránh “std::endl” (gọi flush không cần thiết)
+
+Ví dụ:
+```cpp
+#include <iostream>
+#include <fstream>
+
+int main() {
+    //Cách viết tốt - dùng '\n' thay vì std::endl
+    std::ofstream file("output.txt");  // Mở file để ghi
+    
+    // Ghi 5 dòng vào file
+    for (int i = 1; i <= 5; ++i) {
+        file << "This is line " << i << '\n';  // Chỉ xuống dòng, không flush
+    }
+    
+    // Chỉ flush khi thực sự cần thiết
+    file.flush();  // Đẩy dữ liệu từ bộ đệm xuống file
+    
+    // Ví dụ xuất ra console
+    std::cout << "Operation completed successfully.\n";  // Không dùng std::endl
+    
+    return 0;
+}
+```
+
+
 ### Đảm bảo chất lượng
 
 Thực hiện Mock test với các chức năng đã được sử dụng

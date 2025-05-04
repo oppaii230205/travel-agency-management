@@ -9,7 +9,7 @@ class UserService : public QObject
 {
     Q_OBJECT
 public:
-    explicit UserService(QSharedPointer<SqlUserRepository> userRepo, QObject *parent = nullptr);
+    explicit UserService(QSharedPointer<SqlUserRepository> userRepo, QObject* parent = nullptr);
     UserService() = default;
 
     QSharedPointer<User> getUserByEmail(const QString& email);

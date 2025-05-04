@@ -12,7 +12,7 @@ class LoginWindow : public QDialog {
     Q_OBJECT
 
 public:
-    explicit LoginWindow(QSharedPointer<AuthService> authService, QWidget *parent = nullptr);
+    explicit LoginWindow(QSharedPointer<AuthService> authService, QWidget* parent = nullptr);
     ~LoginWindow();
 
 signals:
@@ -27,8 +27,8 @@ private slots:
     void onLoginRejected();
 
 private:
-    Ui::QDialog *ui;
-    QSharedPointer<AuthService> m_authService;
+    Ui::QDialog* ui;
+    QSharedPointer<AuthService> _authService;
 };
 
 #endif // LOGINWINDOW_H

@@ -29,7 +29,7 @@ private:
     void setupActions(); // Thêm hàm thiết lập actions
 
 private:
-    Ui::TripListDialog *ui;
+    Ui::TripListDialog* ui;
     QSharedPointer<TripService> _tripService;
     QStandardItemModel* _model; // Model quản lý dữ liệu
 

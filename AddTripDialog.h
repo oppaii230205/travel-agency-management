@@ -1,3 +1,6 @@
+#ifndef _ADDTRIPDIALOG_H_
+#define _ADDTRIPDIALOG_H_
+
 #include <QDialog>
 #include "Trip.h"
 #include "TripService.h"
@@ -22,3 +25,4 @@ private:
     Ui::AddTripDialog* ui;
     QSharedPointer<TripService> _tripService;
 };
+#endif

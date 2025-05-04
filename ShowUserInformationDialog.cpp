@@ -2,7 +2,7 @@
 #include "ui_ShowUserInformationDialog.h"
 #include <QMessageBox>
 
-ShowUserInformationDialog::ShowUserInformationDialog(QSharedPointer<UserService> userService, const QString& email, QWidget *parent) : QDialog(parent), ui(new Ui::ShowUserInformationDialog), _userService(userService), _email(email){
+ShowUserInformationDialog::ShowUserInformationDialog(QSharedPointer<UserService> userService, const QString& email, QWidget* parent) : QDialog(parent), ui(new Ui::ShowUserInformationDialog), _userService(userService), _email(email){
     ui->setupUi(this);
     setWindowTitle("Thông tin người dùng");
 

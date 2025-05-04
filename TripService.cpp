@@ -16,7 +16,7 @@ QList<Trip> TripService::getAllTrips() {
 }
 
 Trip TripService::getTripById(int tripId) {
-    if (tripId <= 0) {
+    if (zero >= tripId) {
         emit errorOccurred(tr("Invalid trip ID"));
         return Trip();
     }
@@ -34,7 +34,7 @@ bool TripService::createTrip(const Trip& trip) {
         return false;
     }
 
-    if (trip.getTripId() != 0) {
+    if (zero != trip.getTripId()) {
         qWarning() << "Warning: Trip ID should be 0 for new trips";
         // Vẫn có thể tiếp tục vì DB sẽ bỏ qua ID
     }
@@ -64,7 +64,7 @@ bool TripService::updateTrip(const Trip& trip) {
 }
 
 bool TripService::deleteTrip(int tripId) {
-    if (tripId <= 0) {
+    if (zero >= tripId) {
         emit errorOccurred(tr("Invalid trip ID"));
         return false;
     }
@@ -84,7 +84,7 @@ QList<Trip> TripService::findTripsByDifficulty(const QString& difficulty) {
     QList<Trip> filteredTrips;
 
     for (const Trip& trip : allTrips) {
-        if (trip.getDifficulty().compare(difficulty, Qt::CaseInsensitive) == 0) {
+        if (zero == trip.getDifficulty().compare(difficulty, Qt::CaseInsensitive)) {
             filteredTrips.append(trip);
         }
     }
@@ -112,7 +112,7 @@ QList<Trip> TripService::findTripsInPriceRange(int minPrice, int maxPrice) {
 bool TripService::isTripNameAvailable(const QString& tripName) const {
     QList<Trip> allTrips = _repository->getAllTrips();
     for (const Trip& trip : allTrips) {
-        if (trip.getTripName().compare(tripName, Qt::CaseInsensitive) == 0) {
+        if (zero == trip.getTripName().compare(tripName, Qt::CaseInsensitive)) {
             return false;
         }
     }
@@ -123,10 +123,10 @@ bool TripService::validateTrip(const Trip& trip) const {
     if (trip.getTripName().isEmpty()) {
         return false;
     }
-    if (trip.getDuration() <= 0) {
+    if (minTripDuration >= trip.getDuration()) {
         return false;
     }
-    if (trip.getPrice() < 0) {
+    if (minTripPrice > trip.getPrice()) {
         return false;
     }
     return true;

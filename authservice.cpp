@@ -1,6 +1,6 @@
 #include "authservice.h"
 
-AuthService::AuthService(QSharedPointer<UserRepository> userRepo, QObject *parent)
+AuthService::AuthService(QSharedPointer<UserRepository> userRepo, QObject* parent)
     : QObject(parent), _userRepository(userRepo) {}
 
 bool AuthService::login(const QString& email, const QString& password) {
