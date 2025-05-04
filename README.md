@@ -615,6 +615,7 @@ Lớp kiểm thử MockUserRepository:
 
 ---
 
+```cpp
 class MockUserRepository : public UserRepository {
 
 public:
@@ -629,6 +630,12 @@ bool addUser(const User& user) override {
 > users.insert(user.email(), user);
 > return true;
 > }
+   if (users.contains(user.email())) {
+      return false;
+   }
+   users.insert(user.email(), user);
+   return true;
+}
 
 QSharedPointer&lt;User&gt; getUserByEmail(const QString& email) override {
 
@@ -637,11 +644,18 @@ QSharedPointer&lt;User&gt; getUserByEmail(const QString& email) override {
 > }
 > return nullptr;
 > }
+   if (users.contains(email)) {
+   return QSharedPointer&lt;User&gt;::create(users.value(email));
+   }
+   return nullptr;
+}
 
 QList&lt;User&gt; getAllUsers() override {
 
 > return users.values();
 > }
+   return users.values();
+}
 
 bool updateUser(const User& user) override {
 
@@ -651,11 +665,19 @@ bool updateUser(const User& user) override {
 > users.insert(user.email(), user);
 > return true;
 > }
+   if (!users.contains(user.email())) {
+   return false;
+   }
+   users.insert(user.email(), user);
+   return true;
+}
 
 bool deleteUser(const QString& email) override {
 
 > return users.remove(email) > 0;
 > }
+   return users.remove(email) > 0;
+}
 
 bool userExists(const QString& email) override {
 
@@ -664,6 +686,11 @@ bool userExists(const QString& email) override {
 > };
 
 ---
+
+   return users.contains(email);
+   }
+};
+```
 
 Dựa trên lớp kiểm thử MockUserRepository ta thu được kết quả với các hàm đã được dùng với UserService:
 
@@ -700,6 +727,7 @@ Thực hiện kiểm thử thủ công bằng cách tạo ra các lớp kiểm t
 
 Lớp kiểm thử TripRepository:
 
+```cpp
 class MockTripRepository : public TripRepository {
 
 public:
@@ -709,60 +737,56 @@ QList&lt;Trip&gt; trips;
 bool shouldFail = false;
 
 QList&lt;Trip&gt; getAllTrips() override {
-
-> if (shouldFail) {
-> throw std::runtime_error("Mock database error");
-> }
-> return trips;
-> }
+   if (shouldFail) {
+   throw std::runtime_error("Mock database error");
+   }
+   return trips;
+}
 
 Trip getTripById(int tripId) override {
-
-> for (const Trip& trip : trips) {
-> if (trip.getTripId() == tripId) {
-> return trip;
-> }
-> }
-> return Trip();
-> }
+   for (const Trip& trip : trips) {
+      if (trip.getTripId() == tripId) {
+         return trip;
+      }
+   }
+   return Trip();
+}
 
 bool addTrip(const Trip& trip) override {
-
-> if (shouldFail) {
-> return false;
-> }
-> trips.append(trip);
-> return true;
-> }
+   if (shouldFail) {
+      return false;
+   }
+   trips.append(trip);
+   return true;
+}
 
 bool updateTrip(const Trip& trip) override {
-
-> if (shouldFail) {
-> return false;
-> }
-> for (int i = 0; i < trips.size(); ++i) {
-> if (trips\[i\].getTripId() == trip.getTripId()) {
-> trips\[i\] = trip;
-> return true;
-> }
-> }
-> return false;
-> }
+   if (shouldFail) {
+      return false;
+   }
+   for (int i = 0; i < trips.size(); ++i) {
+      if (trips\[i\].getTripId() == trip.getTripId()) {
+      trips\[i\] = trip;
+      return true;
+      }
+   }
+   return false;
+}
 
 bool deleteTrip(int tripId) override {
-
-> if (shouldFail) {
-> return false;
-> }
-> for (int i = 0; i < trips.size(); ++i) {
-> if (trips\[i\].getTripId() == tripId) {
-> trips.removeAt(i);
-> return true;
-> }
-> }
-> return false;
-> }
-> };
+   if (shouldFail) {
+      return false;
+   }
+   for (int i = 0; i < trips.size(); ++i) {
+      if (trips\[i\].getTripId() == tripId) {
+      trips.removeAt(i);
+      return true;
+      }
+   }
+   return false;
+   }
+};
+```
 
 Dựa trên lớp kiểm thử TripRepository ta thu được kết quả với các hàm đã được dùng với TripService
 
@@ -827,6 +851,10 @@ Kết luận: Các chức năng đã được sử dụng hoạt động đúng 
 | Hoàn thành nhật kí, báo cáo, tài liệu giới thiệu | 8                    | Tài liệu hoàn chỉnh phục vụ báo cáo |
 
 ---
+
+```
+
+```
 
 ```
 
