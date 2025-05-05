@@ -7,6 +7,65 @@
 2.  _Nguyễn Hưng Thịnh_  
     MSSV: **23120200**
 
+## Phân chia công việc
+
+| STT | Họ tên | Vai trò | Công việc | Tỷ lệ phân chia công việc |
+| --- | --- | --- | --- | --- |
+| 1   | Nguyễn Hưng Thịnh | Nhóm trưởng | tạo Github Repositories cho dự án, xác định kiến trúc phần mềm, tổng hợp các nguyên tắc OOP, Design Pattern cần tuân thủ, thiết kế và xây dựng các lớp, chức năng thêm chuyến đi và đặt chuyến đi. Thiết kế UI cho các chức năng đã viết, video hướng dẫn sử dụng. | 50% |
+| 2   | Võ Cao Tâm Chính | Thành viên | Tạo máy chủ Azure Clouds để lưu trữ Database, tạo cơ sở dữ liệu, tổng hợp các Coding Convention cần tuân thủ, thực hiện Unit test các thành phần đã hoàn thiện. Thiết kế và xây dựng các lớp, chức năng người dùng, đăng nhập tài khoản, đăng ký tài khoản, đăng xuất. Thiết kế UI cho các chức năng đã viết. | 50% |
+
+## Báo cáo tiến độ dự án
+
+**Tên dự án**: Travel Agency Management System  
+**Ngày báo cáo**: 05/05/2025  
+**Giai đoạn**: Phát triển chức năng sản phẩm  
+**Người phụ trách**: Nguyễn Hưng Thịnh - Võ Cao Tâm Chính
+
+**Tóm tắt tiến độ**
+
+- Tiến độ tổng thể: 52% hoàn thành
+- Tiến độ so với kế hoạch: Đúng tiến độ
+
+**Công việc đã hoàn thành**
+
+| STT | Hạng mục | Trạng thái | Ghi chú |
+| --- | --- | --- | --- |
+| 1   | Thống nhất tài liệu mô tả coding convention | Hoàn thành |     |
+| 2   | Xây dựng CSDL trên SQL Server | Hoàn thành |     |
+| 3   | Thiết kế lại mã nguồn hướng đối tượng | Hoàn thành |     |
+| 4   | Thiết kế giao diện (UI) | 70% | Bố cục chưa hợp lý cần điều chỉnh lại |
+
+**Công việc đang thực hiện**
+
+| STT | Hạng mục | Trạng thái | Ghi chú |
+| --- | --- | --- | --- |
+| 1   | Viết mã nguồn cho toàn bộ dự án | 40% | Hoàn thành các lớp cơ bản phục vụ cho chương trình. Chưa có các chức năng cải tiến |
+| 2   | Vẽ giao diện cho sản phẩm | 40% | Hoàn thành đăng nhập, đăng ký, đăng xuất, thêm chuyến đi, đặt chuyến đi, lấy danh sách chuyến đi |
+
+**Công việc sắp tới**
+
+- Chuẩn bị tài liệu kiểm thử sản phẩm.
+- Hoàn thành nhật kí, báo cáo, tài liệu giới thiệu.
+- Hoàn thành Auto-generated Documentation.
+
+**Đánh giá rủi ro & đề xuất**
+
+- Rủi ro
+
+   \+Chậm tiến độ do yêu cầu phức tạp khi sử dụng API lấy dữ liệu thời tiết.
+
+   \+ Thiết kế lại bố cục giao diện.
+
+- Đề xuất
+
+   \+ Tăng cường testing trước khi release.
+
+   \+ Tăng cương trao đổi giữa các thành viên để thống nhất ý tưởng.
+
+**Kết luận**
+
+Dự án đang tiến triển ổn định, cần tập trung vào các khâu **xây dựng hệ thống** và **kiểm thử** để đảm bảo đúng timeline.
+
 ## Thông tin chi tiết đồ án
 
 ### Yêu cầu
@@ -599,7 +658,7 @@
 
 **Lợi ích:** Giảm coupling giữa GUI và business logic. Đồng thời, GUI sẽ được tự động cập nhật khi dữ liệu thay đổi.
 
-### Hướng dẫn Coding Invention
+
 
 ### Đảm bảo chất lượng
 
@@ -920,8 +979,6 @@ int main() {
     return 0;
 }
 ```
-
-### Đảm bảo chất lượng
 
 #### Thực hiện Unit Test với các lớp đã được sử dụng
 
