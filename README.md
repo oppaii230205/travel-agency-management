@@ -601,6 +601,63 @@
 
 ### Hướng dẫn Coding Invention
 
+### Đảm bảo chất lượng
+
+**1\. Single Branch Workflow**
+
+**Giới Thiệu Chung**
+
+Single Branch Workflow (Quy trình làm việc một nhánh) là một cách tiếp cận đơn giản trong quản lý mã nguồn bằng Git, nơi toàn bộ dự án chỉ sử dụng **một nhánh chính duy nhất** (thường là main hoặc master). Mọi thay đổi đều được commit trực tiếp lên nhánh này mà không tạo các nhánh phụ (feature branches).
+
+**Đối tượng phù hợp**
+
+- Dự án cá nhân nhỏ
+- Prototype hoặc demo nhanh
+- Team nhỏ (2-3 người) làm việc trên cùng một tính năng
+- Dự án không yêu cầu code review phức tạp
+
+**Ưu điểm**
+
+- **Đơn giản, dễ triển khai**: Không cần quản lý nhiều nhánh, giảm phức tạp khi merge.
+- **Lịch sử commit thẳng (linear history)**: Dễ theo dõi thay đổi vì không có merge commit.
+- **Phù hợp CI/CD**: Mọi commit đều có thể trigger build/deploy ngay lập tức.
+- **Tốc độ nhanh**: Không mất thời gian tạo/tách nhánh, phù hợp cho dự án cần release nhanh.
+
+**Nhược điểm**
+
+- **Không phù hợp cho dự án lớn**: Khó quản lý khi nhiều người cùng làm nhiều tính năng song song.
+- **Rủi ro cao**: Code chưa hoàn thiện có thể ảnh hưởng đến nhánh chính.
+- **Khó review code**: Không có Pull Request/Merge Request để kiểm tra trước khi tích hợp.
+
+**Cách Thức Hoạt Động**
+
+**Khởi tạo dự án**
+
+```bash
+git init
+git checkout -b main  # Tạo nhánh chính
+```
+
+**Làm việc trực tiếp trên** main
+
+```bash
+git add .
+git commit -m "Thêm tính năng X"
+git push origin main
+```
+
+**Không tạo nhánh phụ**, mọi thay đổi đều đẩy thẳng lên main.
+
+**Kết Luận**
+
+Single Branch Workflow là lựa chọn tối ưu cho:
+
+- **Cá nhân** làm dự án nhỏ, không cần phân nhánh.
+- **Team startup** cần release nhanh, ít quy trình.
+- **Prototyping** hoặc demo POC (Proof of Concept).
+
+**2\. Hướng dẫn Coding Invention**
+
 #### Mục đích
 
 - Tăng tính rõ ràng, bảo trì
@@ -870,6 +927,29 @@ int main() {
 
 \- Trước khi kiểm thử thực hiện tách phần Logic và UI để đảm bảo độ ổn định cao và dễ dàng trong quá trình kiểm thử chức năng.
 
+**3\. Thực hiện Unit Test với các lớp đã được** sử dụng
+**Giới Thiệu**
+Tài liệu này mô tả kế hoạch kiểm thử các chức năng chính của hệ thống:
+
+- UserService (Quản lý người dùng)
+- AuthService (Đăng nhập/Đăng ký)
+- TripService (Quản lý chuyến đi)
+
+**Mục Tiêu Kiểm Thử**
+
+- Xác minh hoạt động đúng của các service
+- Kiểm tra tương tác với database
+- Xử lý lỗi và các trường hợp biên
+- Đảm bảo logic nghiệp vụ
+
+**Môi Trường Kiểm Thử**
+
+- Hệ điều hành: Windows
+- Database: SQL Server (Azure)
+- Thư viện: Qt 6.x, ODBC Driver
+- Công cụ: Kiểm thử thủ công (không dùng framework bên ngoài)
+
+**Các Trường Hợp Kiểm Thử**
 Thực hiện kiểm thử thủ công bằng cách tạo ra các hàm kiểm thử lớp “UserService” mô phỏng lại các hàm đã sử dụng (**user**, **updateUser**, **getUserByEmail, deleteUser**).
 Hàm thử:
 
@@ -901,15 +981,6 @@ Dựa trên hàm kiểm thử ta thu được kết quả với các hàm đã �
 | 2   | addUser        | Thêm user thành công                             | PASS             |
 | 3   | getUserByEmail | Lấy user thành công                              | PASS             |
 | 4   | deleteUser     | Xóa thành công                                   | PASS             |
-
-Đánh giá kiểm thử các lớp và hàm liên quan đên UserService
-
-- Tổng số test case: 4
-- Số lượng test case thành công: 4
-- Số lượng test case thất bại: 0
-- Tỷ lệ thành công: 100%
-
-→ Các test case thành công cho thấy các chức năng hoạt động đúng như mong đợi.
 
 Thực hiện kiểm thử thủ công bằng cách tạo ra các hàm kiểm thử lớp “AuthService” mô phỏng lại các hàm đã sử dụng (**login**, **signup**).
 Hàm thử
@@ -953,6 +1024,13 @@ Dựa trên hàm kiểm thử ta thu được kết quả với các hàm đã �
 - Tỷ lệ thành công: 100%
 
 → Các test case thành công cho thấy các chức năng hoạt động đúng như mong đợi.
+| STT | Hàm kiểm thử | Trường hợp | Kết quả trả về | Kết quả kiểm thử |
+| --- | --- | --- | --- | --- |
+| 1 | signup | Đăng ký hợp lệ | Thực thi thành công | PASS |
+| 2 | signup | Đăng ký trùng email | Thông báo Email đã tồn tại | PASS |
+| 3 | login | Đăng nhập hợp lệ | Thực thi thành công | PASS |
+| 4 | login | Đăng nhập sai mật khẩu | Thông báo đăng nhập không thành công | PASS |
+| 5 | login | Đăng nhập với email không tồn tại | Thông báo đăng nhập không thành công | PASS |
 
 Thực hiện kiểm thử thủ công bằng cách tạo ra các hàm kiểm thử lớp “TripService” mô phỏng lại các hàm đã sử dụng (**createTrip**, **getAllTrips, deleteTrip**).
 Hàm thử
@@ -991,6 +1069,22 @@ Dựa trên hàm kiểm thử ta thu được kết quả với các hàm đã �
 | 3   | getAllTrips            |                                  | Trả về danh sách các Trip | PASS             |
 | 4   | deleteTrip + getTripId | TripId tồn tại                   | Xóa thành công            | PASS             |
 | 5   | deleteTrip + getTripId | TripId không tồn tại             | Trip không tồn tại        |                  |
+
+**Tiêu chí hoàn thành**
+
+- Tất cả test case được thực thi
+- Tỷ lệ pass 100%
+- Không có lỗi nghiêm trọng
+- Độ bao phủ code >80%
+
+  **Phụ lục**
+  Nhật ký thực thi
+
+```bash
+[PASS] UserService - Thêm/Xóa/Cập nhật user
+[PASS] AuthService - Đăng nhập/Đăng ký
+[PASS] TripService - Quản lý chuyến đi
+```
 
 Đánh giá kiểm thử các lớp và hàm liên quan đên TripService
 
