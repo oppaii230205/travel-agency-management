@@ -1111,6 +1111,7 @@ int main() {
 \- Trước khi kiểm thử thực hiện tách phần Logic và UI để đảm bảo độ ổn định cao và dễ dàng trong quá trình kiểm thử chức năng.
 
 **3\. Thực hiện Unit Test với các lớp đã được** sử dụng
+
 **Giới Thiệu**
 Tài liệu này mô tả kế hoạch kiểm thử các chức năng chính của hệ thống:
 
