@@ -11,7 +11,7 @@
 
 | STT | Họ tên | Vai trò | Công việc | Tỷ lệ phân chia công việc |
 | --- | --- | --- | --- | --- |
-| 1   | Nguyễn Hưng Thịnh | Nhóm trưởng | tạo Github Repositories cho dự án, xác định kiến trúc phần mềm, tổng hợp các nguyên tắc OOP, Design Pattern cần tuân thủ, thiết kế và xây dựng các lớp, chức năng thêm chuyến đi và đặt chuyến đi. Thiết kế UI cho các chức năng đã viết, video hướng dẫn sử dụng. | 50% |
+| 1   | Nguyễn Hưng Thịnh | Nhóm trưởng | Tạo Github Repositories cho dự án, xác định kiến trúc phần mềm, tổng hợp các nguyên tắc OOP, Design Pattern cần tuân thủ, thiết kế và xây dựng các lớp, chức năng thêm chuyến đi và đặt chuyến đi. Thiết kế UI cho các chức năng đã viết, video hướng dẫn sử dụng. | 50% |
 | 2   | Võ Cao Tâm Chính | Thành viên | Tạo máy chủ Azure Clouds để lưu trữ Database, tạo cơ sở dữ liệu, tổng hợp các Coding Convention cần tuân thủ, thực hiện Unit test các thành phần đã hoàn thiện. Thiết kế và xây dựng các lớp, chức năng người dùng, đăng nhập tài khoản, đăng ký tài khoản, đăng xuất. Thiết kế UI cho các chức năng đã viết. | 50% |
 
 ## Báo cáo tiến độ dự án
