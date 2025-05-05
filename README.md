@@ -599,7 +599,6 @@
 
 **Lợi ích:** Giảm coupling giữa GUI và business logic. Đồng thời, GUI sẽ được tự động cập nhật khi dữ liệu thay đổi.
 
-
 ### Hướng dẫn Coding Invention
 
 #### Mục đích
@@ -612,11 +611,13 @@
 #### Các quy tắc cần tuân thủ
 
 Quản lý Header Files (SF)
+
 - SF.7: Không dùng “using namespace” ở global scope trong header file
 - SF.8: Luôn dùng #include guards
 - SF.12: Dùng “” cho file local, <> cho system/library
 
 Ví dụ:
+
 ```cpp
 //SF.8: #include guard
 #ifndef MATH_UTILS_H
@@ -632,12 +633,15 @@ double squareRoot(double x) {
 
 #endif // MATH_UTILS_H
 ```
+
 Style & Readability (NL)
+
 - NL.21 / ES.10: Khai báo một biến mỗi dòng
 - NL.18: Dùng C++-style declarator
 - NL.5: Tránh mã hóa kiểu vào tên biến
 
 Ví dụ:
+
 ```cpp
 #include <string>
 
@@ -648,17 +652,20 @@ int main() {
     //NL.18: C++-style declarator (đặt * và & sát kiểu dữ liệu)
     //NL.5: Không mã hóa kiểu vào tên biến
     //NL.21: Mỗi biến khai báo trên 1 dòng
-    
+
     return 0;
 }
 ```
+
 Khởi tạo & Phạm vi Biến (ES)
+
 - ES.20: Luôn khởi tạo biến
 - ES.21: Khai báo biến gần nơi dùng nhất
 - ES.22: Chỉ khai báo khi có giá trị khởi tạo
 - NR.1: Không bắt buộc khai báo ở đầu hàm
 
 Ví dụ:
+
 ```cpp
 #include <iostream>
 #include <vector>
@@ -691,12 +698,15 @@ int main() {
     return 0;
 }
 ```
+
 Xử lý Lỗi & Logic (F, NR)
+
 - NR.3: Ưu tiên dùng exception thay vì error code
 - F.56: Tránh lồng điều kiện không cần thiết
 - NR.2: Không bắt buộc một return duy nhất
 
 Ví dụ:
+
 ```cpp
 #include <iostream>
 #include <stdexcept>
@@ -713,7 +723,7 @@ void login(const std::string& username, const std::string& password) {
     if (password.length() < 6) {
         throw std::runtime_error("Mật khẩu phải có ít nhất 6 ký tự");
     }
-    
+
     std::cout << "Đăng nhập thành công!\n";
 }
 
@@ -740,12 +750,15 @@ int main() {
     }
 }
 ```
+
 Hằng số & So sánh (ES)
+
 - ES.45: Tránh magic numbers, dùng hằng số
 - Const on left: Đặt hằng số bên trái phép so sánh
 - ES.47: Dùng “nullptr” thay vì “0” hay ”NULL”
 
 Ví dụ:
+
 ```cpp
 #include <iostream>
 #include <memory>
@@ -772,7 +785,7 @@ int main() {
     if (MIN_PASSWORD_LENGTH <= userInput) {
         std::cout << "Mật khẩu hợp lệ!\n";
     } else {
-        std::cout << "Mật khẩu phải có ít nhất " 
+        std::cout << "Mật khẩu phải có ít nhất "
                   << MIN_PASSWORD_LENGTH << " ký tự\n";
     }
 
@@ -784,12 +797,15 @@ int main() {
     return 0;
 }
 ```
+
 Biểu thức & Toán tử (ES)
+
 - ES.41: Dùng ngoặc đơn khi nghi ngờ độ ưu tiên
 - ES.43: Tránh biểu thức có thứ tự tính không xác định
 - ES.87: Không thêm “== true” hay ”!= false” thừa
 
 Ví dụ:
+
 ```cpp
 #include <iostream>
 #include <vector>
@@ -818,10 +834,13 @@ int main() {
     return 0;
 }
 ```
+
 I/O & Hiệu suất (SL)
+
 - SL.io.50: Tránh “std::endl” (gọi flush không cần thiết)
 
 Ví dụ:
+
 ```cpp
 #include <iostream>
 #include <fstream>
@@ -829,22 +848,21 @@ Ví dụ:
 int main() {
     //Cách viết tốt - dùng '\n' thay vì std::endl
     std::ofstream file("output.txt");  // Mở file để ghi
-    
+
     // Ghi 5 dòng vào file
     for (int i = 1; i <= 5; ++i) {
         file << "This is line " << i << '\n';  // Chỉ xuống dòng, không flush
     }
-    
+
     // Chỉ flush khi thực sự cần thiết
     file.flush();  // Đẩy dữ liệu từ bộ đệm xuống file
-    
+
     // Ví dụ xuất ra console
     std::cout << "Operation completed successfully.\n";  // Không dùng std::endl
-    
+
     return 0;
 }
 ```
-
 
 ### Đảm bảo chất lượng
 
@@ -854,6 +872,7 @@ int main() {
 
 Thực hiện kiểm thử thủ công bằng cách tạo ra các hàm kiểm thử lớp “UserService” mô phỏng lại các hàm đã sử dụng (**user**, **updateUser**, **getUserByEmail, deleteUser**).
 Hàm thử:
+
 ```cpp
 void testUserService(DatabaseManager& db) {
     std::cout << "Running UserService tests...\n";
@@ -876,12 +895,12 @@ void testUserService(DatabaseManager& db) {
 
 Dựa trên hàm kiểm thử ta thu được kết quả với các hàm đã được dùng với UserService:
 
-| STT | Hàm kiểm thử | Kết quả trả về | Kết quả kiểm thử |
-| --- | --- | --- | --- |
-| 1   | updateUser | Thực thi thất bại do không tìm thấy email hợp lệ | PASS |
-| 2   | addUser | Thêm user thành công | PASS |
-| 3   | getUserByEmail | Lấy user thành công | PASS |
-| 4   | deleteUser | Xóa thành công | PASS |
+| STT | Hàm kiểm thử   | Kết quả trả về                                   | Kết quả kiểm thử |
+| --- | -------------- | ------------------------------------------------ | ---------------- |
+| 1   | updateUser     | Thực thi thất bại do không tìm thấy email hợp lệ | PASS             |
+| 2   | addUser        | Thêm user thành công                             | PASS             |
+| 3   | getUserByEmail | Lấy user thành công                              | PASS             |
+| 4   | deleteUser     | Xóa thành công                                   | PASS             |
 
 Đánh giá kiểm thử các lớp và hàm liên quan đên UserService
 
@@ -894,6 +913,7 @@ Dựa trên hàm kiểm thử ta thu được kết quả với các hàm đã �
 
 Thực hiện kiểm thử thủ công bằng cách tạo ra các hàm kiểm thử lớp “AuthService” mô phỏng lại các hàm đã sử dụng (**login**, **signup**).
 Hàm thử
+
 ```cpp
 void testAuthService(DatabaseManager& db) {
     std::cout << "Running AuthService tests...\n";
@@ -917,13 +937,13 @@ void testAuthService(DatabaseManager& db) {
 
 Dựa trên hàm kiểm thử ta thu được kết quả với các hàm đã được dùng với AuthService:
 
-| STT | Hàm kiểm thử | Trường hợp | Kết quả trả về | Kết quả kiểm thử |
-| --- | --- | --- | --- | --- |
-| 1   | signup | Đăng ký hợp lệ | Thực thi thành công | PASS |
-| 2   | signup | Đăng ký trùng email | Thông báo Email đã tồn tại | PASS |
-| 3   | login | Đăng nhập hợp lệ | Thực thi thành công | PASS |
-| 4   | login | Đăng nhập sai mật khẩu | Thông báo đăng nhập không thành công | PASS |
-| 5   | login | Đăng nhập với email không tồn tại | Thông báo đăng nhập không thành công | PASS |
+| STT | Hàm kiểm thử | Trường hợp                        | Kết quả trả về                       | Kết quả kiểm thử |
+| --- | ------------ | --------------------------------- | ------------------------------------ | ---------------- |
+| 1   | signup       | Đăng ký hợp lệ                    | Thực thi thành công                  | PASS             |
+| 2   | signup       | Đăng ký trùng email               | Thông báo Email đã tồn tại           | PASS             |
+| 3   | login        | Đăng nhập hợp lệ                  | Thực thi thành công                  | PASS             |
+| 4   | login        | Đăng nhập sai mật khẩu            | Thông báo đăng nhập không thành công | PASS             |
+| 5   | login        | Đăng nhập với email không tồn tại | Thông báo đăng nhập không thành công | PASS             |
 
 Đánh giá kiểm thử các lớp và hàm liên quan đên AuthService
 
@@ -936,6 +956,7 @@ Dựa trên hàm kiểm thử ta thu được kết quả với các hàm đã �
 
 Thực hiện kiểm thử thủ công bằng cách tạo ra các hàm kiểm thử lớp “TripService” mô phỏng lại các hàm đã sử dụng (**createTrip**, **getAllTrips, deleteTrip**).
 Hàm thử
+
 ```cpp
 void testTripService(DatabaseManager& db) {
     std::cout << "Running TripService tests...\n";
@@ -963,13 +984,13 @@ void testTripService(DatabaseManager& db) {
 
 Dựa trên hàm kiểm thử ta thu được kết quả với các hàm đã được dùng với TripService:
 
-| STT | Hàm kiểm thử | Trường hợp | Kết quả trả về | Kết quả kiểm thử |
-| --- | --- | --- | --- | --- |
-| 1   | createTrip | Tạo Trip thành công | Thực thi thành công | PASS |
-| 2   | createTrip | Tạo Trip với thông tin trùng lặp | Tên Trip đã tồn tại | PASS |
-| 3   | getAllTrips |     | Trả về danh sách các Trip | PASS |
-| 4   | deleteTrip + getTripId | TripId tồn tại | Xóa thành công | PASS |
-| 5   | deleteTrip + getTripId | TripId không tồn tại | Trip không tồn tại |     |
+| STT | Hàm kiểm thử           | Trường hợp                       | Kết quả trả về            | Kết quả kiểm thử |
+| --- | ---------------------- | -------------------------------- | ------------------------- | ---------------- |
+| 1   | createTrip             | Tạo Trip thành công              | Thực thi thành công       | PASS             |
+| 2   | createTrip             | Tạo Trip với thông tin trùng lặp | Tên Trip đã tồn tại       | PASS             |
+| 3   | getAllTrips            |                                  | Trả về danh sách các Trip | PASS             |
+| 4   | deleteTrip + getTripId | TripId tồn tại                   | Xóa thành công            | PASS             |
+| 5   | deleteTrip + getTripId | TripId không tồn tại             | Trip không tồn tại        |                  |
 
 Đánh giá kiểm thử các lớp và hàm liên quan đên TripService
 
@@ -981,7 +1002,74 @@ Dựa trên hàm kiểm thử ta thu được kết quả với các hàm đã �
 → Các test case thành công cho thấy các chức năng hoạt động đúng như mong đợi.
 
 #### Kết luận
+
 Các chức năng đã được sử dụng hoạt động đúng theo yêu cầu, đảm bảo tính chính xác.
+
+## Hướng dẫn cài đặt & build chương trình (trên Windows)
+
+**1. Cài đặt Qt Creator**
+
+- Truy cập đường link sau: https://www.qt.io/download-qt-installer-oss
+
+- Chọn hệ điều hành tương ứng (_Windows x64_).
+
+- Sau khi download thành công, chạy file exe vừa tải về dưới quyền Administrator.
+
+- Cửa sổ cài đặt **Qt Online Installer** sẽ hiện ra, làm theo các bước sau:
+
+  - Màn hình **Welcome** -> Chọn **Next**.
+
+  - Màn hình **Login** -> Tiến hành tạo tài khoản nếu chưa có, hoặc đăng nhập nếu đã có tài khoản.
+
+  - Tích vào **Disable sending usage statistics** -> Nhấn **Next**.
+
+  - Tích vào **I have read agree to the terms and conditions of using Open Source Qt** và **I'm an individual and do not use Qt for any company** -> Nhấn **Next**.
+
+  - Chọn packages **Qt 6.9 for desktop development**
+
+  - Chọn **CMake License Agreement** -> Tích **I have read and agree..** -> Chọn **Next** đến khi nào nút **Install** hiện ra -> Chọn **Install**.
+
+  - Chờ đến khi download xong toàn bộ là đã cài đặt thành công.
+
+- **Lưu ý:** Sau khi Qt Installer bắt đầu cài đặt, rất dễ gặp lỗi _"Network error while downloading..."_. Khắc phục bằng cách chạy lại Qt Installer và chọn một bản mirror cụ thể. Chi tiết như sau:
+
+  - Mở PowerShell, đi đến thư mục chứa Qt Installer (file .exe tải ban đầu).
+
+  - Chạy file cài đặt và chỉ định rõ mirror:
+
+    VD: `installer(.exe) --mirror http://www.nic.funet.fi/pub/mirrors/download.qt-project.org`
+
+  - Nếu vẫn lỗi, hãy tiếp tục chọn một mirror khác cho đến khi thành công.
+
+  - Chi tiết hướng dẫn [**tại đây.**](https://wiki.qt.io/Online_Installer_4.x#Selecting_a_mirror_for_opensource)
+
+**2. Cài đặt ODBC Driver cho SQL Server**
+
+- Tải driver mới nhất từ Microsoft:
+
+  ```powershell
+   winget install Microsoft.ODBC.Driver.18.for.SQLServer
+  ```
+
+  Hoặc tải thủ công: https://learn.microsoft.com/en-us/sql/connect/odbc/download-odbc-driver-for-sql-server
+
+- Kiểm tra driver đã cài::
+
+  ```powershell
+  Get-OdbcDriver -Name "*SQL Server*"
+  ```
+
+  Phải hiển thị ít nhất 1 driver (vd: ODBC Driver 18 for SQL Server)
+
+**3. Mở Project với Qt Creator**
+
+- Mở ứng dụng Qt Creator vừa cài đặt.
+
+- Chọn **Open Project** -> Chọn đến file **CMakeLists.txt** trong thư mục mã nguồn của đồ án.
+
+- Chọn **configure** project nếu project chưa được configure tự động.
+
+- Chọn **Run** hoặc **Debug** để build chương trình.
 
 ## Timeline & Tasks
 
@@ -1026,11 +1114,3 @@ Các chức năng đã được sử dụng hoạt động đúng theo yêu cầ
 | Hoàn thành nhật kí, báo cáo, tài liệu giới thiệu | 8                    | Tài liệu hoàn chỉnh phục vụ báo cáo |
 
 ---
-
-```
-
-```
-
-```
-
-```
