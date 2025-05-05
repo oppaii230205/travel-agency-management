@@ -18,7 +18,7 @@ MainWindow::MainWindow(QSharedPointer<UserService> userService, QSharedPointer<A
             this, &MainWindow::onTripAdded);
     connect(_tripService.data(), &TripService::errorOccurred,
             this, &MainWindow::onErrorOccurred);
-    // connect(ui->btnLogOut, &QPushButton::clicked, this, &MainWindow::handleLogoutRequest);
+    connect(ui->btnLogOut, &QPushButton::clicked, this, &MainWindow::handleLogoutRequest);
 
     connect(_authService.data(), &AuthService::logoutPerformed, this, &MainWindow::handleLogout);
     // refreshTripList();
