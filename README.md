@@ -129,6 +129,7 @@ Phân công công việc
 - Vắng mặt: Không
 
 **Nội dung họp**
+
 Đánh giá mực độ hoàn thành công việc:
 
 | Họ Tên | Mức độ hoàn thành | Ghi chú |
@@ -166,6 +167,7 @@ Phân công công việc mới
 - Vắng mặt: Không
 
 **Nội dung họp**
+
 Đánh giá mực độ hoàn thành công việc được giao:
 
 | Họ Tên | Mức độ hoàn thành | Ghi chú |

@@ -59,6 +59,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         SqlBookingRepository.h
         SqlBookingRepository.cpp
         BookingService.cpp
+        qaesencryption.h
+        qaesencryption.cpp
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET TravelAgencyGUI APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
