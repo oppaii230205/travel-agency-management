@@ -25,8 +25,8 @@ bool UserService::updateUser(const QString &email, const QString &newPassword, c
 
     auto user = _userRepo->getUserByEmail(email);
     if (!user) return false;
-
-    User updatedUser(email, newPassword.isEmpty() ? user->password() : newPassword, newName.isEmpty() ? user->name() : newName, user->role());
+    QString ePassword = CryptoUtils::encrypt(newPassword, eKey);
+    User updatedUser(email, newPassword.isEmpty() ? user->password() : ePassword, newName.isEmpty() ? user->name() : newName, user->role());
 
     return _userRepo->updateUser(updatedUser);
 

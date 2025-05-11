@@ -4,6 +4,8 @@
 #include <QObject>
 #include <QSharedPointer>
 #include "SqlUserRepository.h"
+#include "CrypToUtils.h"
+#include "constants.h"
 
 class UserService : public QObject
 {
