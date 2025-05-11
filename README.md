@@ -9,10 +9,10 @@
 
 ## Phân chia công việc
 
-| STT | Họ tên | Vai trò | Công việc | Tỷ lệ phân chia công việc |
-| --- | --- | --- | --- | --- |
-| 1   | Nguyễn Hưng Thịnh | Nhóm trưởng | Tạo Github Repositories cho dự án, xác định kiến trúc phần mềm, tổng hợp các nguyên tắc OOP, Design Pattern cần tuân thủ, thiết kế và xây dựng các lớp, chức năng thêm chuyến đi và đặt chuyến đi. Thiết kế UI cho các chức năng đã viết, video hướng dẫn sử dụng. | 50% |
-| 2   | Võ Cao Tâm Chính | Thành viên | Tạo máy chủ Azure Clouds để lưu trữ Database, tạo cơ sở dữ liệu, tổng hợp các Coding Convention cần tuân thủ, thực hiện Unit test các thành phần đã hoàn thiện. Thiết kế và xây dựng các lớp, chức năng người dùng, đăng nhập tài khoản, đăng ký tài khoản, đăng xuất. Thiết kế UI cho các chức năng đã viết. | 50% |
+| STT | Họ tên            | Vai trò     | Công việc                                                                                                                                                                                                                                                                                                     | Tỷ lệ phân chia công việc |
+| --- | ----------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------- |
+| 1   | Nguyễn Hưng Thịnh | Nhóm trưởng | Tạo Github Repositories cho dự án, xác định kiến trúc phần mềm, tổng hợp các nguyên tắc OOP, Design Pattern cần tuân thủ, thiết kế và xây dựng các lớp, chức năng thêm chuyến đi và đặt chuyến đi. Thiết kế UI cho các chức năng đã viết, video hướng dẫn sử dụng.                                            | 50%                       |
+| 2   | Võ Cao Tâm Chính  | Thành viên  | Tạo máy chủ Azure Clouds để lưu trữ Database, tạo cơ sở dữ liệu, tổng hợp các Coding Convention cần tuân thủ, thực hiện Unit test các thành phần đã hoàn thiện. Thiết kế và xây dựng các lớp, chức năng người dùng, đăng nhập tài khoản, đăng ký tài khoản, đăng xuất. Thiết kế UI cho các chức năng đã viết. | 50%                       |
 
 ## Báo cáo tiến độ dự án
 
@@ -28,19 +28,19 @@
 
 **Công việc đã hoàn thành**
 
-| STT | Hạng mục | Trạng thái | Ghi chú |
-| --- | --- | --- | --- |
-| 1   | Thống nhất tài liệu mô tả coding convention | Hoàn thành |     |
-| 2   | Xây dựng CSDL trên SQL Server | Hoàn thành |     |
-| 3   | Thiết kế lại mã nguồn hướng đối tượng | Hoàn thành |     |
-| 4   | Thiết kế giao diện (UI) | 70% | Bố cục chưa hợp lý cần điều chỉnh lại |
+| STT | Hạng mục                                    | Trạng thái | Ghi chú                               |
+| --- | ------------------------------------------- | ---------- | ------------------------------------- |
+| 1   | Thống nhất tài liệu mô tả coding convention | Hoàn thành |                                       |
+| 2   | Xây dựng CSDL trên SQL Server               | Hoàn thành |                                       |
+| 3   | Thiết kế lại mã nguồn hướng đối tượng       | Hoàn thành |                                       |
+| 4   | Thiết kế giao diện (UI)                     | 70%        | Bố cục chưa hợp lý cần điều chỉnh lại |
 
 **Công việc đang thực hiện**
 
-| STT | Hạng mục | Trạng thái | Ghi chú |
-| --- | --- | --- | --- |
-| 1   | Viết mã nguồn cho toàn bộ dự án | 40% | Hoàn thành các lớp cơ bản phục vụ cho chương trình. Chưa có các chức năng cải tiến |
-| 2   | Vẽ giao diện cho sản phẩm | 40% | Hoàn thành đăng nhập, đăng ký, đăng xuất, thêm chuyến đi, đặt chuyến đi, lấy danh sách chuyến đi |
+| STT | Hạng mục                        | Trạng thái | Ghi chú                                                                                          |
+| --- | ------------------------------- | ---------- | ------------------------------------------------------------------------------------------------ |
+| 1   | Viết mã nguồn cho toàn bộ dự án | 40%        | Hoàn thành các lớp cơ bản phục vụ cho chương trình. Chưa có các chức năng cải tiến               |
+| 2   | Vẽ giao diện cho sản phẩm       | 40%        | Hoàn thành đăng nhập, đăng ký, đăng xuất, thêm chuyến đi, đặt chuyến đi, lấy danh sách chuyến đi |
 
 **Công việc sắp tới**
 
@@ -52,15 +52,15 @@
 
 - Rủi ro
 
-   \+Chậm tiến độ do yêu cầu phức tạp khi sử dụng API lấy dữ liệu thời tiết.
+  \+Chậm tiến độ do yêu cầu phức tạp khi sử dụng API lấy dữ liệu thời tiết.
 
-   \+ Thiết kế lại bố cục giao diện.
+  \+ Thiết kế lại bố cục giao diện.
 
 - Đề xuất
 
-   \+ Tăng cường testing trước khi release.
+  \+ Tăng cường testing trước khi release.
 
-   \+ Tăng cương trao đổi giữa các thành viên để thống nhất ý tưởng.
+  \+ Tăng cương trao đổi giữa các thành viên để thống nhất ý tưởng.
 
 **Kết luận**
 
@@ -71,60 +71,65 @@ Dự án đang tiến triển ổn định, cần tập trung vào các khâu **
 ### Minh chứng họp nhóm lần 1
 
 **Thông tin chung**
+
 - Thời gian bắt đầu: 21h00, ngày 08/04/2025
 - Thời gian kết thúc: 21h30, ngày 08/04/2025
 - Địa điểm: Google Meet (<https://meet.google.com/jjp-fsff-oae>)
 - Thành viên có mặt:
-   \+ Nguyễn Hưng Thịnh (Trưởng nhóm)
-   \+ Võ Cao Tâm Chính
+  \+ Nguyễn Hưng Thịnh (Trưởng nhóm)
+  \+ Võ Cao Tâm Chính
 - Vắng mặt: Không
 
 **Nội dung**
+
 - Đề xuất ban đầu:
-   \+ Đề tài 1: Travel Agency Management System
-   \+ Đề tài 2: Game Cờ Vua
+  \+ Đề tài 1: Travel Agency Management System
+  \+ Đề tài 2: Game Cờ Vua
 - Thảo luận
-Đề tài 1:
-      -- Dễ dàng phân tích thành các đối tượng (Class) như User, Trip, Booking với quan hệ rõ ràng (kế thừa, đa hình).
---- Dễ dàng thêm tính năng mới.
---- Có tính ứng dụng thực tế.
---- Xử lý được các nghiệp vụ phức tạp (quản lý đặt tour, hủy tour).
-   Đề tài 2:
---- Các đối tượng dễ định nghĩa áp dụng được tính đa hình.
---- Chủ yếu xử lý luật game, it nghiệp vụ phức tạp.
---- Khó ứng dụng chủ yếu phục vụ học thuật
---- Ít cơ hội tích hợp API, cơ sở dữ liệu
+  Đề tài 1:
+  -- Dễ dàng phân tích thành các đối tượng (Class) như User, Trip, Booking với quan hệ rõ ràng (kế thừa, đa hình).
+  --- Dễ dàng thêm tính năng mới.
+  --- Có tính ứng dụng thực tế.
+  --- Xử lý được các nghiệp vụ phức tạp (quản lý đặt tour, hủy tour).
+  Đề tài 2:
+  --- Các đối tượng dễ định nghĩa áp dụng được tính đa hình.
+  --- Chủ yếu xử lý luật game, it nghiệp vụ phức tạp.
+  --- Khó ứng dụng chủ yếu phục vụ học thuật
+  --- Ít cơ hội tích hợp API, cơ sở dữ liệu
 - Biểu quyết:
-Cả nhóm nhất trí chọn đề tài 1 (Travel Agency Management System) với 2/2 số phiếu
+  Cả nhóm nhất trí chọn đề tài 1 (Travel Agency Management System) với 2/2 số phiếu
 
 Phân công công việc
 
-| STT | Họ tên | Vai trò | Công việc | Tỷ lệ phân chia công việc |
-| --- | --- | --- | --- | --- |
-| 1   | Nguyễn Hưng Thịnh | Nhóm trưởng | Tạo Github Repositories cho dự án, xác định kiến trúc phần mềm, tổng hợp các nguyên tắc OOP, Design Pattern cần tuân thủ | 50% |
-| 2   | Võ Cao Tâm Chính | Thành viên | Tạo máy chủ Azure Clouds để lưu trữ Database, tạo cơ sở dữ liệu, tổng hợp các Coding Convention cần tuân thủ | 50% |
+| STT | Họ tên            | Vai trò     | Công việc                                                                                                                | Tỷ lệ phân chia công việc |
+| --- | ----------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------ | ------------------------- |
+| 1   | Nguyễn Hưng Thịnh | Nhóm trưởng | Tạo Github Repositories cho dự án, xác định kiến trúc phần mềm, tổng hợp các nguyên tắc OOP, Design Pattern cần tuân thủ | 50%                       |
+| 2   | Võ Cao Tâm Chính  | Thành viên  | Tạo máy chủ Azure Clouds để lưu trữ Database, tạo cơ sở dữ liệu, tổng hợp các Coding Convention cần tuân thủ             | 50%                       |
 
 **Cam kết chung**
+
 - Tuân thủ deadline và các quy tắc lập trình.
 - Họp đột xuất nếu có vấn đề phát sinh
 
 **Kết luận**
+
 - Đề tài chính thức: Travel Agency Management System
 - Công cụ sử dụng:
-\+Quản lý dự án: Github
-\+ Frontend: Qt
-\+ Backend: C++
-\+ Database: SQL Server + Azure Clouds
+  \+Quản lý dự án: Github
+  \+ Frontend: Qt
+  \+ Backend: C++
+  \+ Database: SQL Server + Azure Clouds
 
 ### Minh chứng họp nhóm lần 2
 
 **Thông tin chung**
+
 - Thời gian bắt đầu: 21h00, ngày 24/04/2025
 - Thời gian kết thúc: 21h30, ngày 24/04/2025
 - Địa điểm: Google Meet (<https://meet.google.com/jjp-fsff-oae>)
 - Thành viên có mặt:
-\+ Nguyễn Hưng Thịnh (Trưởng nhóm)
-\+ Võ Cao Tâm Chính
+  \+ Nguyễn Hưng Thịnh (Trưởng nhóm)
+  \+ Võ Cao Tâm Chính
 
 - Vắng mặt: Không
 
@@ -132,10 +137,10 @@ Phân công công việc
 
 Đánh giá mực độ hoàn thành công việc:
 
-| Họ Tên | Mức độ hoàn thành | Ghi chú |
-| --- | --- | --- |
-| Nguyễn Hưng Thịnh | 85% | Nghiên cứu bổ sung thêm Design Pattern |
-| Võ Cao Tâm Chính | 85% | Số lượng Coding Convention còn hạn chế cần bổ sung thêm |
+| Họ Tên            | Mức độ hoàn thành | Ghi chú                                                 |
+| ----------------- | ----------------- | ------------------------------------------------------- |
+| Nguyễn Hưng Thịnh | 85%               | Nghiên cứu bổ sung thêm Design Pattern                  |
+| Võ Cao Tâm Chính  | 85%               | Số lượng Coding Convention còn hạn chế cần bổ sung thêm |
 
 Đánh giá tiến độ đồ án
 \+ Tiến độ tổng thể: 19.5% hoàn thành
@@ -144,36 +149,39 @@ Phân công công việc
 Phân công công việc mới
 | STT | Họ tên | Vai trò | Công việc | Tỷ lệ phân chia công việc |
 | --- | --- | --- | --- | --- |
-| 1   | Nguyễn Hưng Thịnh | Nhóm trưởng | Thiết kế và xây dựng các lớp, chức năng thêm chuyến đi và đặt chuyến đi. Thiết kế UI cho các chức năng đã viết, tạo video demo và tài liệu hướng dẫn. | 50% |
-| 2   | Võ Cao Tâm Chính | Thành viên | Thiết kế và xây dựng các lớp, chức năng người dùng, đăng nhập tài khoản, đăng ký tài khoản, đăng xuất. Thiết kế UI cho các chức năng đã viết. Thực hiện Unit test các thành phần đã hoàn thiện. | 50% |
+| 1 | Nguyễn Hưng Thịnh | Nhóm trưởng | Thiết kế và xây dựng các lớp, chức năng thêm chuyến đi và đặt chuyến đi. Thiết kế UI cho các chức năng đã viết, tạo video demo và tài liệu hướng dẫn. | 50% |
+| 2 | Võ Cao Tâm Chính | Thành viên | Thiết kế và xây dựng các lớp, chức năng người dùng, đăng nhập tài khoản, đăng ký tài khoản, đăng xuất. Thiết kế UI cho các chức năng đã viết. Thực hiện Unit test các thành phần đã hoàn thiện. | 50% |
 
 **Cam kết chung**
+
 - Tuân thủ deadline và các quy tắc lập trình.
 - Họp đột xuất nếu có vấn đề phát sinh
 
 **Kết luận**
+
 - Các thành viên đều hoàn thành công việc ở mức tốt
 - Đồ án đúng tiến độ
 
 ### Minh chứng họp nhóm lần 3
 
 **Thông tin chung**
+
 - Thời gian bắt đầu: 22h00, ngày 05/05/2025
 - Thời gian kết thúc: 22h30, ngày 25/05/2025
 - Địa điểm: Google Meet (<https://meet.google.com/jjp-fsff-oae>)
 - Thành viên có mặt:
-\+ Nguyễn Hưng Thịnh (Trưởng nhóm)
-\+ Võ Cao Tâm Chính
+  \+ Nguyễn Hưng Thịnh (Trưởng nhóm)
+  \+ Võ Cao Tâm Chính
 - Vắng mặt: Không
 
 **Nội dung họp**
 
 Đánh giá mực độ hoàn thành công việc được giao:
 
-| Họ Tên | Mức độ hoàn thành | Ghi chú |
-| --- | --- | --- |
-| Nguyễn Hưng Thịnh | 100% |     |
-| Võ Cao Tâm Chính | 100% |     |
+| Họ Tên            | Mức độ hoàn thành | Ghi chú |
+| ----------------- | ----------------- | ------- |
+| Nguyễn Hưng Thịnh | 100%              |         |
+| Võ Cao Tâm Chính  | 100%              |         |
 
 Đánh giá tiến độ đồ án
 \+ Tiến độ tổng thể: 52% hoàn thành
@@ -181,16 +189,18 @@ Phân công công việc mới
 
 Phân công công việc mới
 
-| STT | Họ tên | Vai trò | Công việc | Tỷ lệ phân chia công việc |
-| --- | --- | --- | --- | --- |
-| 1   | Nguyễn Hưng Thịnh | Nhóm trưởng | Tổng hợp các nội dung báo cáo, release sản phẩm, nộp bài | 50% |
-| 2   | Võ Cao Tâm Chính | Thành viên | Tổng hợp các nội dung cần báo cáo, tổng hợp minh chứng các cuộc họp. | 50% |
+| STT | Họ tên            | Vai trò     | Công việc                                                            | Tỷ lệ phân chia công việc |
+| --- | ----------------- | ----------- | -------------------------------------------------------------------- | ------------------------- |
+| 1   | Nguyễn Hưng Thịnh | Nhóm trưởng | Tổng hợp các nội dung báo cáo, release sản phẩm, nộp bài             | 50%                       |
+| 2   | Võ Cao Tâm Chính  | Thành viên  | Tổng hợp các nội dung cần báo cáo, tổng hợp minh chứng các cuộc họp. | 50%                       |
 
 **Cam kết chung**
+
 - Tuân thủ deadline và các quy tắc lập trình.
 - Họp đột xuất nếu có vấn đề phát sinh
 
 **Kết luận**
+
 - Các thành viên đều hoàn thành công việc ở mức tốt
 - Đồ án đúng tiến độ
 
@@ -786,8 +796,6 @@ Phân công công việc mới
 
 **Lợi ích:** Giảm coupling giữa GUI và business logic. Đồng thời, GUI sẽ được tự động cập nhật khi dữ liệu thay đổi.
 
-
-
 ### Đảm bảo chất lượng
 
 **1\. Single Branch Workflow**
@@ -1113,7 +1121,9 @@ int main() {
 \- Trước khi kiểm thử thực hiện tách phần Logic và UI để đảm bảo độ ổn định cao và dễ dàng trong quá trình kiểm thử chức năng.
 
 **3\. Thực hiện Unit Test với các lớp đã được** sử dụng
+
 **Giới Thiệu**
+
 Tài liệu này mô tả kế hoạch kiểm thử các chức năng chính của hệ thống:
 
 - UserService (Quản lý người dùng)
@@ -1349,6 +1359,14 @@ Các chức năng đã được sử dụng hoạt động đúng theo yêu cầ
 - Chọn **configure** project nếu project chưa được configure tự động.
 
 - Chọn **Run** hoặc **Debug** để build chương trình.
+
+## Video demo chương trình
+
+- Video demo báo cáo tiến độ - Link: https://www.youtube.com/watch?v=7cq-_D9EoGc
+
+## Tài liệu mô tả kiến trúc phần mềm, modules
+
+- Trong file nộp, nằm ở thư mục **Doxygen** -> **html** -> **annotated.html**.
 
 ## Timeline & Tasks
 
