@@ -67,6 +67,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         ReviewService.h
         ReviewService.cpp
         ReviewDialog.h ReviewDialog.cpp ReviewDialog.ui
+        TripCard.h TripCard.cpp TripCard.ui
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET TravelAgencyGUI APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
