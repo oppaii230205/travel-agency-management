@@ -9,8 +9,8 @@ bool AuthService::login(const QString& email, const QString& password) {
         emit loginFailed("Email không tồn tại");
         return false;
     }
-
-    if (user->password() != password) {
+    QString dPassword = CryptoUtils::decrypt(user->password(), eKey);
+    if (dPassword != password) {
         emit loginFailed("Mật khẩu không đúng");
         return false;
     }
@@ -25,8 +25,8 @@ bool AuthService::signup(const QString& email, const QString& password, const QS
         emit signupFailed("Email đã được sử dụng");
         return false;
     }
-
-    User newUser(email, password, name, "customer"); // Mặc định role là "customer"!! Cho nhập role thì lỏ vcl :v
+    QString ePassword = CryptoUtils::encrypt(password, eKey);
+    User newUser(email, ePassword, name, "customer"); // Mặc định role là "customer"!! Cho nhập role thì lỏ vcl :v
     if (!_userRepository->addUser(newUser)) {
         emit signupFailed("Lỗi khi tạo tài khoản");
         return false;

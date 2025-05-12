@@ -4,6 +4,8 @@
 #include "UserRepository.h"
 #include <QObject>
 #include <QSharedPointer>
+#include "CrypToUtils.h"
+#include "constants.h"
 
 class AuthService : public QObject {
     Q_OBJECT

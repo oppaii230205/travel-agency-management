@@ -67,6 +67,9 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         ReviewService.h
         ReviewService.cpp
         ReviewDialog.h ReviewDialog.cpp ReviewDialog.ui
+        qaesencryption.h
+        qaesencryption.cpp
+        CrypToUtils.h CrypToUtils.cpp
         TripCard.h TripCard.cpp TripCard.ui
     )
 # Define target properties for Android with Qt 6 as:
