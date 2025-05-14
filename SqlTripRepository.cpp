@@ -25,7 +25,8 @@ QList<Trip> SqlTripRepository::getAllTrips() {
             query.value("difficulty").toString(),
             query.value("price").toInt(),
             query.value("summary").toString(),
-            query.value("description").toString()
+            query.value("description").toString(),
+            query.value("imagePath").toString()
             // Thêm các trường khác nếu cần thiết
         );
         trips.append(trip);
@@ -47,7 +48,8 @@ Trip SqlTripRepository::getTripById(int tripId) {
             query.value("difficulty").toString(),
             query.value("price").toInt(),
             query.value("summary").toString(),
-            query.value("description").toString()
+            query.value("description").toString(),
+            query.value("imagePath").toString()
             // Thêm các trường khác nếu cần thiết
         );
     }
@@ -56,7 +58,7 @@ Trip SqlTripRepository::getTripById(int tripId) {
 
 bool SqlTripRepository::addTrip(const Trip& trip) {
     QSqlQuery query(_dbManager.getDatabase());
-    query.prepare("INSERT TRIP (tripName, duration, maxGroupSize, difficulty, price, summary, description) VALUES (:tripName, :duration, :maxGroupSize, :difficulty, :price, :summary, :description)");
+    query.prepare("INSERT TRIP (tripName, duration, maxGroupSize, difficulty, price, summary, description, imagePath) VALUES (:tripName, :duration, :maxGroupSize, :difficulty, :price, :summary, :description, :imagePath)");
     // query.bindValue(":tripId", trip.getTripId());
     query.bindValue(":tripName", trip.getTripName());
     query.bindValue(":duration", trip.getDuration());
@@ -65,7 +67,8 @@ bool SqlTripRepository::addTrip(const Trip& trip) {
     query.bindValue(":price", trip.getPrice());
     query.bindValue(":summary", trip.getSummary());
     query.bindValue(":description", trip.getDescription());
-    
+    query.bindValue(":imagePath", trip.getImagePath());
+
     // Look before you leap: check if the SQL query is executed successfully
     if (!query.exec()) {
         qDebug() << "Add trip error:" << query.lastError().text();
@@ -77,7 +80,7 @@ bool SqlTripRepository::addTrip(const Trip& trip) {
 
 bool SqlTripRepository::updateTrip(const Trip& trip) {
     QSqlQuery query(_dbManager.getDatabase());
-    query.prepare("UPDATE TRIP SET tripName = :tripName, duration = :duration, maxGroupSize = :maxGroupSize, difficulty = :difficulty, price = :price, summary = :summary, decription = :description WHERE tripId = :tripId");
+    query.prepare("UPDATE TRIP SET tripName = :tripName, duration = :duration, maxGroupSize = :maxGroupSize, difficulty = :difficulty, price = :price, summary = :summary, decription = :description, imagePath = :imagePath WHERE tripId = :tripId");
     query.bindValue(":tripId", trip.getTripId());
     query.bindValue(":tripName", trip.getTripName());
     query.bindValue(":duration", trip.getDuration());
@@ -86,7 +89,7 @@ bool SqlTripRepository::updateTrip(const Trip& trip) {
     query.bindValue(":price", trip.getPrice());
     query.bindValue(":summary", trip.getSummary());
     query.bindValue(":description", trip.getDescription());
-
+    query.bindValue(":imagePath", trip.getImagePath());
     
     // Look before you leap: check if the SQL query is executed successfully
     if (!query.exec()) {

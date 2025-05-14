@@ -1,4 +1,3 @@
-/*
 #include <QWidget>
 #include "Trip.h"
 
@@ -15,4 +14,3 @@ signals:
 private:
     int _tripId;
 };
-*/

@@ -1,10 +1,9 @@
-/*
 #include "TripCard.h"
 #include <QVBoxLayout>
 #include <QLabel>
 #include <QPushButton>
 #include <QPixmap>
-
+#include <string>
 
 TripCard::TripCard(const Trip& trip, QWidget *parent)
     : QWidget(parent), _tripId(trip.getTripId())
@@ -14,7 +13,10 @@ TripCard::TripCard(const Trip& trip, QWidget *parent)
 
     // Hình ảnh (có thể lấy từ resource hoặc URL)
     QLabel *imageLabel = new QLabel(this);
-    imageLabel->setPixmap(QPixmap(":/images/" + trip.getTripName().toLower().replace(" ", "_") + ".jpg")
+
+    QString pathToImage = !trip.getImagePath().isEmpty() ? trip.getImagePath() : ":/images/default-trip.jpg";
+
+    imageLabel->setPixmap(QPixmap(pathToImage)
                               .scaled(200, 150, Qt::KeepAspectRatio));
 
     // Thông tin chuyến đi
@@ -46,4 +48,3 @@ TripCard::TripCard(const Trip& trip, QWidget *parent)
     // Style thêm nếu cần
     this->setStyleSheet("TripCard { border: 1px solid #ddd; border-radius: 8px; padding: 10px; }");
 }
-*/

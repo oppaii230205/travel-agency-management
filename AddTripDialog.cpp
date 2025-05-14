@@ -30,7 +30,9 @@ void AddTripDialog::on_btnSave_clicked()
         ui->comboDifficulty->currentText(),
         ui->linePrice->text().toInt(),
         ui->textSummary->toPlainText(),
-        ui->textDescription->toPlainText()
+        ui->textDescription->toPlainText(),
+        //TODO
+        "" // empty imagePath
         );
 
     if (_tripService->createTrip(newTrip)) {

@@ -14,10 +14,12 @@ private:
     int _price;
     QString _summary;
     QString _description;
+    QString _imagePath;
+
 public:
     Trip(); // Default constructor
     Trip(int tripId, const QString& tripName, int duration, int maxGroupSize, const QString& difficulty,
-         int price, const QString& summary, const QString& description);
+         int price, const QString& summary, const QString& description, const QString& _imagePath);
 
     int getTripId() const;
     QString getTripName() const;
@@ -27,6 +29,7 @@ public:
     int getPrice() const;
     QString getSummary() const;
     QString getDescription() const;
+    QString getImagePath() const;
 
     void setTripName(const QString& tripName);
     void setDuration(int duration);
@@ -35,6 +38,7 @@ public:
     void setPrice(int price);
     void setSummary(const QString& summary);
     void setDescription(const QString& description);
+    void setImagePath(const QString& imagePath);
 };
 
 #endif // TRIP_H
