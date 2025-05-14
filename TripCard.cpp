@@ -16,17 +16,39 @@ TripCard::TripCard(const Trip& trip, QWidget *parent)
 
     QString pathToImage = !trip.getImagePath().isEmpty() ? trip.getImagePath() : ":/images/default-trip.jpg";
 
-    imageLabel->setPixmap(QPixmap(pathToImage)
-                              .scaled(200, 150, Qt::KeepAspectRatio));
+    QPixmap pixmap(pathToImage);
+
+    if (pixmap.isNull()) {
+        qWarning() << "Failed to load image:" << pathToImage;
+        pixmap.load(":/images/default-trip.jpg");
+    }
+
+    // Tính toán kích thước giữ nguyên tỷ lệ
+    QPixmap scaledPixmap = pixmap.scaledToWidth(200, Qt::SmoothTransformation);
+    // Hoặc nếu muốn cố định cả chiều cao:
+    // QPixmap scaledPixmap = pixmap.scaled(200, 150, Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation);
+
+    imageLabel->setPixmap(scaledPixmap);
+    imageLabel->setAlignment(Qt::AlignCenter);
+    imageLabel->setMinimumSize(200, 150);
+    imageLabel->setMaximumSize(200, 150);
 
     // Thông tin chuyến đi
     QLabel *nameLabel = new QLabel("<b>" + trip.getTripName() + "</b>", this);
+    nameLabel->setObjectName("nameLabel"); // Quan trọng để CSS nhận diện
+
     QLabel *priceLabel = new QLabel("Price: $" + QString::number(trip.getPrice()), this);
+    priceLabel->setObjectName("priceLabel");
+
     QLabel *difficultyLabel = new QLabel("Difficulty: " + trip.getDifficulty(), this);
+    difficultyLabel->setObjectName("difficultyLabel");
 
     // Các nút
     QPushButton *detailsBtn = new QPushButton("Details", this);
+    detailsBtn->setObjectName("detailsBtn");
+
     QPushButton *bookBtn = new QPushButton("Book Now", this);
+    bookBtn->setObjectName("bookBtn");
 
     // Thêm vào layout
     layout->addWidget(imageLabel);

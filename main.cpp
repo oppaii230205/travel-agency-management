@@ -8,11 +8,23 @@
 #include "BookingService.h"
 #include "SqlBookingRepository.h"
 
+#include <QFile>
+
+void loadGlobalStyles() {
+    QFile styleFile(":/styles/style.css"); // Đường dẫn trong resource
+    if (styleFile.open(QFile::ReadOnly | QFile::Text)) {
+        QString styleSheet = QLatin1String(styleFile.readAll());
+        qApp->setStyleSheet(styleSheet); // Áp dụng cho toàn bộ ứng dụng
+        styleFile.close();
+    }
+}
 
 int main(int argc, char* argv[])
 {
     QApplication a(argc, argv);
     
+    loadGlobalStyles();
+
     // Khởi tạo các dependency
     DatabaseManager& db = DatabaseManager::getInstance();
     QSharedPointer<SqlTripRepository> tripRepository = QSharedPointer<SqlTripRepository>::create(db);
