@@ -8,8 +8,8 @@
 #include <QMessageBox>
 #include <QTableWidgetItem>
 
-MainWindow::MainWindow(QSharedPointer<UserService> userService, QSharedPointer<AuthService> authService, QSharedPointer<TripService> tripService, QSharedPointer<BookingService> bookingService, QWidget* parent)
-    : QMainWindow(parent), ui(new Ui::MainWindow), _userService(userService), _authService(authService), _tripService(tripService), _bookingService(bookingService)
+MainWindow::MainWindow(QSharedPointer<UserService> userService, QSharedPointer<AuthService> authService, QSharedPointer<TripService> tripService, QSharedPointer<BookingService> bookingService, QSharedPointer<AzureStorageService> storageService, QWidget* parent)
+    : QMainWindow(parent), ui(new Ui::MainWindow), _userService(userService), _authService(authService), _tripService(tripService), _bookingService(bookingService), _storageService(storageService)
 {
     ui->setupUi(this);
     
@@ -61,7 +61,7 @@ void MainWindow::on_btnShowUserInfomation_clicked()
     QString currentUserEmail = _authService->getCurrentUser()->email(); // Cần implement hàm này
 
 
-    ShowUserInformationDialog Dialog(_userService, currentUserEmail, this);
+    ShowUserInformationDialog Dialog(_userService, _storageService, currentUserEmail, this);
     Dialog.exec();
 }
 
@@ -93,7 +93,6 @@ void MainWindow::handleLogout()
     this->hide();
     emit logoutCompleted();
 }
-
 
 
 

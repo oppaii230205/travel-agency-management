@@ -16,6 +16,7 @@ class SqlUserRepository: public UserRepository{
         bool updateUser(const User& user);
         bool deleteUser(const QString& email);
         bool userExists(const QString& email);
+        bool updateUserAvatar(const QString &email, const QString &avatarUrl);
     private:
         User mapResultToUser(const QSqlQuery& query) const;
         bool executeQuery(QSqlQuery& query) const;

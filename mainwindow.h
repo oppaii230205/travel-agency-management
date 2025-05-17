@@ -7,6 +7,7 @@
 #include "UserService.h"
 #include "BookingService.h"
 #include "loginwindow.h"
+#include "AzureStorageService.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -17,7 +18,12 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    MainWindow(QSharedPointer<UserService> userService, QSharedPointer<AuthService> authService, QSharedPointer<TripService> tripService, QSharedPointer<BookingService> bookingService, QWidget* parent = nullptr);
+    MainWindow(QSharedPointer<UserService> userService,
+               QSharedPointer<AuthService> authService,
+               QSharedPointer<TripService> tripService,
+               QSharedPointer<BookingService> bookingService,
+               QSharedPointer<AzureStorageService> storageService,
+               QWidget* parent = nullptr);
     ~MainWindow();
 
 public:
@@ -40,6 +46,7 @@ private:
     QSharedPointer<TripService> _tripService;
     QSharedPointer<UserService> _userService;
     QSharedPointer<BookingService> _bookingService;
+    QSharedPointer<AzureStorageService> _storageService;
 };
 
 #endif // MAINWINDOW_H

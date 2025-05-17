@@ -7,6 +7,7 @@
 #include "loginwindow.h"
 #include "BookingService.h"
 #include "SqlBookingRepository.h"
+#include "AzureStorageService.h"
 
 #include <QFile>
 
@@ -35,7 +36,8 @@ int main(int argc, char* argv[])
     QSharedPointer<TripService> tripService = QSharedPointer<TripService>::create(tripRepository);
     QSharedPointer<UserService> userService = QSharedPointer<UserService>::create(userRepository);
     QSharedPointer<BookingService> bookingService = QSharedPointer<BookingService>::create(bookingRepository, tripService, authService);
-    
+    QSharedPointer<AzureStorageService> storageService(new AzureStorageService());
+
     LoginWindow loginWindow(authService, nullptr);
     QSharedPointer<MainWindow> mainWindow; // Khai báo bên ngoài lambda
 
@@ -52,7 +54,7 @@ int main(int argc, char* argv[])
         loginWindow.hide();
 
         // Tạo MainWindow sau khi login thành công
-        mainWindow =  QSharedPointer<MainWindow>::create(userService, authService, tripService, bookingService);
+        mainWindow =  QSharedPointer<MainWindow>::create(userService, authService, tripService, bookingService, storageService);
         mainWindow->show();
     });
 
