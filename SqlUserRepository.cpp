@@ -37,6 +37,7 @@ QSharedPointer<User> SqlUserRepository::getUserByEmail(const QString& email){
     return QSharedPointer<User>::create(mapResultToUser(query));
 }
 
+
 QList<User> SqlUserRepository::getAllUsers(){
     QList<User> users;
     QSqlQuery query("SELECT * FROM [USER]", _dbManager.getDatabase());
@@ -85,7 +86,8 @@ User SqlUserRepository::mapResultToUser(const QSqlQuery& query) const {
         query.value("email").toString(),
         query.value("password").toString(),
         query.value("name").toString(),
-        query.value("role").toString()
+        query.value("role").toString(),
+        query.value("avatar_url").toString()
     );
 }
 
@@ -95,4 +97,12 @@ bool SqlUserRepository::executeQuery(QSqlQuery& query) const {
         return false;
     }
     return true;
+}
+
+bool SqlUserRepository::updateUserAvatar(const QString &email, const QString &avatarUrl) {
+    QSqlQuery query;
+    query.prepare("UPDATE [user] SET avatar_url = ? WHERE email = ?");
+    query.addBindValue(avatarUrl);
+    query.addBindValue(email);
+    return query.exec();
 }

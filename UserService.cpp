@@ -26,7 +26,7 @@ bool UserService::updateUser(const QString &email, const QString &newPassword, c
     auto user = _userRepo->getUserByEmail(email);
     if (!user) return false;
     QString ePassword = CryptoUtils::encrypt(newPassword, eKey);
-    User updatedUser(email, newPassword.isEmpty() ? user->password() : ePassword, newName.isEmpty() ? user->name() : newName, user->role());
+    User updatedUser(email, newPassword.isEmpty() ? user->password() : ePassword, newName.isEmpty() ? user->name() : newName, user->role(), user->avatarUrl());
 
     return _userRepo->updateUser(updatedUser);
 
@@ -39,3 +39,7 @@ bool UserService::deleteUser(const QString& email){
     return _userRepo->deleteUser(email);
 }
 
+bool UserService::updateUserAvatar(const QString &email, const QString &avatarUrl) {
+    if (!_userRepo) return false;
+    return _userRepo->updateUserAvatar(email, avatarUrl);
+}

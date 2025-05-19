@@ -6,6 +6,7 @@
 #include "SqlUserRepository.h"
 #include "CrypToUtils.h"
 #include "constants.h"
+#include <QSqlQuery>
 
 class UserService : public QObject
 {
@@ -18,6 +19,7 @@ public:
     QList<User> getAllUsers();
     bool updateUser(const QString& email, const QString& newPassword, const QString& newName);
     bool deleteUser(const QString& email);
+    bool updateUserAvatar(const QString &email, const QString &avatarUrl);
 private:
     QSharedPointer<SqlUserRepository> _userRepo;
 };
