@@ -1,6 +1,8 @@
 // TripListDialog.cpp
 #include "TripListDialog.h"
 #include "TripCard.h"
+#include "TripDetailDialog.h"
+
 #include <QScrollArea>
 #include <QHBoxLayout>
 #include <QMessageBox>
@@ -60,7 +62,7 @@ void TripListDialog::handleDetailsClicked(int tripId)
 {
     // Hiển thị dialog chi tiết
     Trip trip = _tripService->getTripById(tripId);
-    QDialog detailsDialog(this);
+    QSharedPointer<TripDetailDialog> detailsDialog = QSharedPointer<TripDetailDialog>::create(trip, _cardsContainer);
     // ... thiết kế dialog chi tiết ...
-    detailsDialog.exec();
+    detailsDialog->exec();
 }
