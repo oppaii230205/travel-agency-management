@@ -3,11 +3,33 @@
 #include <QLabel>
 #include <QPushButton>
 #include <QPixmap>
-#include <string>
+#include <QGraphicsDropShadowEffect>
 
 TripCard::TripCard(const Trip& trip, QWidget *parent)
     : QWidget(parent), _tripId(trip.getTripId())
 {
+    this->setObjectName("tripCard");
+    this->setProperty("class", "trip-card"); // Thêm property
+
+    this->setAttribute(Qt::WA_StyledBackground, true);
+
+    this->setAttribute(Qt::WA_Hover);  // Quan trọng: Bật khả năng nhận hover
+    this->setMouseTracking(true);      // Theo dõi chuột ngay cả khi không nhấn
+
+    this->setAttribute(Qt::WA_AcceptTouchEvents, false); // Tắt touch events nếu không cần
+    this->setFocusPolicy(Qt::StrongFocus); // Thiết lập focus policy
+
+    this->setAttribute(Qt::WA_NoMousePropagation, false); // Cho phép sự kiện chuột lan tỏa
+
+    // shadowing
+    auto shadowEffect = new QGraphicsDropShadowEffect(this);
+    shadowEffect->setBlurRadius(10);
+    shadowEffect->setOffset(0, 10);
+    shadowEffect->setColor(Qt::gray); // TODO
+    this->setGraphicsEffect(shadowEffect);
+
+    this->setProperty("yPos", 0); // Khởi tạo property
+
     // Thiết lập kích thước cơ bản
     setMinimumSize(280, 350);
     setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
@@ -28,14 +50,15 @@ TripCard::TripCard(const Trip& trip, QWidget *parent)
     }
 
     // Tính toán kích thước giữ nguyên tỷ lệ
-    QPixmap scaledPixmap = pixmap.scaledToWidth(200, Qt::SmoothTransformation);
+    QPixmap scaledPixmap = pixmap.scaledToWidth(350, Qt::SmoothTransformation);
     // Hoặc nếu muốn cố định cả chiều cao:
     // QPixmap scaledPixmap = pixmap.scaled(200, 150, Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation);
 
     imageLabel->setPixmap(scaledPixmap);
     imageLabel->setAlignment(Qt::AlignCenter);
-    imageLabel->setMinimumSize(200, 150);
-    imageLabel->setMaximumSize(200, 150);
+    // imageLabel->setMinimumSize(200, 150);
+    // imageLabel->setMaximumSize(200, 150);
+    imageLabel->setObjectName("imageLabel");
 
     // Thông tin chuyến đi
     QLabel *nameLabel = new QLabel("<b>" + trip.getTripName() + "</b>", this);
@@ -72,5 +95,5 @@ TripCard::TripCard(const Trip& trip, QWidget *parent)
     });
 
     // Style thêm nếu cần
-    this->setStyleSheet("TripCard { border: 1px solid #ddd; border-radius: 8px; padding: 10px; }");
+    // this->setStyleSheet("TripCard { border: 1px solid #ddd; border-radius: 8px; padding: 10px; }");
 }

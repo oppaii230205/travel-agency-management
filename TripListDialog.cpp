@@ -14,7 +14,7 @@ TripListDialog::TripListDialog(QSharedPointer<TripService> tripService,
 {
     // Thiết lập cửa sổ
     setWindowTitle("Available Trips");
-    setMinimumSize(800, 600);
+    setMinimumSize(850, 625);
 
     // Tạo scroll area
     QScrollArea *scrollArea = new QScrollArea(this);
@@ -66,9 +66,9 @@ void TripListDialog::resizeEvent(QResizeEvent *event)
 {
     QDialog::resizeEvent(event);
 
-    // QPropertyAnimation *anim = new QPropertyAnimation(this, "geometry");
-    // anim->setDuration(300);
-    // anim->setEasingCurve(QEasingCurve::InOutQuad);
+    QPropertyAnimation *anim = new QPropertyAnimation(this, "geometry");
+    anim->setDuration(300);
+    anim->setEasingCurve(QEasingCurve::InOutQuad);
 
     // Tính toán số cột dựa trên chiều rộng
     int cardWidth = 300; // Chiều rộng mỗi card
