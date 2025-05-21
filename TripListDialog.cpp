@@ -1,7 +1,7 @@
 // TripListDialog.cpp
 #include "TripListDialog.h"
-#include "TripCard.h"
 #include "TripDetailDialog.h"
+#include <QPropertyAnimation>
 
 #include <QScrollArea>
 #include <QHBoxLayout>
@@ -12,39 +12,78 @@ TripListDialog::TripListDialog(QSharedPointer<TripService> tripService,
                              QWidget *parent)
     : QDialog(parent), _tripService(tripService), _bookingService(bookingService)
 {
-    // Tạo scroll area để chứa các card khi nhiều
-    QScrollArea *scrollArea = new QScrollArea(this);
-    _cardsContainer = new QWidget(scrollArea);
-    QHBoxLayout *layout = new QHBoxLayout(_cardsContainer);
+    // Thiết lập cửa sổ
+    setWindowTitle("Available Trips");
+    setMinimumSize(800, 600);
 
-    // Thiết lập scroll area
+    // Tạo scroll area
+    QScrollArea *scrollArea = new QScrollArea(this);
     scrollArea->setWidgetResizable(true);
-    scrollArea->setWidget(_cardsContainer);
+
+    // Widget chứa nội dung chính
+    QWidget *contentWidget = new QWidget();
+    _gridLayout = new QGridLayout(contentWidget); // Sử dụng QGridLayout thay vì QHBoxLayout
+    _gridLayout->setSpacing(20); // Khoảng cách giữa các card
+    _gridLayout->setContentsMargins(20, 20, 20, 20);
+
+    scrollArea->setWidget(contentWidget);
 
     // Layout chính
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(scrollArea);
 
-    // Tải và hiển thị các card
-    setupCards();
+    // Tải các trip card
+    refreshTripList();
 }
 
-void TripListDialog::setupCards()
+void TripListDialog::refreshTripList()
 {
-    // Xóa card cũ nếu có
-    QLayoutItem *child;
-    while (child = _cardsContainer->layout()->takeAt(0)) {
-        delete child->widget();
-        delete child;
+    // Xóa card cũ
+    QLayoutItem* item;
+    while (item = _gridLayout->takeAt(0)) {
+        delete item->widget();
+        delete item;
     }
 
-    // Tạo card mới cho mỗi trip
+    // Tải danh sách trip
     QList<Trip> trips = _tripService->getAllTrips();
-    for (const Trip &trip : trips) {
-        TripCard *card = new TripCard(trip, _cardsContainer);
+
+    // Thêm card mới
+    for (int i = 0; i < trips.size(); ++i) {
+        TripCard *card = new TripCard(trips[i], this);
         connect(card, &TripCard::bookClicked, this, &TripListDialog::handleBookClicked);
         connect(card, &TripCard::detailsClicked, this, &TripListDialog::handleDetailsClicked);
-        _cardsContainer->layout()->addWidget(card);
+
+        // Tính toán vị trí trong grid
+        int row = i / 3; // 3 cột
+        int col = i % 3;
+        _gridLayout->addWidget(card, row, col);
+    }
+}
+
+// Xử lý sự kiện resize để điều chỉnh số cột
+void TripListDialog::resizeEvent(QResizeEvent *event)
+{
+    QDialog::resizeEvent(event);
+
+    // QPropertyAnimation *anim = new QPropertyAnimation(this, "geometry");
+    // anim->setDuration(300);
+    // anim->setEasingCurve(QEasingCurve::InOutQuad);
+
+    // Tính toán số cột dựa trên chiều rộng
+    int cardWidth = 300; // Chiều rộng mỗi card
+    int spacing = _gridLayout->spacing();
+    int margin = _gridLayout->contentsMargins().left() + _gridLayout->contentsMargins().right();
+
+    int availableWidth = width() - margin;
+    int columns = qMax(1, availableWidth / (cardWidth + spacing));
+
+    // Sắp xếp lại các card
+    QList<TripCard*> cards = findChildren<TripCard*>();
+    for (int i = 0; i < cards.size(); ++i) {
+        int row = i / columns;
+        int col = i % columns;
+        _gridLayout->addWidget(cards[i], row, col);
     }
 }
 
@@ -62,7 +101,7 @@ void TripListDialog::handleDetailsClicked(int tripId)
 {
     // Hiển thị dialog chi tiết
     Trip trip = _tripService->getTripById(tripId);
-    QSharedPointer<TripDetailDialog> detailsDialog = QSharedPointer<TripDetailDialog>::create(trip, _cardsContainer);
+    QSharedPointer<TripDetailDialog> detailsDialog = QSharedPointer<TripDetailDialog>::create(trip);
     // ... thiết kế dialog chi tiết ...
     detailsDialog->exec();
 }

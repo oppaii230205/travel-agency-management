@@ -1,3 +1,6 @@
+#ifndef _TRIP_CARD_H_
+#define _TRIP_CARD_H_
+
 #include <QWidget>
 #include "Trip.h"
 
@@ -14,3 +17,5 @@ signals:
 private:
     int _tripId;
 };
+
+#endif

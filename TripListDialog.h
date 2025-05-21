@@ -4,12 +4,15 @@
 #include <QDialog>
 #include <QScrollArea>
 #include <QWidget>
+#include <QGridLayout>
+#include <QResizeEvent> // Thêm cho xử lý resize
 
 #include <QStandardItemModel>
 #include <qitemselectionmodel.h>
 
 #include "TripService.h"
 #include "BookingService.h"
+#include "TripCard.h"
 
 namespace Ui {
 class TripListDialog;
@@ -26,12 +29,13 @@ public:
 private slots:
     void handleBookClicked(int tripId);
     void handleDetailsClicked(int tripId);
+    void refreshTripList();
+    void resizeEvent(QResizeEvent *event);
 
 private:
-    void setupCards();
     QSharedPointer<TripService> _tripService;
     QSharedPointer<BookingService> _bookingService;
-    QWidget *_cardsContainer;
+    QGridLayout* _gridLayout;
 };
 
 #endif // TRIPLISTDIALOG_H

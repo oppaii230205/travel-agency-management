@@ -8,6 +8,10 @@
 TripCard::TripCard(const Trip& trip, QWidget *parent)
     : QWidget(parent), _tripId(trip.getTripId())
 {
+    // Thiết lập kích thước cơ bản
+    setMinimumSize(280, 350);
+    setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
+
     // Setup layout và các thành phần UI
     QVBoxLayout *layout = new QVBoxLayout(this);
 

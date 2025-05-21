@@ -1,12 +1,29 @@
 /* style.css */
 /* Áp dụng cho toàn bộ TripCard */
+/* style.css */
 TripCard {
   border: 1px solid #e0e0e0;
   border-radius: 8px;
   padding: 15px;
   background-color: white;
   margin: 10px;
+  min-width: 280px;
+  max-width: 320px;
 }
+
+TripCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+/* Khi màn hình nhỏ */
+/* @media screen and (max-width: 600px) {
+  TripCard {
+    min-width: 100%;
+    max-width: 100%;
+  }
+} */
 
 /* Tiêu đề trip */
 TripCard QLabel#nameLabel {
@@ -121,9 +138,9 @@ QLabel#imageLabel {
 }
 
 /* Khung thông tin */
-QFrame {
+/* QFrame {
   background-color: white;
   border-radius: 8px;
   padding: 20px;
   margin: 10px;
-}
+} */
