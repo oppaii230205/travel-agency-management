@@ -3,6 +3,7 @@
 #include <QLabel>
 #include <QPushButton>
 #include <QPixmap>
+#include <QColor>
 #include <QGraphicsDropShadowEffect>
 
 TripCard::TripCard(const Trip& trip, QWidget *parent)
@@ -23,9 +24,12 @@ TripCard::TripCard(const Trip& trip, QWidget *parent)
 
     // shadowing
     auto shadowEffect = new QGraphicsDropShadowEffect(this);
-    shadowEffect->setBlurRadius(10);
-    shadowEffect->setOffset(0, 10);
-    shadowEffect->setColor(Qt::gray); // TODO
+    shadowEffect->setBlurRadius(48);
+    shadowEffect->setOffset(0, 5);
+
+    QColor color;
+    color.setRgbF(0,0,0,0.075);
+    shadowEffect->setColor(color); // TODO
     this->setGraphicsEffect(shadowEffect);
 
     this->setProperty("yPos", 0); // Khởi tạo property
