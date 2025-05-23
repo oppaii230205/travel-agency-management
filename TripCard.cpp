@@ -27,6 +27,7 @@ TripCard::TripCard(const Trip& trip, QWidget *parent)
     shadowEffect->setBlurRadius(48);
     shadowEffect->setOffset(0, 5);
 
+    // Set rgba color
     QColor color;
     color.setRgbF(0,0,0,0.075);
     shadowEffect->setColor(color); // TODO
