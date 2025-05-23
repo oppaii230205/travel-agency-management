@@ -39,22 +39,6 @@
     <string>Email</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label">
-   <property name="geometry">
-    <rect>
-     <x>100</x>
-     <y>50</y>
-     <width>108</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>ĐĂNG NHẬP</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignmentFlag::AlignCenter</set>
-   </property>
-  </widget>
   <widget class="QPushButton" name="signupButton">
    <property name="geometry">
     <rect>

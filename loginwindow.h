@@ -1,7 +1,9 @@
+// loginwindow.h
 #ifndef LOGINWINDOW_H
 #define LOGINWINDOW_H
 
 #include <QDialog>
+#include <QSharedPointer>
 #include "authservice.h"
 
 namespace Ui {
@@ -29,6 +31,7 @@ private slots:
 private:
     Ui::QDialog* ui;
     QSharedPointer<AuthService> _authService;
+    void setupUI(); // Thêm phương thức thiết lập giao diện
 };
 
 #endif // LOGINWINDOW_H
