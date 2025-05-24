@@ -5,6 +5,7 @@
 #include <QFileDialog>
 #include <QPixmap>
 #include <QDebug>
+#include "CustomMessageBox.h"
 
 ShowUserInformationDialog::ShowUserInformationDialog(QSharedPointer<UserService> userService,
                                                      QSharedPointer<AzureStorageService> storageService,
@@ -113,24 +114,24 @@ void ShowUserInformationDialog::on_btnSave_clicked()
 
     if(newName.isEmpty())
     {
-        QMessageBox::warning(this, tr("Error"), tr("Name cannot be empty"));
+        CustomMessageBox::show("Error", "Name cannot be empty");
         return;
     }
 
     if (!_tempAvatarPath.isEmpty()) {
         // Nếu có ảnh mới chọn nhưng chưa upload xong
-        QMessageBox::warning(this, tr("Warning"), tr("Please wait for avatar upload to complete"));
+        CustomMessageBox::show("Warning", "Please wait for avatar upload to complete");
         return;
     }
 
     if(_userService->updateUser(_email, newPassword, newName))
     {
-        QMessageBox::information(this, tr("Success"), tr("User information updated"));
+        CustomMessageBox::show("Success", "User information updated");
         accept();
     }
     else
     {
-        QMessageBox::warning(this, tr("Error"), tr("Failed to update user"));
+        CustomMessageBox::show("Error", "Failed to update user");
     }
 }
 
@@ -171,10 +172,10 @@ void ShowUserInformationDialog::onImageUploaded(const QString &imageUrl)
 {
     // Lưu URL ảnh vào user
     if (_userService->updateUserAvatar(_email, imageUrl)) {
-        QMessageBox::information(this, "Thành công", "Ảnh đại diện đã được cập nhật");
+        CustomMessageBox::show("Thành công", "Ảnh đại diện đã được cập nhật");
         loadUserData(); // Refresh hiển thị
     } else {
-        QMessageBox::warning(this, "Lỗi", "Không thể cập nhật ảnh đại diện");
+        CustomMessageBox::show("Lỗi", "Không thể cập nhật ảnh đại diện");
     }
 
     _tempAvatarPath.clear();

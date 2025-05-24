@@ -8,6 +8,7 @@ class CustomMessageBox : public QMessageBox {
     Q_OBJECT
 public:
     static void show(const QString& title, const QString& message, QWidget* parent = nullptr);
+    static StandardButton question(const QString& title, const QString& message, QWidget* parent = nullptr, StandardButtons buttons = Yes|No);
 
 private:
     explicit CustomMessageBox(QWidget* parent = nullptr);

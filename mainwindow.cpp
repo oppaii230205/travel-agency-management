@@ -8,6 +8,8 @@
 #include <QMessageBox>
 #include <QTableWidgetItem>
 
+#include "CustomMessageBox.h"
+
 MainWindow::MainWindow(QSharedPointer<UserService> userService, QSharedPointer<AuthService> authService, QSharedPointer<TripService> tripService, QSharedPointer<BookingService> bookingService, QSharedPointer<AzureStorageService> storageService, QWidget* parent)
     : QMainWindow(parent), ui(new Ui::MainWindow), _userService(userService), _authService(authService), _tripService(tripService), _bookingService(bookingService), _storageService(storageService)
 {
@@ -69,19 +71,22 @@ void MainWindow::on_btnShowUserInfomation_clicked()
 void MainWindow::onTripAdded(const Trip& newTrip)
 {
     // refreshTripList();
-    QMessageBox::information(this, "Thành công", "Đã thêm chuyến đi mới!");
+   CustomMessageBox::show("Thành công", "Đã thêm chuyến đi mới!");
 }
 
 void MainWindow::onErrorOccurred(const QString& message)
 {
-    QMessageBox::critical(this, "Lỗi", message);
+   CustomMessageBox::show("Lỗi", message);
 }
 
 void MainWindow::handleLogoutRequest()
 {
     QMessageBox::StandardButton reply;
-    reply = QMessageBox::question(this, "Xác nhận", "Bạn có chắc muốn đăng xuất?",
-                                  QMessageBox::Yes|QMessageBox::No);
+    reply = CustomMessageBox::question(
+        "Xác nhận",
+        "Bạn có chắc muốn đăng xuất?",this,
+        QMessageBox::Yes | QMessageBox::No
+        );
     if (reply == QMessageBox::Yes) {
         _authService->logout();
     }

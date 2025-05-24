@@ -6,6 +6,7 @@
 #include <QScrollArea>
 #include <QHBoxLayout>
 #include <QMessageBox>
+#include "CustomMessageBox.h"
 
 TripListDialog::TripListDialog(QSharedPointer<TripService> tripService,
                              QSharedPointer<BookingService> bookingService,
@@ -91,9 +92,9 @@ void TripListDialog::handleBookClicked(int tripId)
 {
     // Xử lý đặt chỗ
     if (_bookingService->bookTrip(tripId)) {
-        QMessageBox::information(this, "Success", "Trip booked successfully!");
+        CustomMessageBox::show("Success", "Trip booked successfully!");
     } else {
-        QMessageBox::warning(this, "Error", "Failed to book trip");
+        CustomMessageBox::show("Error", "Failed to book trip");
     }
 }
 
