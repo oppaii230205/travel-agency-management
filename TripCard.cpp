@@ -69,11 +69,15 @@ TripCard::TripCard(const Trip& trip, QWidget *parent)
     QLabel *nameLabel = new QLabel("<b>" + trip.getTripName() + "</b>", this);
     nameLabel->setObjectName("nameLabel"); // Quan trọng để CSS nhận diện
 
-    QLabel *priceLabel = new QLabel("Price: $" + QString::number(trip.getPrice()), this);
+    QLabel *priceLabel = new QLabel("💵 <b>Price:</b> $" + QString::number(trip.getPrice()), this);
     priceLabel->setObjectName("priceLabel");
 
-    QLabel *difficultyLabel = new QLabel("Difficulty: " + trip.getDifficulty(), this);
+    QLabel *difficultyLabel = new QLabel("🧗 <b>Difficulty:</b> " + trip.getDifficulty(), this);
     difficultyLabel->setObjectName("difficultyLabel");
+
+    QLabel *durationLabel = new QLabel("⏱️ <b>Duration:</b> " + QString::number(trip.getDuration()) + " days", this);
+    durationLabel->setObjectName("durationLabel");
+
 
     // Các nút
     QPushButton *detailsBtn = new QPushButton("Details", this);
@@ -87,6 +91,7 @@ TripCard::TripCard(const Trip& trip, QWidget *parent)
     layout->addWidget(nameLabel);
     layout->addWidget(priceLabel);
     layout->addWidget(difficultyLabel);
+    layout->addWidget(durationLabel);
     layout->addWidget(detailsBtn);
     layout->addWidget(bookBtn);
 
@@ -98,7 +103,4 @@ TripCard::TripCard(const Trip& trip, QWidget *parent)
     connect(detailsBtn, &QPushButton::clicked, [this]() {
         emit detailsClicked(_tripId);
     });
-
-    // Style thêm nếu cần
-    // this->setStyleSheet("TripCard { border: 1px solid #ddd; border-radius: 8px; padding: 10px; }");
 }

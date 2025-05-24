@@ -6,6 +6,8 @@
 #include "SqlUserRepository.h"
 #include "loginwindow.h"
 #include "BookingService.h"
+#include "SqlReviewRepository.h"
+#include "ReviewService.h"
 #include "SqlBookingRepository.h"
 #include "AzureStorageService.h"
 #include "CustomMessageBox.h"
@@ -31,11 +33,13 @@ int main(int argc, char* argv[])
     QSharedPointer<SqlTripRepository> tripRepository = QSharedPointer<SqlTripRepository>::create(db);
     QSharedPointer<SqlUserRepository> userRepository = QSharedPointer<SqlUserRepository>::create(db);
     QSharedPointer<SqlBookingRepository> bookingRepository = QSharedPointer<SqlBookingRepository>::create(db);
+    QSharedPointer<SqlReviewRepository> reviewRepository = QSharedPointer<SqlReviewRepository>::create(db);
 
     QSharedPointer<AuthService> authService = QSharedPointer<AuthService>::create(userRepository);
     QSharedPointer<TripService> tripService = QSharedPointer<TripService>::create(tripRepository);
     QSharedPointer<UserService> userService = QSharedPointer<UserService>::create(userRepository);
     QSharedPointer<BookingService> bookingService = QSharedPointer<BookingService>::create(bookingRepository, tripService, authService);
+    QSharedPointer<ReviewService> reviewService = QSharedPointer<ReviewService>::create(reviewRepository, authService, bookingService);
     QSharedPointer<AzureStorageService> storageService(new AzureStorageService());
 
     LoginWindow loginWindow(authService, nullptr);
@@ -54,7 +58,7 @@ int main(int argc, char* argv[])
         loginWindow.hide();
 
         // Tạo MainWindow sau khi login thành công
-        mainWindow =  QSharedPointer<MainWindow>::create(userService, authService, tripService, bookingService, storageService);
+        mainWindow =  QSharedPointer<MainWindow>::create(userService, authService, tripService, bookingService, storageService, reviewService);
         mainWindow->show();
     });
 

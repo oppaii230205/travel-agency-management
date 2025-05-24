@@ -10,8 +10,9 @@
 
 TripListDialog::TripListDialog(QSharedPointer<TripService> tripService,
                              QSharedPointer<BookingService> bookingService,
+                             QSharedPointer<ReviewService> reviewService,
                              QWidget *parent)
-    : QDialog(parent), _tripService(tripService), _bookingService(bookingService)
+    : QDialog(parent), _tripService(tripService), _bookingService(bookingService), _reviewService(reviewService)
 {
     // Thiết lập cửa sổ
     setWindowTitle("Available Trips");
@@ -102,7 +103,7 @@ void TripListDialog::handleDetailsClicked(int tripId)
 {
     // Hiển thị dialog chi tiết
     Trip trip = _tripService->getTripById(tripId);
-    QSharedPointer<TripDetailDialog> detailsDialog = QSharedPointer<TripDetailDialog>::create(trip);
+    QSharedPointer<TripDetailDialog> detailsDialog = QSharedPointer<TripDetailDialog>::create(trip, _reviewService);
     // ... thiết kế dialog chi tiết ...
     detailsDialog->exec();
 }

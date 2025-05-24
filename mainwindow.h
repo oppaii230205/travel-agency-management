@@ -6,6 +6,7 @@
 #include "authservice.h"
 #include "UserService.h"
 #include "BookingService.h"
+#include "ReviewService.h"
 #include "loginwindow.h"
 #include "AzureStorageService.h"
 
@@ -23,6 +24,7 @@ public:
                QSharedPointer<TripService> tripService,
                QSharedPointer<BookingService> bookingService,
                QSharedPointer<AzureStorageService> storageService,
+               QSharedPointer<ReviewService> reviewService,
                QWidget* parent = nullptr);
     ~MainWindow();
 
@@ -47,6 +49,7 @@ private:
     QSharedPointer<UserService> _userService;
     QSharedPointer<BookingService> _bookingService;
     QSharedPointer<AzureStorageService> _storageService;
+    QSharedPointer<ReviewService> _reviewService;
 };
 
 #endif // MAINWINDOW_H

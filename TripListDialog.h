@@ -12,6 +12,7 @@
 
 #include "TripService.h"
 #include "BookingService.h"
+#include "ReviewService.h"
 #include "TripCard.h"
 
 namespace Ui {
@@ -24,6 +25,7 @@ class TripListDialog : public QDialog
 public:
     explicit TripListDialog(QSharedPointer<TripService> tripService,
                             QSharedPointer<BookingService> bookingService,
+                            QSharedPointer<ReviewService> reviewService,
                             QWidget *parent = nullptr);
 
 private slots:
@@ -35,6 +37,7 @@ private slots:
 private:
     QSharedPointer<TripService> _tripService;
     QSharedPointer<BookingService> _bookingService;
+    QSharedPointer<ReviewService> _reviewService;
     QGridLayout* _gridLayout;
 };
 

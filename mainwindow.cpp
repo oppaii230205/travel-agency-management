@@ -10,8 +10,8 @@
 
 #include "CustomMessageBox.h"
 
-MainWindow::MainWindow(QSharedPointer<UserService> userService, QSharedPointer<AuthService> authService, QSharedPointer<TripService> tripService, QSharedPointer<BookingService> bookingService, QSharedPointer<AzureStorageService> storageService, QWidget* parent)
-    : QMainWindow(parent), ui(new Ui::MainWindow), _userService(userService), _authService(authService), _tripService(tripService), _bookingService(bookingService), _storageService(storageService)
+MainWindow::MainWindow(QSharedPointer<UserService> userService, QSharedPointer<AuthService> authService, QSharedPointer<TripService> tripService, QSharedPointer<BookingService> bookingService, QSharedPointer<AzureStorageService> storageService,QSharedPointer<ReviewService> reviewService,  QWidget* parent)
+    : QMainWindow(parent), ui(new Ui::MainWindow), _userService(userService), _authService(authService), _tripService(tripService), _bookingService(bookingService), _storageService(storageService), _reviewService(reviewService)
 {
     ui->setupUi(this);
     
@@ -52,7 +52,7 @@ void MainWindow::on_btnAddTrip_clicked()
 }
 
 void MainWindow::on_btnShowTrips_clicked() {
-    TripListDialog dialog(_tripService, _bookingService, this);
+    TripListDialog dialog(_tripService, _bookingService, _reviewService, this);
     dialog.exec(); // Hiển thị dialog dạng modal    
 }
 

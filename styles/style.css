@@ -24,7 +24,7 @@ TripCard {
 
 QWidget#tripCard:hover,
 QWidget[class="trip-card"]:hover {
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  /* box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); */
   margin-top: -5px;
   /* padding-bottom: 60px; */
   background-color: #ffeeee; /* Màu thay đổi để dễ nhận biết */
@@ -43,6 +43,22 @@ TripCard QLabel#nameLabel {
   font-size: 16px;
   font-weight: bold;
   color: #333;
+}
+
+/* Thông tin meta */
+#priceLabel {
+  color: #e74c3c;
+  font-size: 14px;
+}
+
+#difficultyLabel {
+  color: #3498db;
+  font-size: 14px;
+}
+
+#durationLabel {
+  color: #2ecc71;
+  font-size: 14px;
 }
 
 /* Nút đặt chuyến */
@@ -71,14 +87,6 @@ TripCard QPushButton#detailsBtn:hover {
   background-color: #0b7dda;
 }
 
-/* Label giá */
-TripCard QLabel#priceLabel {
-  font-size: 14px;
-  color: #e53935;
-  font-weight: bold;
-}
-
-/* style.css */
 /* Áp dụng cho TripDetailDialog */
 TripDetailDialog {
   background-color: #f5f5f5;
@@ -90,22 +98,6 @@ TripDetailDialog {
   font-size: 24px;
   color: #2c3e50;
   margin-bottom: 10px;
-}
-
-/* Thông tin meta */
-#priceLabel {
-  color: #e74c3c;
-  font-size: 14px;
-}
-
-#difficultyLabel {
-  color: #3498db;
-  font-size: 14px;
-}
-
-#durationLabel {
-  color: #2ecc71;
-  font-size: 14px;
 }
 
 /* Mô tả */
@@ -148,6 +140,58 @@ QLabel#imageLabel {
   border-radius: 4px;
   background-color: white;
   padding: 5px;
+}
+
+#reviewFormContainer {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 15px;
+  margin-top: 20px;
+}
+
+#submitReviewButton {
+  background-color: #4caf50;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+}
+
+#submitReviewButton:hover {
+  background-color: #45a049;
+}
+
+/* Reviews Section */
+#reviewsContainer {
+  margin-top: 30px;
+  border-top: 1px solid #eee;
+  padding-top: 15px;
+}
+
+#reviewFrame {
+  background-color: white;
+  border-radius: 6px;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #e0e0e0;
+}
+
+#ratingLabel {
+  font-size: 16px;
+  font-weight: bold;
+  color: #f39c12;
+}
+
+#commentLabel {
+  font-size: 14px;
+  color: #333;
+  margin: 8px 0;
+}
+
+#metaLabel {
+  font-size: 12px;
+  color: #95a5a6;
+  font-style: italic;
 }
 
 /* Khung thông tin */
