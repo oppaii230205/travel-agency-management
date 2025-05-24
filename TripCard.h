@@ -10,6 +10,8 @@ class TripCard : public QWidget
 public:
     explicit TripCard(const Trip& trip, QWidget *parent = nullptr);
 
+    bool eventFilter(QObject *obj, QEvent *event) override;
+
 signals:
     void bookClicked(int tripId);
     void detailsClicked(int tripId);

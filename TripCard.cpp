@@ -5,6 +5,8 @@
 #include <QPixmap>
 #include <QColor>
 #include <QGraphicsDropShadowEffect>
+#include <QPropertyAnimation>
+#include <QEvent>
 
 TripCard::TripCard(const Trip& trip, QWidget *parent)
     : QWidget(parent), _tripId(trip.getTripId())
@@ -15,6 +17,7 @@ TripCard::TripCard(const Trip& trip, QWidget *parent)
     this->setAttribute(Qt::WA_StyledBackground, true);
 
     this->setAttribute(Qt::WA_Hover);  // Quan trọng: Bật khả năng nhận hover
+    this->installEventFilter(this); // Cài đặt bộ lọc sự kiện
     this->setMouseTracking(true);      // Theo dõi chuột ngay cả khi không nhấn
 
     this->setAttribute(Qt::WA_AcceptTouchEvents, false); // Tắt touch events nếu không cần
@@ -103,4 +106,56 @@ TripCard::TripCard(const Trip& trip, QWidget *parent)
     connect(detailsBtn, &QPushButton::clicked, [this]() {
         emit detailsClicked(_tripId);
     });
+}
+
+bool TripCard::eventFilter(QObject *obj, QEvent *event)
+{
+    if (obj == this) {
+        auto shadowEffect = qobject_cast<QGraphicsDropShadowEffect*>(this->graphicsEffect());
+        int transitionTime = 200; //ms
+
+        if (event->type() == QEvent::HoverEnter) {
+            // Hiệu ứng di chuyển
+            QPropertyAnimation *posAnim = new QPropertyAnimation(this, "pos");
+            posAnim->setDuration(transitionTime);
+            posAnim->setEasingCurve(QEasingCurve::OutQuad);
+            posAnim->setStartValue(this->pos());
+            posAnim->setEndValue(this->pos() + QPoint(0, -5));
+            posAnim->start(QAbstractAnimation::DeleteWhenStopped);
+            
+            // Hiệu ứng đổ bóng (nếu có)
+            if (shadowEffect) {
+                QPropertyAnimation *shadowAnim = new QPropertyAnimation(shadowEffect, "offset");
+                shadowAnim->setDuration(transitionTime);
+                shadowAnim->setEasingCurve(QEasingCurve::OutQuad);
+                shadowAnim->setStartValue(shadowEffect->offset());
+                shadowAnim->setEndValue(QPointF(0, 10));
+                shadowAnim->start(QAbstractAnimation::DeleteWhenStopped);
+            }
+            
+            return true;
+        }
+        else if (event->type() == QEvent::HoverLeave) {
+            // Hiệu ứng di chuyển
+            QPropertyAnimation *posAnim = new QPropertyAnimation(this, "pos");
+            posAnim->setDuration(transitionTime);
+            posAnim->setEasingCurve(QEasingCurve::OutQuad);
+            posAnim->setStartValue(this->pos());
+            posAnim->setEndValue(this->pos() + QPoint(0, 5));
+            posAnim->start(QAbstractAnimation::DeleteWhenStopped);
+            
+            // Hiệu ứng đổ bóng (nếu có)
+            if (shadowEffect) {
+                QPropertyAnimation *shadowAnim = new QPropertyAnimation(shadowEffect, "offset");
+                shadowAnim->setDuration(transitionTime);
+                shadowAnim->setEasingCurve(QEasingCurve::OutQuad);
+                shadowAnim->setStartValue(shadowEffect->offset());
+                shadowAnim->setEndValue(QPointF(0, 5));
+                shadowAnim->start(QAbstractAnimation::DeleteWhenStopped);
+            }
+            
+            return true;
+        }
+    }
+    return QWidget::eventFilter(obj, event);
 }

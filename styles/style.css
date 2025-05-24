@@ -25,7 +25,7 @@ TripCard {
 QWidget#tripCard:hover,
 QWidget[class="trip-card"]:hover {
   /* box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); */
-  margin-top: -5px;
+  /* margin-top: -5px; */
   /* padding-bottom: 60px; */
   background-color: #ffeeee; /* Màu thay đổi để dễ nhận biết */
 }
