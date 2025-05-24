@@ -29,10 +29,15 @@ private slots:
     void onImageUploaded(const QString &imageUrl);
     //void onAvatarDownloaded();
 
+protected:
+    bool eventFilter(QObject *obj, QEvent *event);
+
 private:
     void loadUserData();
     void updateAvatarPreview(const QString &imagePath);
     void loadAvatarFromUrl(const QString &url);
+    void setupUI();
+    void onAvatarClicked();
 
     Ui::ShowUserInformationDialog* ui;
     QSharedPointer<UserService> _userService;

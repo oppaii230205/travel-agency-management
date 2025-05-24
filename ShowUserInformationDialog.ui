@@ -13,58 +13,6 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <widget class="QLabel" name="labelEmail">
-   <property name="geometry">
-    <rect>
-     <x>31</x>
-     <y>51</y>
-     <width>29</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Email</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="LabelName">
-   <property name="geometry">
-    <rect>
-     <x>31</x>
-     <y>85</y>
-     <width>32</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Name</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="labelPass">
-   <property name="geometry">
-    <rect>
-     <x>31</x>
-     <y>119</y>
-     <width>50</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Password</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="labelRole">
-   <property name="geometry">
-    <rect>
-     <x>31</x>
-     <y>152</y>
-     <width>23</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Role</string>
-   </property>
-  </widget>
   <widget class="QLineEdit" name="lineEditName">
    <property name="geometry">
     <rect>
@@ -140,40 +88,14 @@
      <height>141</height>
     </rect>
    </property>
+   <property name="mouseTracking">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Image</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignmentFlag::AlignCenter</set>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="btnSelectAvatar">
-   <property name="geometry">
-    <rect>
-     <x>390</x>
-     <y>220</y>
-     <width>41</width>
-     <height>24</height>
-    </rect>
-   </property>
-   <property name="layoutDirection">
-    <enum>Qt::LayoutDirection::LeftToRight</enum>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">border: none</string>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-   <property name="icon">
-    <iconset>
-     <normaloff>C:/Users/Admin/Downloads/upload_icon.png</normaloff>C:/Users/Admin/Downloads/upload_icon.png</iconset>
-   </property>
-   <property name="iconSize">
-    <size>
-     <width>35</width>
-     <height>30</height>
-    </size>
    </property>
   </widget>
  </widget>
