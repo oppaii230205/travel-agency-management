@@ -8,7 +8,7 @@
 #include "BookingService.h"
 #include "SqlBookingRepository.h"
 #include "AzureStorageService.h"
-
+#include "CustomMessageBox.h"
 #include <QFile>
 
 void loadGlobalStyles() {
@@ -64,7 +64,7 @@ int main(int argc, char* argv[])
 
     // Khi người dùng nhấn nút 'x' để tắt bảng Login -> thông báo hủy đăng nhập -> tắt chương trình
     QObject::connect(&loginWindow, &LoginWindow::loginAborted, [&]() {
-        QMessageBox::information(nullptr, "Thông báo", "Bạn đã hủy đăng nhập");
+        CustomMessageBox::show("Thông báo", "Bạn đã hủy đăng nhập");
         QApplication::quit();
     });
 

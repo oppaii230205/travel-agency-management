@@ -31,7 +31,7 @@ private slots:
 private:
     Ui::QDialog* ui;
     QSharedPointer<AuthService> _authService;
-    void setupUI(); // Thêm phương thức thiết lập giao diện
+    void setupUI();
 };
 
 #endif // LOGINWINDOW_H

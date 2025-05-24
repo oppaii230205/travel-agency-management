@@ -28,7 +28,7 @@ private slots:
 private:
     Ui::SignupWindow* ui;
     QSharedPointer<AuthService> _authService;
+    void setupUI();
 };
-
 
 #endif // SIGNUPWINDOW_H

@@ -8,6 +8,7 @@
 #include <QGuiApplication>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
+#include "CustomMessageBox.h"
 
 LoginWindow::LoginWindow(QSharedPointer<AuthService> authService, QWidget* parent)
     : QDialog(parent), ui(new Ui::QDialog), _authService(authService) {
@@ -169,7 +170,7 @@ void LoginWindow::on_loginButton_clicked() {
     QString password = ui->passwordEdit->text();
 
     if ((email.isEmpty()) || (password.isEmpty())) {
-        QMessageBox::warning(this, "Lỗi", "Vui lòng nhập đầy đủ email và mật khẩu");
+       CustomMessageBox::show("Lỗi", "Vui lòng nhập đầy đủ email và mật khẩu");
         return;
     }
 
@@ -195,7 +196,7 @@ void LoginWindow::handleLoginSuccess() {
 }
 
 void LoginWindow::handleLoginFailed(const QString& reason) {
-    QMessageBox::critical(this, "Lỗi đăng nhập", reason);
+    CustomMessageBox::show("Lỗi đăng nhập", reason);
 }
 
 void LoginWindow::onLoginRejected() {
