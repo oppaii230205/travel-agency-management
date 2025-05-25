@@ -76,6 +76,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         TripDetailDialog.h TripDetailDialog.cpp TripDetailDialog.ui
         CustomMessageBox.h CustomMessageBox.cpp
         IDataProvider.h
+        SqlDao.h
+        SqlDao.cpp
 
     )
 # Define target properties for Android with Qt 6 as:

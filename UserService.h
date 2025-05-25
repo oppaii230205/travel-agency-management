@@ -12,7 +12,7 @@ class UserService : public QObject
 {
     Q_OBJECT
 public:
-    explicit UserService(QSharedPointer<SqlUserRepository> userRepo, QObject* parent = nullptr);
+    explicit UserService(QSharedPointer<UserRepository> userRepo, QObject* parent = nullptr);
     UserService() = default;
 
     QSharedPointer<User> getUserByEmail(const QString& email);
@@ -21,7 +21,7 @@ public:
     bool deleteUser(const QString& email);
     bool updateUserAvatar(const QString &email, const QString &avatarUrl);
 private:
-    QSharedPointer<SqlUserRepository> _userRepo;
+    QSharedPointer<UserRepository> _userRepo;
 };
 
 #endif // USERSERVICE_H

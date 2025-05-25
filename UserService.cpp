@@ -1,6 +1,6 @@
 #include "UserService.h"
 
-UserService::UserService(QSharedPointer<SqlUserRepository> userRepo, QObject* parent): QObject(parent), _userRepo(userRepo){
+UserService::UserService(QSharedPointer<UserRepository> userRepo, QObject* parent): QObject(parent), _userRepo(userRepo){
     if(!_userRepo){
         qCritical() << "UserRepository is null!";
     }

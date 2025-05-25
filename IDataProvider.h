@@ -15,6 +15,6 @@ public:
   virtual QSharedPointer<UserRepository> getUserRepository() const = 0;
   virtual QSharedPointer<BookingRepository> getBookingRepository() const = 0;
   virtual QSharedPointer<ReviewRepository> getReviewRepository() const = 0;
-}
+};
 
 #endif // IDATAPROVIDER_H
