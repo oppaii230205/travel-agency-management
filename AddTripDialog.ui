@@ -39,45 +39,6 @@
     <string>Cancel</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_2">
-   <property name="geometry">
-    <rect>
-     <x>21</x>
-     <y>51</y>
-     <width>52</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Duration: </string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label">
-   <property name="geometry">
-    <rect>
-     <x>21</x>
-     <y>21</y>
-     <width>60</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Trip Name: </string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_4">
-   <property name="geometry">
-    <rect>
-     <x>21</x>
-     <y>113</y>
-     <width>51</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Difficulty:</string>
-   </property>
-  </widget>
   <widget class="QSpinBox" name="spinGroupSize">
    <property name="geometry">
     <rect>
@@ -86,19 +47,6 @@
      <width>71</width>
      <height>25</height>
     </rect>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_3">
-   <property name="geometry">
-    <rect>
-     <x>21</x>
-     <y>82</y>
-     <width>59</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Group Size:</string>
    </property>
   </widget>
   <widget class="QLineEdit" name="lineName">
@@ -119,19 +67,6 @@
      <width>108</width>
      <height>24</height>
     </rect>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_5">
-   <property name="geometry">
-    <rect>
-     <x>21</x>
-     <y>249</y>
-     <width>63</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Description:</string>
    </property>
   </widget>
   <widget class="QSpinBox" name="spinDuration">
@@ -164,19 +99,6 @@
     </rect>
    </property>
   </widget>
-  <widget class="QLabel" name="label_7">
-   <property name="geometry">
-    <rect>
-     <x>21</x>
-     <y>143</y>
-     <width>32</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Price: </string>
-   </property>
-  </widget>
   <widget class="QPlainTextEdit" name="textSummary">
    <property name="geometry">
     <rect>
@@ -185,19 +107,6 @@
      <width>280</width>
      <height>70</height>
     </rect>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_6">
-   <property name="geometry">
-    <rect>
-     <x>21</x>
-     <y>173</y>
-     <width>54</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Summary:</string>
    </property>
   </widget>
  </widget>

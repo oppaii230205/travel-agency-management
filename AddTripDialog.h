@@ -2,6 +2,7 @@
 #define _ADDTRIPDIALOG_H_
 
 #include <QDialog>
+#include <QSharedPointer>
 #include "Trip.h"
 #include "TripService.h"
 
@@ -22,6 +23,8 @@ private slots:
     void on_btnCancel_clicked();
 
 private:
+    void setupUI(); // Thêm phương thức setup giao diện
+
     Ui::AddTripDialog* ui;
     QSharedPointer<TripService> _tripService;
 };
