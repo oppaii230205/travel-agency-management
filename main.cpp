@@ -14,6 +14,8 @@
 
 #include "IDataProvider.h"
 #include "SqlDao.h"
+#include "Registry.h"
+
 #include <QFile>
 
 void loadGlobalStyles() {
@@ -33,6 +35,9 @@ int main(int argc, char* argv[])
 
     // Khởi tạo các dependency
     DatabaseManager& db = DatabaseManager::getInstance();
+    
+    // TODO: DI - Registry
+    QSharedPointer<IDataProvider> dataProvider = QSharedPointer<SqlDao>::create(db); 
     /*
     QSharedPointer<SqlTripRepository> tripRepository = QSharedPointer<SqlTripRepository>::create(db);
     QSharedPointer<SqlUserRepository> userRepository = QSharedPointer<SqlUserRepository>::create(db);
@@ -48,23 +53,35 @@ int main(int argc, char* argv[])
     QSharedPointer<AzureStorageService> storageService(new AzureStorageService());
     */
     
-    // TODO: DI
-    QSharedPointer<IDataProvider> dataProvider = QSharedPointer<SqlDao>::create(db); 
-    
-    // TODO: Prototype Registry
+    // TODO: Registry
+    Registry::addSingleton<AuthService>(QSharedPointer<AuthService>::create(dataProvider->getUserRepository()));
+    Registry::addSingleton<TripService>(QSharedPointer<TripService>::create(dataProvider->getTripRepository()));
+    Registry::addSingleton<UserService>(QSharedPointer<UserService>::create(dataProvider->getUserRepository()));
+
+    Registry::addSingleton<BookingService>(QSharedPointer<BookingService>::create(dataProvider->getBookingRepository(), 
+                                                                                  Registry::getSingleton<TripService>(), 
+                                                                                  Registry::getSingleton<AuthService>()));
+
+    Registry::addSingleton<ReviewService>(QSharedPointer<ReviewService>::create(dataProvider->getReviewRepository(),
+                                                                                  Registry::getSingleton<AuthService>(), 
+                                                                                  Registry::getSingleton<BookingService>()));
+
+    Registry::addSingleton<AzureStorageService>(QSharedPointer<AzureStorageService>::create());
+
+    /*
     QSharedPointer<AuthService> authService = QSharedPointer<AuthService>::create(dataProvider->getUserRepository());
     QSharedPointer<TripService> tripService = QSharedPointer<TripService>::create(dataProvider->getTripRepository());
     QSharedPointer<UserService> userService = QSharedPointer<UserService>::create(dataProvider->getUserRepository());
     QSharedPointer<BookingService> bookingService = QSharedPointer<BookingService>::create(dataProvider->getBookingRepository(), tripService, authService);
     QSharedPointer<ReviewService> reviewService = QSharedPointer<ReviewService>::create(dataProvider->getReviewRepository(), authService, bookingService);
     QSharedPointer<AzureStorageService> storageService(new AzureStorageService());
+    */
 
-
-    LoginWindow loginWindow(authService, nullptr);
+    LoginWindow loginWindow(Registry::getSingleton<AuthService>(), nullptr);
     QSharedPointer<MainWindow> mainWindow; // Khai báo bên ngoài lambda
 
     // Kết nối khi logout từ MainWindow
-    QObject::connect(authService.data(), &AuthService::logoutPerformed, [&]() {
+    QObject::connect(Registry::getSingleton<AuthService>().data(), &AuthService::logoutPerformed, [&]() {
         if (mainWindow) {
             mainWindow->hide();
         }
@@ -76,7 +93,14 @@ int main(int argc, char* argv[])
         loginWindow.hide();
 
         // Tạo MainWindow sau khi login thành công
-        mainWindow =  QSharedPointer<MainWindow>::create(userService, authService, tripService, bookingService, storageService, reviewService);
+        mainWindow =  QSharedPointer<MainWindow>::create(
+            Registry::getSingleton<UserService>(),
+            Registry::getSingleton<AuthService>(),
+            Registry::getSingleton<TripService>(),
+            Registry::getSingleton<BookingService>(),
+            Registry::getSingleton<AzureStorageService>(),
+            Registry::getSingleton<ReviewService>()
+        );
         mainWindow->show();
     });
 
