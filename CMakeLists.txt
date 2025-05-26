@@ -79,6 +79,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         SqlDao.h
         SqlDao.cpp
         Registry.h
+        App.h
+        App.cpp
 
 
 
