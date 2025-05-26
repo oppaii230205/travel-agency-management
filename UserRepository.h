@@ -16,6 +16,7 @@ class UserRepository {
         virtual bool deleteUser(const QString& email) = 0;
 
         virtual bool userExists(const QString& email) = 0;
+        virtual bool updateUserAvatar(const QString &email, const QString &avatarUrl) = 0;
 };
 
 

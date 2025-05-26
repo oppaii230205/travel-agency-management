@@ -75,6 +75,15 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         AzureStorageService.h AzureStorageService.cpp
         TripDetailDialog.h TripDetailDialog.cpp TripDetailDialog.ui
         CustomMessageBox.h CustomMessageBox.cpp
+        IDataProvider.h
+        SqlDao.h
+        SqlDao.cpp
+        Registry.h
+        App.h
+        App.cpp
+
+
+
 
     )
 # Define target properties for Android with Qt 6 as:
