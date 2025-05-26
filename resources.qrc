@@ -1,6 +1,8 @@
 <RCC>
     <qresource prefix="/">
         <file>images/default-trip.jpg</file>
+	<file>images/UserInfo.png</file>
+	<file>images/ShowTrips.png</file>
 	<file>styles/style.css</file>
     </qresource>
 </RCC>

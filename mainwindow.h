@@ -33,23 +33,27 @@ public:
 
 private slots:
     void on_btnAddTrip_clicked();
-    void on_btnShowTrips_clicked();
-    void on_btnShowUserInfomation_clicked();
+    void onLabelShowTripsClicked();
+    void onLabelShowUserInfoClicked();
     void handleLogoutRequest();
-    // void on_btnRefresh_clicked();
     void onTripAdded(const Trip& newTrip);
     void onErrorOccurred(const QString& message);
     void handleLogout();
+
 signals:
     void logoutCompleted();
+protected:
+    bool eventFilter(QObject *obj, QEvent *event) override;
 private:
     Ui::MainWindow* ui;
-    QSharedPointer<AuthService> _authService;  // Truyền qua DI
+    QSharedPointer<AuthService> _authService;
     QSharedPointer<TripService> _tripService;
     QSharedPointer<UserService> _userService;
     QSharedPointer<BookingService> _bookingService;
     QSharedPointer<AzureStorageService> _storageService;
     QSharedPointer<ReviewService> _reviewService;
+
+    void setupUI();
 };
 
 #endif // MAINWINDOW_H

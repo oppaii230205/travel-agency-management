@@ -132,8 +132,8 @@ void AddTripDialog::setupUI()
     ui->textDescription->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::MinimumExpanding);
 
     // Thiết lập kích thước tối thiểu cho các widget
-    ui->textSummary->setMinimumHeight(80);
-    ui->textDescription->setMinimumHeight(120);
+    ui->textSummary->setMinimumHeight(50);
+    ui->textDescription->setMinimumHeight(50);
 
     tripGroup->setLayout(formLayout);
 
