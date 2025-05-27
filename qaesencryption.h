@@ -1,3 +1,14 @@
+/**
+ * @file qaesencryption.h
+ * @brief Class triển khai thuật toán mã hóa AES (Advanced Encryption Standard)
+ * 
+ * Class này cung cấp các phương thức để:
+ * - Mã hóa và giải mã dữ liệu sử dụng AES
+ * - Hỗ trợ các mức độ bảo mật AES-128, AES-192, AES-256
+ * - Hỗ trợ các mode hoạt động ECB, CBC, CFB, OFB
+ * - Hỗ trợ các chuẩn padding ZERO, PKCS7, ISO
+ */
+
 #ifndef QAESENCRYPTION_H
 #define QAESENCRYPTION_H
 
@@ -16,76 +27,91 @@
 #endif
 #endif
 
+/**
+ * @brief Class triển khai thuật toán mã hóa AES
+ */
 class QTAESSHARED_EXPORT QAESEncryption : public QObject
 {
     Q_OBJECT
 public:
+    /**
+     * @brief Enum xác định độ dài khóa AES
+     */
     enum Aes {
-        AES_128,
-        AES_192,
-        AES_256
+        AES_128,    ///< AES với khóa 128-bit
+        AES_192,    ///< AES với khóa 192-bit
+        AES_256     ///< AES với khóa 256-bit
     };
 
+    /**
+     * @brief Enum xác định mode hoạt động của AES
+     */
     enum Mode {
-        ECB,
-        CBC,
-        CFB,
-        OFB
+        ECB,        ///< Electronic Codebook Mode
+        CBC,        ///< Cipher Block Chaining Mode
+        CFB,        ///< Cipher Feedback Mode
+        OFB         ///< Output Feedback Mode
     };
 
+    /**
+     * @brief Enum xác định chuẩn padding
+     */
     enum Padding {
-      ZERO,
-      PKCS7,
-      ISO
+      ZERO,        ///< Zero padding
+      PKCS7,       ///< PKCS#7 padding
+      ISO          ///< ISO/IEC 7816-4 padding
     };
 
-    /*!
-     * \brief static method call to encrypt data given by rawText
-     * \param level:    AES::Aes level
-     * \param mode:     AES::Mode mode
-     * \param rawText:  input text
-     * \param key:      user-key (key.size either 128, 192, 256 bits depending on AES::Aes)
-     * \param iv:       initialisation-vector (iv.size is 128 bits (16 Bytes))
-     * \param padding:  AES::Padding standard
-     * \return encrypted cipher
+    /**
+     * @brief Mã hóa dữ liệu sử dụng AES
+     * @param level Độ dài khóa AES (128, 192, hoặc 256 bit)
+     * @param mode Mode hoạt động (ECB, CBC, CFB, OFB)
+     * @param rawText Dữ liệu cần mã hóa
+     * @param key Khóa mã hóa (độ dài phụ thuộc vào level)
+     * @param iv Vector khởi tạo (128 bit), chỉ cần thiết cho CBC, CFB, OFB
+     * @param padding Chuẩn padding được sử dụng
+     * @return Dữ liệu đã được mã hóa
      */
     static QByteArray Crypt(QAESEncryption::Aes level, QAESEncryption::Mode mode, const QByteArray &rawText, const QByteArray &key,
                             const QByteArray &iv = QByteArray(), QAESEncryption::Padding padding = QAESEncryption::ISO);
-    /*!
-     * \brief static method call to decrypt data given by rawText
-     * \param level:    AES::Aes level
-     * \param mode:     AES::Mode mode
-     * \param rawText:  input text
-     * \param key:      user-key (key.size either 128, 192, 256 bits depending on AES::Aes)
-     * \param iv:       initialisation-vector (iv.size is 128 bits (16 Bytes))
-     * \param padding:  AES::Padding standard
-     * \return decrypted cipher with padding
+    /**
+     * @brief Giải mã dữ liệu đã được mã hóa bằng AES
+     * @param level Độ dài khóa AES (128, 192, hoặc 256 bit)
+     * @param mode Mode hoạt động (ECB, CBC, CFB, OFB)
+     * @param rawText Dữ liệu đã mã hóa cần giải mã
+     * @param key Khóa giải mã (phải giống với khóa mã hóa)
+     * @param iv Vector khởi tạo (phải giống với IV khi mã hóa)
+     * @param padding Chuẩn padding được sử dụng
+     * @return Dữ liệu gốc sau khi giải mã (vẫn còn padding)
      */
     static QByteArray Decrypt(QAESEncryption::Aes level, QAESEncryption::Mode mode, const QByteArray &rawText, const QByteArray &key,
                               const QByteArray &iv = QByteArray(), QAESEncryption::Padding padding = QAESEncryption::ISO);
-    /*!
-     * \brief static method call to expand the user key to fit the encrypting/decrypting algorithm
-     * \param level:            AES::Aes level
-     * \param mode:             AES::Mode mode
-     * \param key:              user-key (key.size either 128, 192, 256 bits depending on AES::Aes)
-     * \param expKey:           output expanded key
-     * \param isEncryptionKey:    always 'true' || only 'false' when DECRYPTING in CBC or EBC mode with aesni (check if supported)
-     * \return AES-ready key
+    /**
+     * @brief Mở rộng khóa người dùng thành khóa AES
+     * @param level Độ dài khóa AES
+     * @param mode Mode hoạt động
+     * @param key Khóa người dùng cần mở rộng
+     * @param isEncryptionKey true cho mã hóa, false cho giải mã (CBC/ECB với aesni)
+     * @return Khóa đã được mở rộng
      */
     static QByteArray ExpandKey(QAESEncryption::Aes level, QAESEncryption::Mode mode, const QByteArray &key, bool isEncryptionKey);
 
-    /*!
-     * \brief static method call to remove padding from decrypted cipher given by rawText
-     * \param rawText:  inputText
-     * \param padding:  AES::Padding standard
-     * \return decrypted cipher with padding removed
+    /**
+     * @brief Loại bỏ padding khỏi dữ liệu đã giải mã
+     * @param rawText Dữ liệu đã giải mã còn padding
+     * @param padding Chuẩn padding được sử dụng
+     * @return Dữ liệu gốc không còn padding
      */
     static QByteArray RemovePadding(const QByteArray &rawText, QAESEncryption::Padding padding = QAESEncryption::ISO);
 
+    /**
+     * @brief Constructor
+     * @param level Độ dài khóa AES
+     * @param mode Mode hoạt động
+     * @param padding Chuẩn padding
+     */
     QAESEncryption(QAESEncryption::Aes level, QAESEncryption::Mode mode,
                    QAESEncryption::Padding padding = QAESEncryption::ISO);
-
-
 
     /*!
      * \brief object method call to encrypt data given by rawText
@@ -127,17 +153,17 @@ Q_SIGNALS:
 public Q_SLOTS:
 
 private:
-    int m_nb;
-    int m_blocklen;
-    int m_level;
-    int m_mode;
-    int m_nk;
-    int m_keyLen;
-    int m_nr;
-    int m_expandedKey;
-    int m_padding;
-    bool m_aesNIAvailable;
-    QByteArray* m_state;
+    int m_nb;                  ///< Số cột trong state array
+    int m_blocklen;           ///< Độ dài block (bytes)
+    int m_level;              ///< Độ dài khóa AES
+    int m_mode;               ///< Mode hoạt động
+    int m_nk;                 ///< Số từ 32-bit trong khóa
+    int m_keyLen;             ///< Độ dài khóa (bytes)
+    int m_nr;                 ///< Số round
+    int m_expandedKey;        ///< Độ dài khóa mở rộng
+    int m_padding;            ///< Chuẩn padding
+    bool m_aesNIAvailable;    ///< Có hỗ trợ AES-NI không
+    QByteArray* m_state;      ///< State array
 
     struct AES256{
         int nk = 8;
