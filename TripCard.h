@@ -16,7 +16,7 @@ signals:
     void bookClicked(int tripId);
     void detailsClicked(int tripId);
 
-private:
+protected:
     int _tripId;
 };
 

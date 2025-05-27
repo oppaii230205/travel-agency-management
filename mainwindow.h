@@ -34,6 +34,7 @@ public:
 private slots:
     void on_btnAddTrip_clicked();
     void onLabelShowTripsClicked();
+    void onLabelMyBookingsClicked();
     void onLabelShowUserInfoClicked();
     void handleLogoutRequest();
     void onTripAdded(const Trip& newTrip);

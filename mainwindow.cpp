@@ -3,6 +3,7 @@
 
 #include "AddTripDialog.h"
 #include "TripListDialog.h"
+#include "BookedTripsDialog.h"
 #include "ShowUserInformationDialog.h"
 
 #include <QMessageBox>
@@ -175,7 +176,6 @@ void MainWindow::setupUI()
     tripLayout->setContentsMargins(0, 0, 0, 0);
     tripLayout->setSpacing(0);
 
-    // Label Show Trips
     ui->labelShowTrips->setProperty("class", "ImageButton");
     ui->labelShowTrips->setFixedSize(200, 200);
     ui->labelShowTrips->setAlignment(Qt::AlignCenter);
@@ -184,6 +184,25 @@ void MainWindow::setupUI()
     ui->labelShowTrips->setToolTip("Xem danh sách các chuyến đi");
     ui->labelShowTrips->setMouseTracking(true);
     ui->labelShowTrips->installEventFilter(this);
+
+    // Label My Bookings
+    ui->labelMyBookings->setProperty("class", "ImageButton");
+    ui->labelMyBookings->setFixedSize(200, 200);
+
+    // Tạo layout con cho hình ảnh và text
+    QVBoxLayout *bookingLayout = new QVBoxLayout(ui->labelMyBookings);
+    bookingLayout->setContentsMargins(0, 0, 0, 0);
+    bookingLayout->setSpacing(0);
+
+    ui->labelMyBookings->setProperty("class", "ImageButton");
+    ui->labelMyBookings->setFixedSize(200, 200);
+    ui->labelMyBookings->setAlignment(Qt::AlignCenter);
+    ui->labelMyBookings->setPixmap(QPixmap(":/images/default-trip.jpg").scaled(
+    ui->labelMyBookings->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    ui->labelMyBookings->setToolTip("Xem danh sách các chuyến đi đã đặt");
+    ui->labelMyBookings->setMouseTracking(true);
+    ui->labelMyBookings->installEventFilter(this);
+
 
     // Label Show User Information
     ui->labelShowUserInfo->setProperty("class", "ImageButton");
@@ -196,6 +215,7 @@ void MainWindow::setupUI()
     ui->labelShowUserInfo->installEventFilter(this);
 
     labelLayout->addWidget(ui->labelShowTrips);
+    labelLayout->addWidget(ui->labelMyBookings);
     labelLayout->addWidget(ui->labelShowUserInfo);
 
     mainLayout->addLayout(labelLayout, 1);
@@ -232,7 +252,15 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
 
 void MainWindow::onLabelShowTripsClicked()
 {
+    qDebug() << "Label ShowTrips clicked";
     TripListDialog dialog(_tripService, _bookingService, _reviewService, this);
+    dialog.exec();
+}
+
+void MainWindow::onLabelMyBookingsClicked()
+{
+    qDebug() << "Label MyBookings clicked";
+    BookedTripsDialog dialog(_tripService, _bookingService, _reviewService, this);
     dialog.exec();
 }
 

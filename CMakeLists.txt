@@ -90,6 +90,10 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         AnalyticsObserver.h
         BaseTripDialog.h
         BaseTripDialog.cpp
+        BookedTripCard.h
+        BookedTripCard.cpp
+        BookedTripsDialog.h
+        BookedTripsDialog.cpp
 
 
 
