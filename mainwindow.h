@@ -32,7 +32,8 @@ public:
     void updateUI();
 
 private slots:
-    void on_btnAddTrip_clicked();
+    void onLabelAddTripClicked();
+    void onLabelLogOutClicked();
     void onLabelShowTripsClicked();
     void onLabelShowUserInfoClicked();
     void handleLogoutRequest();

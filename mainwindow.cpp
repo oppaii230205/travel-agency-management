@@ -40,8 +40,9 @@ MainWindow::MainWindow(QSharedPointer<UserService> userService,
     // Kết nối signal-slot
     connect(_tripService.data(), &TripService::tripAdded, this, &MainWindow::onTripAdded);
     connect(_tripService.data(), &TripService::errorOccurred, this, &MainWindow::onErrorOccurred);
-    connect(ui->btnLogOut, &QPushButton::clicked, this, &MainWindow::handleLogoutRequest);
     connect(_authService.data(), &AuthService::logoutPerformed, this, &MainWindow::handleLogout);
+    connect(ui->labelAddTrip, &QLabel::linkActivated, this, &MainWindow::onLabelAddTripClicked);
+    connect(ui->labelLogOut, &QLabel::linkActivated, this, &MainWindow::onLabelLogOutClicked);
 
     setupUI(); // Thiết lập giao diện
     updateUI(); // Cập nhật thông tin người dùng
@@ -61,151 +62,151 @@ void MainWindow::setupUI()
     int height = qMin(600, static_cast<int>(screenGeometry.height() * 0.7));
     resize(width, height);
 
-    // Thiết lập style sheet
+    // Thiết lập stylesheet
     this->setStyleSheet(R"(
-    QMainWindow {
-        background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
-                                  stop:0 #0077be, stop:1 #00a8e8); /* Gradient màu biển */
-        font-family: 'Segoe UI', Arial, sans-serif;
-    }
+        QLabel:not(#tripCard QLabel) {
+            background: transparent;
+            color: #2c3e50;
+        }
+        QWidget#centralWidget {
+            background: white;
+        }
 
-    QLabel#labelWelcome {
-        font-size: 30px;
-        color: #ffff00;
-        font-weight: 800;
-        padding: 10px;
-        letter-spacing: 1px;
-    }
+        QLabel#labelWelcome {
+            font-size: 16px;
+            color: #7f8c8d;
+            font-weight: 600;
+            padding: 10px;
+        }
 
-    QFrame {  /* Style cho đường kẻ ngang */
-        color: white;
-        background-color: white;
-    }
+        QFrame {
+            color: white;
+            background-color: white;
+        }
 
-    QPushButton#btnLogOut {
-        background-color: #e74c3c;
-        color: white;
-        border-radius: 5px;
-        padding: 8px 15px;
-        font-size: 14px;
-        border: 1px solid white;  /* Viền trắng */
-    }
+        .ImageButton {
+            border: 2px solid #3498db;
+            border-radius: 10px;
+            padding: 5px;
+            background-color: rgba(255, 255, 255, 0.9);
+            qproperty-alignment: 'AlignCenter';
+        }
 
-    QPushButton#btnLogOut:hover {
-        background-color: #c0392b;
-    }
+        .ImageButton:hover {
+            border-color: #2980b9;
+            background-color: white;
+            cursor: pointer;
+        }
 
-    QPushButton#btnAddTrip {
-        background-color: #2ecc71;  /* Xanh lá cây */
-        color: white;
-        border-radius: 5px;
-        padding: 10px 20px;
-        font-size: 16px;
-        min-width: 150px;
-        border: 1px solid white;  /* Viền trắng */
-    }
+        .SmallButton {
+            border: 2px solid #2ecc71;
+            border-radius: 8px;
+            padding: 3px;
+            background-color: rgba(255, 255, 255, 0.9);
+        }
 
-    QPushButton#btnAddTrip:hover {
-        background-color: #27ae60;  /* Xanh lá cây đậm hơn khi hover */
-    }
+        .SmallButton:hover {
+            border-color: #27ae60;
+            background-color: rgba(46, 204, 113, 0.1);
+        }
 
-    .ClickableLabel, .ImageButton {
-        border: 2px solid white;  /* Viền trắng */
-        border-radius: 10px;
-        padding: 5px;
-        background-color: rgba(255, 255, 255, 0.9);  /* Nền trắng với độ trong suốt */
-        qproperty-alignment: 'AlignCenter';
-    }
+        .LogoutButton {
+            border: 2px solid #e74c3c;
+            border-radius: 8px;
+            padding: 3px;
+            background-color: rgba(255, 255, 255, 0.9);
+        }
 
-    .ClickableLabel:hover, .ImageButton:hover {
-        border-color: #f1c40f;  /* Viền vàng khi hover */
-        background-color: white;
-        cursor: pointer;
-    }
+        .LogoutButton:hover {
+            border-color: #c0392b;
+            background-color: rgba(231, 76, 60, 0.1);
+        }
+    )");
 
-    QLabel {
-        background: transparent;
-        color: #2c3e50;  /* Màu chữ tối cho dễ đọc */
-    }
-)");
     // Tạo layout chính
     QWidget *centralWidget = new QWidget(this);
     QVBoxLayout *mainLayout = new QVBoxLayout(centralWidget);
     mainLayout->setContentsMargins(20, 20, 20, 20);
     mainLayout->setSpacing(20);
 
-    // Header (nút Add Trip và nút đăng xuất)
+    // Header layout (top section)
     QHBoxLayout *headerLayout = new QHBoxLayout();
 
-    // Thêm nút Add Trip vào vị trí tiêu đề
-    ui->btnAddTrip->setObjectName("btnAddTrip");
-    headerLayout->addWidget(ui->btnAddTrip);
+    // Add Trip button (small, top-left)
+    ui->labelAddTrip->setProperty("class", "SmallButton");
+    ui->labelAddTrip->setFixedSize(60, 60);
+    ui->labelAddTrip->setAlignment(Qt::AlignCenter);
+    ui->labelAddTrip->setPixmap(QPixmap(":/images/AddTrip.png").scaled(
+        40, 40, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    ui->labelAddTrip->setToolTip("Thêm chuyến đi mới");
+    ui->labelAddTrip->setMouseTracking(true);
+    ui->labelAddTrip->installEventFilter(this);
+    headerLayout->addWidget(ui->labelAddTrip);
 
+    // Spacer to push welcome message and logout button to right
     headerLayout->addStretch();
 
+    // Welcome message
     ui->labelWelcome->setStyleSheet("font-size: 16px; color: #7f8c8d;");
     headerLayout->addWidget(ui->labelWelcome);
 
-    ui->btnLogOut->setObjectName("btnLogOut");
-    headerLayout->addWidget(ui->btnLogOut);
+    // Logout button (small, top-right, same size as AddTrip)
+    ui->labelLogOut->setProperty("class", "LogoutButton");
+    ui->labelLogOut->setFixedSize(60, 60);
+    ui->labelLogOut->setAlignment(Qt::AlignCenter);
+    ui->labelLogOut->setPixmap(QPixmap(":/images/LogOut.jpg").scaled(
+        40, 40, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    ui->labelLogOut->setToolTip("Đăng xuất");
+    ui->labelLogOut->setMouseTracking(true);
+    ui->labelLogOut->installEventFilter(this);
+    headerLayout->addWidget(ui->labelLogOut);
 
     mainLayout->addLayout(headerLayout);
 
-    // Thêm đường kẻ ngang phân cách
+    // Horizontal line separator
     QFrame *line = new QFrame();
     line->setFrameShape(QFrame::HLine);
     line->setFrameShadow(QFrame::Sunken);
     line->setStyleSheet("color: #bdc3c7;");
     mainLayout->addWidget(line);
 
-    // Thêm khoảng trống
-    mainLayout->addSpacing(30);
+    // Main buttons layout (centered)
+    QHBoxLayout *buttonLayout = new QHBoxLayout();
+    buttonLayout->setSpacing(30);
+    buttonLayout->setAlignment(Qt::AlignCenter);
 
-    // Các label chức năng chính (clickable)
-    QHBoxLayout *labelLayout = new QHBoxLayout();
-    labelLayout->setSpacing(30);
-    labelLayout->setAlignment(Qt::AlignCenter); // Căn giữa các nút
-
-    // Label Show Trips - Thiết kế giống code cũ nhưng dùng QLabel
+    // Show Trips button
     ui->labelShowTrips->setProperty("class", "ImageButton");
-    ui->labelShowTrips->setFixedSize(200, 200);
-
-    // Tạo layout con cho hình ảnh và text
-    QVBoxLayout *tripLayout = new QVBoxLayout(ui->labelShowTrips);
-    tripLayout->setContentsMargins(0, 0, 0, 0);
-    tripLayout->setSpacing(0);
-
-    // Label Show Trips
-    ui->labelShowTrips->setProperty("class", "ImageButton");
-    ui->labelShowTrips->setFixedSize(200, 200);
+    ui->labelShowTrips->setFixedSize(150, 150);
     ui->labelShowTrips->setAlignment(Qt::AlignCenter);
     ui->labelShowTrips->setPixmap(QPixmap(":/images/ShowTrips.png").scaled(
-    ui->labelShowTrips->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+        120, 120, Qt::KeepAspectRatio, Qt::SmoothTransformation));
     ui->labelShowTrips->setToolTip("Xem danh sách các chuyến đi");
     ui->labelShowTrips->setMouseTracking(true);
     ui->labelShowTrips->installEventFilter(this);
 
-    // Label Show User Information
+    // User Info button
     ui->labelShowUserInfo->setProperty("class", "ImageButton");
-    ui->labelShowUserInfo->setFixedSize(200, 200);
+    ui->labelShowUserInfo->setFixedSize(150, 150);
     ui->labelShowUserInfo->setAlignment(Qt::AlignCenter);
     ui->labelShowUserInfo->setPixmap(QPixmap(":/images/UserInfo.png").scaled(
-    ui->labelShowUserInfo->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+        120, 120, Qt::KeepAspectRatio, Qt::SmoothTransformation));
     ui->labelShowUserInfo->setToolTip("Xem thông tin người dùng");
     ui->labelShowUserInfo->setMouseTracking(true);
     ui->labelShowUserInfo->installEventFilter(this);
 
-    labelLayout->addWidget(ui->labelShowTrips);
-    labelLayout->addWidget(ui->labelShowUserInfo);
+    // Add buttons to layout
+    buttonLayout->addWidget(ui->labelShowTrips);
+    buttonLayout->addWidget(ui->labelShowUserInfo);
 
-    mainLayout->addLayout(labelLayout, 1);
+    // Add button layout to main layout with stretch to center vertically
     mainLayout->addStretch();
-
-
+    mainLayout->addLayout(buttonLayout);
+    mainLayout->addStretch();
 
     setCentralWidget(centralWidget);
 
-    // Hiệu ứng fade in khi mở cửa sổ
+    // Fade-in animation
     QPropertyAnimation *animation = new QPropertyAnimation(this, "windowOpacity");
     animation->setDuration(300);
     animation->setStartValue(0);
@@ -224,10 +225,28 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
             } else if (obj == ui->labelShowUserInfo) {
                 onLabelShowUserInfoClicked();
                 return true;
+            } else if (obj == ui->labelAddTrip) {
+                onLabelAddTripClicked();
+                return true;
+            } else if (obj == ui->labelLogOut) {
+                onLabelLogOutClicked();
+                return true;
             }
         }
     }
     return QMainWindow::eventFilter(obj, event);
+}
+
+
+void MainWindow::onLabelAddTripClicked()
+{
+    AddTripDialog dialog(_tripService, this);
+    dialog.exec();
+}
+
+void MainWindow::onLabelLogOutClicked()
+{
+    handleLogoutRequest();
 }
 
 void MainWindow::onLabelShowTripsClicked()
@@ -246,18 +265,11 @@ void MainWindow::updateUI() {
     QSharedPointer<User> currentUser = _authService->getCurrentUser();
     if (currentUser) {
         ui->labelWelcome->setText("Xin chào, " + currentUser->name());
-        ui->btnAddTrip->setVisible(_authService->hasPermission("admin"));
+        ui->labelAddTrip->setVisible(_authService->hasPermission("admin"));
     } else {
         qWarning() << "No user logged in!";
     }
 }
-
-void MainWindow::on_btnAddTrip_clicked()
-{
-    AddTripDialog dialog(_tripService, this);
-    dialog.exec(); // Hiển thị dialog dạng modal
-}
-
 // void MainWindow::on_btnShowTrips_clicked() {
 //     TripListDialog dialog(_tripService, _bookingService, _reviewService, this);
 //     dialog.exec(); // Hiển thị dialog dạng modal

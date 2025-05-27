@@ -3,6 +3,8 @@
         <file>images/default-trip.jpg</file>
 	<file>images/UserInfo.png</file>
 	<file>images/ShowTrips.png</file>
+	<file>images/AddTrip.png</file>
+	<file>images/LogOut.jpg</file>
 	<file>styles/style.css</file>
     </qresource>
 </RCC>
