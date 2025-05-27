@@ -173,78 +173,43 @@ void MainWindow::setupUI()
 
     // Main buttons layout (centered)
     QHBoxLayout *buttonLayout = new QHBoxLayout();
-    buttonLayout->setSpacing(30);
+    buttonLayout->setSpacing(10);  // Giảm khoảng cách từ 20px xuống 10px
     buttonLayout->setAlignment(Qt::AlignCenter);
 
-    // Show Trips button
+    // Show Trips button - tăng kích thước lên 300x300
     ui->labelShowTrips->setProperty("class", "ImageButton");
-    ui->labelShowTrips->setFixedSize(200, 200);
-
-    // Tạo layout con cho hình ảnh và text
-    QVBoxLayout *tripLayout = new QVBoxLayout(ui->labelShowTrips);
-    tripLayout->setContentsMargins(0, 0, 0, 0);
-    tripLayout->setSpacing(0);
-
-    ui->labelShowTrips->setProperty("class", "ImageButton");
-    ui->labelShowTrips->setFixedSize(200, 200);
+    ui->labelShowTrips->setFixedSize(300, 300);  // Tăng từ 250 lên 300
     ui->labelShowTrips->setAlignment(Qt::AlignCenter);
     ui->labelShowTrips->setPixmap(QPixmap(":/images/ShowTrips.png").scaled(
-        120, 120, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+        220, 220, Qt::KeepAspectRatio, Qt::SmoothTransformation));  // Tăng kích thước ảnh
     ui->labelShowTrips->setToolTip("Xem danh sách các chuyến đi");
     ui->labelShowTrips->setMouseTracking(true);
     ui->labelShowTrips->installEventFilter(this);
 
-    // Label My Bookings
+    // My Bookings button - tăng kích thước lên 300x300
     ui->labelMyBookings->setProperty("class", "ImageButton");
-    ui->labelMyBookings->setFixedSize(200, 200);
-
-    // Tạo layout con cho hình ảnh và text
-    QVBoxLayout *bookingLayout = new QVBoxLayout(ui->labelMyBookings);
-    bookingLayout->setContentsMargins(0, 0, 0, 0);
-    bookingLayout->setSpacing(0);
-
-    ui->labelMyBookings->setProperty("class", "ImageButton");
-    ui->labelMyBookings->setFixedSize(200, 200);
+    ui->labelMyBookings->setFixedSize(300, 300);  // Tăng từ 250 lên 300
     ui->labelMyBookings->setAlignment(Qt::AlignCenter);
     ui->labelMyBookings->setPixmap(QPixmap(":/images/default-trip.jpg").scaled(
-    ui->labelMyBookings->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+        220, 220, Qt::KeepAspectRatio, Qt::SmoothTransformation));  // Tăng kích thước ảnh
     ui->labelMyBookings->setToolTip("Xem danh sách các chuyến đi đã đặt");
     ui->labelMyBookings->setMouseTracking(true);
     ui->labelMyBookings->installEventFilter(this);
 
-
-    // Label My Bookings
-    ui->labelMyBookings->setProperty("class", "ImageButton");
-    ui->labelMyBookings->setFixedSize(200, 200);
-
-    // Tạo layout con cho hình ảnh và text
-    QVBoxLayout *bookingLayout = new QVBoxLayout(ui->labelMyBookings);
-    bookingLayout->setContentsMargins(0, 0, 0, 0);
-    bookingLayout->setSpacing(0);
-
-    ui->labelMyBookings->setProperty("class", "ImageButton");
-    ui->labelMyBookings->setFixedSize(200, 200);
-    ui->labelMyBookings->setAlignment(Qt::AlignCenter);
-    ui->labelMyBookings->setPixmap(QPixmap(":/images/default-trip.jpg").scaled(
-    ui->labelMyBookings->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
-    ui->labelMyBookings->setToolTip("Xem danh sách các chuyến đi đã đặt");
-    ui->labelMyBookings->setMouseTracking(true);
-    ui->labelMyBookings->installEventFilter(this);
-
-
-    // User Info button
+    // User Info button - tăng kích thước lên 300x300
     ui->labelShowUserInfo->setProperty("class", "ImageButton");
-    ui->labelShowUserInfo->setFixedSize(150, 150);
+    ui->labelShowUserInfo->setFixedSize(300, 300);  // Tăng từ 250 lên 300
     ui->labelShowUserInfo->setAlignment(Qt::AlignCenter);
     ui->labelShowUserInfo->setPixmap(QPixmap(":/images/UserInfo.png").scaled(
-        120, 120, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+        220, 220, Qt::KeepAspectRatio, Qt::SmoothTransformation));  // Tăng kích thước ảnh
     ui->labelShowUserInfo->setToolTip("Xem thông tin người dùng");
     ui->labelShowUserInfo->setMouseTracking(true);
     ui->labelShowUserInfo->installEventFilter(this);
 
-    labelLayout->addWidget(ui->labelShowTrips);
-    labelLayout->addWidget(ui->labelMyBookings);
-    labelLayout->addWidget(ui->labelShowUserInfo);
+    // Add buttons to layout (chỉ còn 3 nút)
+    buttonLayout->addWidget(ui->labelShowTrips);
+    buttonLayout->addWidget(ui->labelMyBookings);
+    buttonLayout->addWidget(ui->labelShowUserInfo);
 
     // Add button layout to main layout with stretch to center vertically
     mainLayout->addStretch();
@@ -269,6 +234,9 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
             if (obj == ui->labelShowTrips) {
                 onLabelShowTripsClicked();
                 return true;
+            } else if (obj == ui->labelMyBookings) {
+                onLabelMyBookingsClicked();
+                return true;
             } else if (obj == ui->labelShowUserInfo) {
                 onLabelShowUserInfoClicked();
                 return true;
@@ -283,7 +251,6 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
     }
     return QMainWindow::eventFilter(obj, event);
 }
-
 
 void MainWindow::onLabelAddTripClicked()
 {
