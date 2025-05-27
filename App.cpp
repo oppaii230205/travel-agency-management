@@ -58,8 +58,11 @@ void App::setupDependencies() {
         // Khởi tạo DatabaseManager
         DatabaseManager& db = DatabaseManager::getInstance();
 
+        // Đăng kí IDataProvider với Registry
+        Registry::addSingleton<IDataProvider>(QSharedPointer<SqlDao>::create(db));
+
         // Khởi tạo DataProvider
-        QSharedPointer<IDataProvider> dataProvider = QSharedPointer<SqlDao>::create(db);
+        QSharedPointer<IDataProvider> dataProvider = Registry::getSingleton<IDataProvider>();
 
         // Đăng ký các service theo thứ tự dependency
 
