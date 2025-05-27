@@ -864,9 +864,15 @@ Single Branch Workflow là lựa chọn tối ưu cho:
 
 Quản lý Header Files (SF)
 
+- HS.1 (Header Structure Rule 1): Yêu cầu mọi tệp tiêu đề phải có #ifndef/#define/#endif guard (còn gọi là include guard) để tránh việc bao gồm nhiều lần (multiple inclusion).
 - SF.7: Không dùng “using namespace” ở global scope trong header file
 - SF.8: Luôn dùng #include guards
 - SF.12: Dùng “” cho file local, <> cho system/library
+- HC.3 (Header Content Rule 3): Quy định rằng tệp tiêu đề chỉ nên chứa các khai báo (declarations) chứ không phải định nghĩa (definitions) của các hàm hoặc biến, trừ khi đó là các hàm inline hoặc các hàm mẫu (templates).
+
+- HM.2 (Header Module Rule 2): Mỗi tệp tiêu đề nên tập trung vào việc khai báo cho một mô-đun hoặc một nhóm các thực thể liên quan.
+
+- FN.3 (File Naming Rule 3): Sử dụng đuôi .h hoặc .hpp cho tệp tiêu đề C++
 
 Ví dụ:
 
@@ -887,7 +893,7 @@ double squareRoot(double x) {
 ```
 
 Style & Readability (NL)
-
+- G.1 / G.2: Tuân thủ quy tắc đề ra một cách nhất quán
 - NL.21 / ES.10: Khai báo một biến mỗi dòng
 - NL.18: Dùng C++-style declarator
 - NL.5: Tránh mã hóa kiểu vào tên biến
@@ -911,10 +917,12 @@ int main() {
 
 Khởi tạo & Phạm vi Biến (ES)
 
-- ES.20: Luôn khởi tạo biến
-- ES.21: Khai báo biến gần nơi dùng nhất
-- ES.22: Chỉ khai báo khi có giá trị khởi tạo
-- NR.1: Không bắt buộc khai báo ở đầu hàm
+- ES.20: Luôn khởi tạo biến.
+- ES.21: Khai báo biến gần nơi dùng nhất.
+- ES.22: Chỉ khai báo khi có giá trị khởi tạo.
+- NR.1: Không bắt buộc khai báo ở đầu hàm.
+- ES.2: Tránh dùng toán tử "new" và "delete" để quản lý bộ nhớ trực tiếp.
+- ES.3: Khuyến khích sử dụng smart pointer để quản lý bộ nhớ động
 
 Ví dụ:
 
@@ -1005,9 +1013,13 @@ int main() {
 
 Hằng số & So sánh (ES)
 
-- ES.45: Tránh magic numbers, dùng hằng số
-- Const on left: Đặt hằng số bên trái phép so sánh
-- ES.47: Dùng “nullptr” thay vì “0” hay ”NULL”
+- ES.45: Tránh magic numbers, dùng hằng số.
+- Const on left: Đặt hằng số bên trái phép so sánh.
+- ES.47: Dùng “nullptr” thay vì “0” hay ”NULL”.
+- P.9: Don't use "const_cast" to cast away "const".
+- R.3: Không bao giờ được tạo một con trỏ hoặc tham chiếu không-const tới một đối tượng mà bản thân đối tượng đó đã được khai báo là const.
+- Con.3: Sử dụng const cho các biến có giá trị không thay đổi trong suốt vòng đời của chúng. 
+
 
 Ví dụ:
 
