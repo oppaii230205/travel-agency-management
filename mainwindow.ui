@@ -30,8 +30,8 @@
    <widget class="QLabel" name="labelShowTrips">
     <property name="geometry">
      <rect>
-      <x>320</x>
-      <y>230</y>
+      <x>290</x>
+      <y>240</y>
       <width>121</width>
       <height>151</height>
      </rect>
@@ -98,7 +98,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>21</height>
+     <height>17</height>
     </rect>
    </property>
   </widget>

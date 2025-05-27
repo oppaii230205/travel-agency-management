@@ -81,6 +81,19 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         Registry.h
         App.h
         App.cpp
+        Event.h
+        IObserver.h
+        Observable.h
+        Observable.cpp
+        TripBookedEvent.h
+        LoggingObserver.h
+        AnalyticsObserver.h
+        BaseTripDialog.h
+        BaseTripDialog.cpp
+        BookedTripCard.h
+        BookedTripCard.cpp
+        BookedTripsDialog.h
+        BookedTripsDialog.cpp
 
 
 

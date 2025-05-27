@@ -35,6 +35,7 @@ private slots:
     void onLabelAddTripClicked();
     void onLabelLogOutClicked();
     void onLabelShowTripsClicked();
+    void onLabelMyBookingsClicked();
     void onLabelShowUserInfoClicked();
     void handleLogoutRequest();
     void onTripAdded(const Trip& newTrip);

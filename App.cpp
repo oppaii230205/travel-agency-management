@@ -22,6 +22,9 @@
 #include "SqlDao.h"
 #include "Registry.h"
 
+#include "LoggingObserver.h"
+#include "AnalyticsObserver.h"
+
 App::App() {
     // Constructor - khởi tạo cơ bản
     qDebug() << "App constructor called";
@@ -58,8 +61,11 @@ void App::setupDependencies() {
         // Khởi tạo DatabaseManager
         DatabaseManager& db = DatabaseManager::getInstance();
 
+        // Đăng kí IDataProvider với Registry
+        Registry::addSingleton<IDataProvider>(QSharedPointer<SqlDao>::create(db));
+
         // Khởi tạo DataProvider
-        QSharedPointer<IDataProvider> dataProvider = QSharedPointer<SqlDao>::create(db);
+        QSharedPointer<IDataProvider> dataProvider = Registry::getSingleton<IDataProvider>();
 
         // Đăng ký các service theo thứ tự dependency
 
@@ -101,6 +107,10 @@ void App::setupDependencies() {
                 Registry::getSingleton<BookingService>()
                 )
             );
+
+        // Create and register observers
+        setupObservers();
+
         qDebug() << "ReviewService registered";
 
         qDebug() << "All dependencies set up successfully";
@@ -109,6 +119,24 @@ void App::setupDependencies() {
         qCritical() << "Error setting up dependencies:" << e.what();
         throw;
     }
+}
+
+void App::setupObservers() {
+    // Get services from Registry
+    auto bookingService = Registry::getSingleton<BookingService>();
+    auto authService = Registry::getSingleton<AuthService>();
+    
+    // Create observers
+    auto logger = QSharedPointer<LoggingObserver>::create();
+    auto analytics = QSharedPointer<AnalyticsObserver>::create();
+    
+    // Subscribe observers to services
+    bookingService->subscribe(logger);
+    bookingService->subscribe(analytics);
+    
+    // Store observers in Registry if they need to be accessed elsewhere
+    Registry::addSingleton<LoggingObserver>(logger);
+    Registry::addSingleton<AnalyticsObserver>(analytics);
 }
 
 void App::setupConnections() {
