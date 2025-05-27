@@ -88,6 +88,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         TripBookedEvent.h
         LoggingObserver.h
         AnalyticsObserver.h
+        BaseTripDialog.h
+        BaseTripDialog.cpp
 
 
 
