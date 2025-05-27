@@ -150,7 +150,7 @@ bool TripCard::eventFilter(QObject *obj, QEvent *event)
                 shadowAnim->setDuration(transitionTime);
                 shadowAnim->setEasingCurve(QEasingCurve::OutQuad);
                 shadowAnim->setStartValue(shadowEffect->offset());
-                shadowAnim->setEndValue(QPointF(0, 5));
+                shadowAnim->setEndValue(QPointF(0, 10));
                 shadowAnim->start(QAbstractAnimation::DeleteWhenStopped);
             }
             

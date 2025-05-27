@@ -794,7 +794,262 @@ Phân công công việc mới
     }
     ```
 
+- **Cải tiến**: Tạo ra các lớp _Observer_ và _Observable_ để thoải mái cài đặt quan hệ lắng nghe-phản ứng giữa các đối tượng với nhau.
+
+  - Code minh họa:
+
+    - Lớp `IObserver`
+
+    ```cpp
+    class IObserver {
+    public:
+        virtual ~IObserver() = default;
+        virtual void onEvent(const Event& event) = 0; // phản ứng khi nhận được sự kiện
+    };
+    ```
+
+    - Lớp `Observable`
+
+    ```cpp
+    class Observable : public QObject {
+    Q_OBJECT
+    public:
+        void subscribe(IObserverPtr observer) {
+          _observers.insert(observer);
+        }
+
+        void Observable::unsubscribe(IObserverPtr observer) {
+          _observers.erase(observer);
+        }
+
+        void Observable::notify(const Event& event) {
+          for (const auto& observer : _observers) {
+            observer->onEvent(event);
+          }
+        }
+
+    protected:
+        std::set<IObserverPtr> _observers;
+    };
+    ```
+
+    - Lớp `Event`
+
+    ```cpp
+    class Event {
+    public:
+        Event() : _timestamp(QDateTime::currentDateTime()) {}
+        virtual ~Event() = default;
+
+        QDateTime timestamp() const { return _timestamp; }
+        virtual QString name() const = 0;
+        virtual QVariantMap data() const = 0;
+
+    private:
+        QDateTime _timestamp;
+    };
+    ```
+
+    - Ví dụ áp dụng **Observer Pattern** với _BookingService_: log lại thông tin booking của người dùng mỗi khi booking thành công.
+
+      - Lớp `LoggingObserver` (kế thừa lớp `IObserver`)
+
+      ```cpp
+      class LoggingObserver : public IObserver {
+      public:
+          void onEvent(const Event& event) override {
+              qDebug() << "[" << event.timestamp().toString(Qt::ISODate) << "]"
+                      << event.name() << "event occurred with data:" << event.data();
+          }
+      };
+      ```
+
+      - Lớp `TripBookedEvent`: Sự kiện một chuyến đi đã được đặt (kế thừa lớp `Event`)
+
+      ```cpp
+      class TripBookedEvent : public Event {
+      public:
+          TripBookedEvent(int tripId, const QString& userEmail)
+              : _tripId(tripId), _userEmail(userEmail) {}
+
+          QString name() const override { return "TripBooked"; }
+
+          QVariantMap data() const override {
+              return {
+                  {"tripId", _tripId},
+                  {"userEmail", _userEmail}
+              };
+          }
+
+          int tripId() const { return _tripId; }
+          QString userEmail() const { return _userEmail; }
+
+      private:
+          int _tripId;
+          QString _userEmail;
+      };
+      ```
+
+      - Lớp `BookingService`: đây chính là lớp đóng vai trò `Observable` (hay **publisher**) trong **Observer Pattern**, phát ra các sự kiện đến các _Observer_ đã đăng kí.
+
+      ```cpp
+      class BookingService : public QObject {
+          Q_OBJECT
+      public:
+          explicit BookingService(QSharedPointer<BookingRepository> bookingRepo,
+                                  QSharedPointer<TripService> tripService,
+                                  QSharedPointer<AuthService> authService,
+                                  QObject* parent = nullptr);
+
+          // Other methods...
+
+          // Provide access to observable functionality
+          void subscribe(QSharedPointer<IObserver> observer);
+
+          void unsubscribe(QSharedPointer<IObserver> observer);
+
+      private:
+          QSharedPointer<Observable> _observable; // "Composition over Inheritance"
+          // Other properties...
+      };
+      ```
+
 **Lợi ích:** Giảm coupling giữa GUI và business logic. Đồng thời, GUI sẽ được tự động cập nhật khi dữ liệu thay đổi.
+
+**4. Kết hợp: Factory Pattern + Prototype Pattern + Registry Pattern** => **Prototype Registry Pattern**
+
+**Mục đích:** **Factory Pattern + Prototype Pattern** cho phép lấy & sử dụng các đối tượng đã được tạo sẵn, thay vì phải tạo mới mỗi khi cần sử dụng, khiến mã nguồn trở nên độc lập với các lớp của các đối tượng này. Đồng thời, **Registry Pattern** là một mẫu thiết kế nhằm **tập trung hóa** việc quản lý và truy cập các đối tượng hoặc thể hiện được chia sẻ trong một ứng dụng phần mềm, từ đó thúc đẩy khả năng tái sử dụng và giảm thiểu sự phụ thuộc giữa các thành phần => tuân thủ nguyên tắc **Single Source Of Truth (SSOT)**.
+
+**Ví dụ áp dụng trong đồ án:**
+
+- Lớp `Registry`: Quản lí danh sách các đối tượng để chương trình có thể gọi đến mỗi khi cần (`IDataProvider` (nơi tập trung các repository), các `Service`,...)
+
+  - Code minh họa:
+
+  ```cpp
+  class Registry {
+  private:
+      inline static QHash<QString, std::any> _instances;
+
+  public:
+      template<typename T>
+      static void addSingleton(QSharedPointer<T> instance) {
+          _instances.insert(QString::fromStdString(typeid(T).name()), instance);
+      }
+
+      template<typename T>
+      static QSharedPointer<T> getSingleton() {
+          auto it = _instances.constFind(QString::fromStdString(typeid(T).name()));
+          if (it != _instances.constEnd()) {
+              try {
+                  return std::any_cast<QSharedPointer<T>>(it.value());
+              } catch (const std::bad_any_cast& e) {
+                  qWarning() << "Bad cast when getting singleton for type:" << typeid(T).name();
+                  return nullptr;
+              }
+          }
+          return nullptr;
+      }
+  ```
+
+  - Ví dụ sử dụng:
+
+    - Lớp `App`: Thiết lập sẵn các dependencies và connections, giảm sự phụ thuộc giữa các lớp đối tượng.
+
+    ```cpp
+    class App {
+    private:
+        QSharedPointer<LoginWindow> _loginWindow;
+        QSharedPointer<MainWindow> _mainWindow;
+
+        // Private methods cho việc thiết lập
+        void loadGlobalStyles() {/*...*/}
+        void setupObservers() {/*...*/}
+
+        void setupDependencies() {
+            // Khởi tạo DatabaseManager
+            DatabaseManager& db = DatabaseManager::getInstance();
+
+            // Đăng kí IDataProvider với Registry
+            Registry::addSingleton<IDataProvider>(QSharedPointer<SqlDao>::create(db)); // Có thể thay thành `MockDao`
+
+            // Khởi tạo DataProvider
+            QSharedPointer<IDataProvider> dataProvider = Registry::getSingleton<IDataProvider>();
+
+            // Đăng ký các service theo thứ tự dependency
+            Registry::addSingleton<AuthService>(
+                QSharedPointer<AuthService>::create(dataProvider->getUserRepository())
+                );
+
+            Registry::addSingleton<TripService>(
+                QSharedPointer<TripService>::create(dataProvider->getTripRepository())
+                );
+            // Các dependency khác...
+        }
+
+        void setupConnections() {
+            _loginWindow = QSharedPointer<LoginWindow>::create(
+                Registry::getSingleton<AuthService>(),
+                nullptr
+                );
+
+            // Kết nối signal loginSuccess để tạo MainWindow sau khi login
+            QObject::connect(_loginWindow.data(), &LoginWindow::loginSuccess, [this]() {
+                qDebug() << "Login successful, creating main window";
+                _loginWindow->hide();
+
+                // Tạo MainWindow sau khi login thành công
+                _mainWindow = QSharedPointer<MainWindow>::create(
+                    Registry::getSingleton<UserService>(),
+                    Registry::getSingleton<AuthService>(),
+                    Registry::getSingleton<TripService>(),
+                    Registry::getSingleton<BookingService>(),
+                    Registry::getSingleton<AzureStorageService>(),
+                    Registry::getSingleton<ReviewService>()
+                    );
+
+                // Kết nối logout từ MainWindow sau khi MainWindow được tạo
+                QObject::connect(_mainWindow.data(), &MainWindow::logoutCompleted, [this]() {
+                    qDebug() << "Logout completed from main window";
+                    _loginWindow->show();
+                });
+
+                _mainWindow->show();
+            });
+        }
+
+    public:
+        App();
+        ~App();
+
+        /**
+         * @brief Khởi tạo ứng dụng với tất cả dependencies và connections
+        * @return true nếu khởi tạo thành công, false nếu có lỗi
+        *
+        * Phương thức này phải được gọi sau khi QApplication đã được tạo
+        */
+        bool config() {
+            // Load styles
+            loadGlobalStyles();
+
+            // Setup dependency injection
+            setupDependencies();
+
+            // Setup UI connections
+            setupConnections();
+        }
+
+        /**
+         * @brief Chạy ứng dụng
+        * @return exit code của ứng dụng
+        *
+        * Phương thức này sẽ hiển thị LoginWindow và bắt đầu event loop
+        */
+        int run();
+    };
+    ```
+
+**Lợi ích:** Nhờ vào thiết kế này, mã nguồn sẽ không còn phụ thuộc vào các lớp cụ thể của các đối tượng cần clone, đồng thời loại bỏ việc khởi tạo lặp đi lặp lại bằng cách sao chép các nguyên mẫu (prototype) đã được xây dựng sẵn. Kết hợp với **Registry Pattern**, giúp **tập trung hóa** việc quản lý và truy cập các đối tượng được chia sẻ trong một ứng dụng phần mềm, khiến mã nguồn trở nên dễ bảo trì & mở rộng hơn.
 
 ### Đảm bảo chất lượng
 

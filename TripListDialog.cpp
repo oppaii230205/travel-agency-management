@@ -47,6 +47,6 @@ void TripListDialog::handleBookClicked(int tripId)
     if (_bookingService->bookTrip(tripId)) {
         CustomMessageBox::show("Success", "Trip booked successfully!");
     } else {
-        CustomMessageBox::show("Error", "Failed to book trip");
+        CustomMessageBox::show("Error", "You've already booked this trip!");
     }
 }

@@ -18,6 +18,7 @@ BookedTripCard::BookedTripCard(const Trip& trip, const Booking& booking, QWidget
         for (QPushButton* button : buttons) {
             if (button->text() == "Book Now") {
                 bookBtn = button;
+                bookBtn->setText("Newest");
                 break;
             }
         }
