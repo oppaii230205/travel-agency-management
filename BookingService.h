@@ -4,9 +4,13 @@
 #include "BookingRepository.h"
 #include "TripService.h"
 #include "AuthService.h"
+
+#include "Observable.h"
+#include "TripBookedEvent.h"
+
 #include <QObject>
 
-class BookingService : public QObject {
+class BookingService : public QObject/*, public Observable*/ {
     Q_OBJECT
 public:
     explicit BookingService(QSharedPointer<BookingRepository> bookingRepo,
@@ -26,12 +30,18 @@ public:
     // Hủy booking
     Q_INVOKABLE bool cancelBooking(int tripId);
 
+    // Provide access to observable functionality
+    void subscribe(QSharedPointer<IObserver> observer);
+    
+    void unsubscribe(QSharedPointer<IObserver> observer);
+
 signals:
     void bookingSuccess(const QString& message);
     void bookingFailed(const QString& error);
     void bookingsUpdated();
 
 private:
+    QSharedPointer<Observable> _observable;
     QSharedPointer<BookingRepository> _bookingRepo;
     QSharedPointer<TripService> _tripService;
     QSharedPointer<AuthService> _authService;

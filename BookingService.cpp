@@ -8,7 +8,9 @@ BookingService::BookingService(QSharedPointer<BookingRepository> bookingRepo,
     : QObject(parent),
     _bookingRepo(bookingRepo),
     _tripService(tripService),
-    _authService(authService) {}
+    _authService(authService) {
+        _observable = QSharedPointer<Observable>::create();
+    }
 
 bool BookingService::bookTrip(int tripId) {
     // Kiểm tra user đăng nhập
@@ -55,6 +57,10 @@ bool BookingService::bookTrip(int tripId) {
         */
         emit bookingSuccess("Booking successful!");
         emit bookingsUpdated();
+
+        TripBookedEvent event(tripId, _authService->getCurrentUser()->email());
+        _observable->notify(event); // Notify all observers
+
         return true;
     }
 
@@ -103,4 +109,12 @@ bool BookingService::cancelBooking(int tripId) {
 
     emit bookingFailed("Failed to cancel booking");
     return false;
+}
+
+void BookingService::subscribe(QSharedPointer<IObserver> observer) {
+    _observable->subscribe(observer);
+}
+
+void BookingService::unsubscribe(QSharedPointer<IObserver> observer) {
+    _observable->unsubscribe(observer);
 }

@@ -27,6 +27,7 @@ private:
     void loadGlobalStyles();
     void setupDependencies();
     void setupConnections();
+    void setupObservers();
 
 public:
     /**
