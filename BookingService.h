@@ -10,7 +10,7 @@
 
 #include <QObject>
 
-class BookingService : public QObject/*, public Observable*/ {
+class BookingService : public QObject {
     Q_OBJECT
 public:
     explicit BookingService(QSharedPointer<BookingRepository> bookingRepo,
