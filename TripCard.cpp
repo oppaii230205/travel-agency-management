@@ -11,6 +11,8 @@
 TripCard::TripCard(const Trip& trip, QWidget *parent)
     : QWidget(parent), _tripId(trip.getTripId())
 {
+    _networkManager = new QNetworkAccessManager(this);
+
     this->setObjectName("tripCard");
     this->setProperty("class", "trip-card"); // Thêm property
 
@@ -46,27 +48,49 @@ TripCard::TripCard(const Trip& trip, QWidget *parent)
     QVBoxLayout *layout = new QVBoxLayout(this);
 
     // Hình ảnh (có thể lấy từ resource hoặc URL)
+    // QLabel *imageLabel = new QLabel(this);
+
+    // QString pathToImage = !trip.getImagePath().isEmpty() ? trip.getImagePath() : ":/images/default-trip.jpg";
+
+    // QPixmap pixmap(pathToImage);
+
+    // if (pixmap.isNull()) {
+    //     qWarning() << "Failed to load image:" << pathToImage;
+    //     pixmap.load(":/images/default-trip.jpg");
+    // }
+
+    // // Tính toán kích thước giữ nguyên tỷ lệ
+    // QPixmap scaledPixmap = pixmap.scaledToWidth(350, Qt::SmoothTransformation);
+    // // Hoặc nếu muốn cố định cả chiều cao:
+    // // QPixmap scaledPixmap = pixmap.scaled(200, 150, Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation);
+
+    // imageLabel->setPixmap(scaledPixmap);
+    // imageLabel->setAlignment(Qt::AlignCenter);
+    // // imageLabel->setMinimumSize(200, 150);
+    // // imageLabel->setMaximumSize(200, 150);
+    // imageLabel->setObjectName("imageLabel");
+
+    // Thay thế phần code hiện tại bằng:
     QLabel *imageLabel = new QLabel(this);
-
-    QString pathToImage = !trip.getImagePath().isEmpty() ? trip.getImagePath() : ":/images/default-trip.jpg";
-
-    QPixmap pixmap(pathToImage);
-
-    if (pixmap.isNull()) {
-        qWarning() << "Failed to load image:" << pathToImage;
-        pixmap.load(":/images/default-trip.jpg");
-    }
-
-    // Tính toán kích thước giữ nguyên tỷ lệ
-    QPixmap scaledPixmap = pixmap.scaledToWidth(350, Qt::SmoothTransformation);
-    // Hoặc nếu muốn cố định cả chiều cao:
-    // QPixmap scaledPixmap = pixmap.scaled(200, 150, Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation);
-
-    imageLabel->setPixmap(scaledPixmap);
-    imageLabel->setAlignment(Qt::AlignCenter);
-    // imageLabel->setMinimumSize(200, 150);
-    // imageLabel->setMaximumSize(200, 150);
     imageLabel->setObjectName("imageLabel");
+    imageLabel->setAlignment(Qt::AlignCenter);
+
+    // Kiểm tra nếu có URL ảnh từ trip
+    if (!trip.getImagePath().isEmpty() && trip.getImagePath().startsWith("http")) {
+        // Nếu là URL thì tải từ mạng
+        loadImageFromUrl(trip.getImagePath(), imageLabel);
+    } else {
+        // Nếu là đường dẫn local hoặc không có ảnh
+        QString pathToImage = !trip.getImagePath().isEmpty() ? trip.getImagePath() : ":/images/default-trip.jpg";
+        QPixmap pixmap(pathToImage);
+
+        if (pixmap.isNull()) {
+            loadDefaultImage(imageLabel);
+        } else {
+            QPixmap scaledPixmap = pixmap.scaledToWidth(350, Qt::SmoothTransformation);
+            imageLabel->setPixmap(scaledPixmap);
+        }
+    }
 
     // Thông tin chuyến đi
     QLabel *nameLabel = new QLabel("<b>" + trip.getTripName() + "</b>", this);
@@ -158,4 +182,45 @@ bool TripCard::eventFilter(QObject *obj, QEvent *event)
         }
     }
     return QWidget::eventFilter(obj, event);
+}
+
+
+void TripCard::loadImageFromUrl(const QString &url, QLabel *imageLabel)
+{
+    const QSize targetSize(350, 0); // Chiều rộng cố định 350, chiều cao tự động
+
+    QNetworkRequest request(url);
+    QNetworkReply *reply = _networkManager->get(request);
+
+    connect(reply, &QNetworkReply::finished, this, [this, reply, imageLabel, targetSize]() {
+        if (reply->error() == QNetworkReply::NoError) {
+            QPixmap src;
+            if (src.loadFromData(reply->readAll())) {
+                // Scale ảnh giữ nguyên tỷ lệ với chiều rộng cố định
+                QPixmap scaled = src.scaledToWidth(targetSize.width(), Qt::SmoothTransformation);
+
+                imageLabel->setPixmap(scaled);
+                imageLabel->setAlignment(Qt::AlignCenter);
+            } else {
+                qWarning() << "Failed to load image from downloaded data";
+                loadDefaultImage(imageLabel);
+            }
+        } else {
+            qWarning() << "Network error:" << reply->errorString() << "URL:" << reply->url().toString();
+            loadDefaultImage(imageLabel);
+        }
+        reply->deleteLater();
+    });
+}
+
+void TripCard::loadDefaultImage(QLabel *imageLabel)
+{
+    QPixmap defaultPixmap(":/images/default-trip.jpg");
+    if (!defaultPixmap.isNull()) {
+        QPixmap scaled = defaultPixmap.scaledToWidth(350, Qt::SmoothTransformation);
+        imageLabel->setPixmap(scaled);
+        imageLabel->setAlignment(Qt::AlignCenter);
+    } else {
+        imageLabel->setText("No Image Available");
+    }
 }

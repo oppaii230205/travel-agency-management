@@ -10,9 +10,14 @@
 #include "CustomMessageBox.h"
 #include <QFormLayout>
 #include <QLabel>
+#include <QFileDialog>
+#include <QRandomGenerator>
 
-AddTripDialog::AddTripDialog(QSharedPointer<TripService> service, QWidget* parent)
-    : QDialog(parent), ui(new Ui::AddTripDialog), _tripService(service)
+AddTripDialog::AddTripDialog(QSharedPointer<TripService> tripService, QSharedPointer<AzureStorageService> storageService, QWidget* parent)
+    : QDialog(parent),
+    ui(new Ui::AddTripDialog),
+    _tripService(tripService),
+    _storageService(storageService)
 {
     ui->setupUi(this);
     setWindowTitle("Add Trip");
@@ -42,6 +47,28 @@ AddTripDialog::AddTripDialog(QSharedPointer<TripService> service, QWidget* paren
     animation->setStartValue(0);
     animation->setEndValue(1);
     animation->start();
+
+    connect(_storageService.data(), &AzureStorageService::uploadCompleted,
+            this, &AddTripDialog::onImageUploaded);
+
+    // Thiết lập ban đầu cho label ảnh
+    ui->labelImage->setText("No image selected");
+    ui->labelImage->setStyleSheet("color: #666666; font-style: italic;");
+
+    // Thiết lập nút chọn ảnh
+    ui->btnChooseImage->setText("Choose Image");
+    ui->btnChooseImage->setStyleSheet(
+        "QPushButton {"
+        "   background-color: #3498db;"
+        "   color: white;"
+        "   border: none;"
+        "   padding: 5px 10px;"
+        "   border-radius: 4px;"
+        "}"
+        "QPushButton:hover {"
+        "   background-color: #2980b9;"
+        "}"
+        );
 }
 
 void AddTripDialog::setupUI()
@@ -121,6 +148,16 @@ void AddTripDialog::setupUI()
 
     formLayout->addWidget(lblDescription, 6, 0, Qt::AlignTop);
     formLayout->addWidget(ui->textDescription, 6, 1);
+
+    // Thêm phần chọn ảnh vào formLayout
+    QLabel *lblImage = new QLabel("Trip Image:");
+    lblImage->setStyleSheet(labelStyle);
+    formLayout->addWidget(lblImage, 7, 0);
+
+    QHBoxLayout *imageLayout = new QHBoxLayout();
+    imageLayout->addWidget(ui->btnChooseImage);
+    imageLayout->addWidget(ui->labelImage, 1); // Cho label mở rộng
+    formLayout->addLayout(imageLayout, 7, 1);
 
     // Thiết lập size policy cho các widget input
     ui->lineName->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
@@ -208,6 +245,11 @@ void AddTripDialog::on_btnSave_clicked()
         return;
     }
 
+    if (!_tempImagePath.isEmpty() && _uploadedImageUrl.isEmpty()) {
+        CustomMessageBox::show("Warning", "Please wait for image upload to complete");
+        return;
+    }
+
     Trip newTrip(
         0, // ID sẽ được DB tự sinh
         ui->lineName->text(),
@@ -217,7 +259,7 @@ void AddTripDialog::on_btnSave_clicked()
         ui->linePrice->text().toInt(),
         ui->textSummary->toPlainText(),
         ui->textDescription->toPlainText(),
-        "" // empty imagePath
+        _uploadedImageUrl
         );
 
     if (_tripService->createTrip(newTrip)) {
@@ -230,4 +272,40 @@ void AddTripDialog::on_btnSave_clicked()
 void AddTripDialog::on_btnCancel_clicked()
 {
     reject(); // Đóng dialog và trả về QDialog::Rejected
+}
+
+void AddTripDialog::on_btnChooseImage_clicked()
+{
+    QString imagePath = QFileDialog::getOpenFileName(
+        this,
+        "Select Trip Image",
+        QDir::homePath(),
+        "Image Files (*.png *.jpg *.jpeg *.bmp)"
+        );
+
+    if (!imagePath.isEmpty()) {
+        _tempImagePath = imagePath;
+        QFileInfo fileInfo(imagePath);
+        ui->labelImage->setText("Uploading: " + fileInfo.fileName());
+        ui->labelImage->setStyleSheet("color: black; font-style: normal;");
+
+        // Tạo tên file unique cho blob storage
+        QString blobName = QString("trip_%1_%2.%3")
+                               .arg(QDateTime::currentDateTime().toString("yyyyMMddhhmmss"))
+                               .arg(QRandomGenerator::global()->bounded(1000))
+                               .arg(fileInfo.suffix().toLower());
+
+        // Bắt đầu upload
+        qDebug() << imagePath;
+        _storageService->uploadImage(imagePath, blobName);
+    }
+}
+
+void AddTripDialog::onImageUploaded(const QString &imageUrl)
+{
+    // Lưu URL ảnh vào biến tạm để sử dụng khi save
+    _uploadedImageUrl = imageUrl;
+
+    // Có thể thêm thông báo hoặc cập nhật UI nếu cần
+    ui->labelImage->setText("Image uploaded: " + QFileInfo(imageUrl).fileName());
 }
