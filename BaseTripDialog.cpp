@@ -97,6 +97,7 @@ void BaseTripDialog::refreshTripList()
         int col = i % 3;
         _gridLayout->addWidget(card, row, col);
     }
+    arrangeCardsInGrid(); // !!!!!!!!!!
 }
 
 void BaseTripDialog::resizeEvent(QResizeEvent *event)

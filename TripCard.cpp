@@ -112,7 +112,7 @@ bool TripCard::eventFilter(QObject *obj, QEvent *event)
 {
     if (obj == this) {
         auto shadowEffect = qobject_cast<QGraphicsDropShadowEffect*>(this->graphicsEffect());
-        int transitionTime = 200; //ms
+        int transitionTime = 150; //ms
 
         if (event->type() == QEvent::HoverEnter) {
             // Hiệu ứng di chuyển
