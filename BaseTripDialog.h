@@ -122,7 +122,7 @@ protected:
      */
     void showEvent(QShowEvent *event) override;
 
-protected slots:
+public slots:
     /**
      * @brief Slot xử lý khi người dùng click vào nút chi tiết
      * @param tripId ID của chuyến đi được chọn
