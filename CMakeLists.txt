@@ -54,6 +54,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         BookingService.h
         Booking.h
         constants.h
+        constants.cpp
         Booking.cpp
         BookingRepository.h
         SqlBookingRepository.h
