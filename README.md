@@ -1051,6 +1051,85 @@ Phân công công việc mới
 
 **Lợi ích:** Nhờ vào thiết kế này, mã nguồn sẽ không còn phụ thuộc vào các lớp cụ thể của các đối tượng cần clone, đồng thời loại bỏ việc khởi tạo lặp đi lặp lại bằng cách sao chép các nguyên mẫu (prototype) đã được xây dựng sẵn. Kết hợp với **Registry Pattern**, giúp **tập trung hóa** việc quản lý và truy cập các đối tượng được chia sẻ trong một ứng dụng phần mềm, khiến mã nguồn trở nên dễ bảo trì & mở rộng hơn.
 
+**5. Template Method Pattern**
+
+**Mục đích:** Template Method Pattern định nghĩa bộ khung (skeleton) của một thuật toán trong phương thức của lớp cơ sở, nhưng trì hoãn việc triển khai một số bước cụ thể cho các lớp con. Mẫu thiết kế này cho phép lớp con định nghĩa lại các bước cụ thể của thuật toán mà không làm thay đổi cấu trúc tổng thể.
+
+**Ví dụ áp dụng trong đồ án:**
+
+Lớp `BaseTripDialog` đóng vai trò là lớp cơ sở áp dụng Template Method Pattern, định nghĩa bộ khung chung cho việc hiển thị danh sách các chuyến đi. Các bước cụ thể được ủy quyền cho lớp con triển khai thông qua các phương thức ảo (virtual methods) và hook methods.
+
+**Cấu trúc lớp:**
+
+- `BaseTripDialog`: Lớp cơ sở chứa template method `refreshTripList` và `initializeDialog`. Các phương thức sau đây được khai báo ảo để lớp con tùy biến:
+
+- `getWindowTitle()`: Trả về tiêu đề cửa sổ.
+
+- `getTripsToDisplay()`: Trả về danh sách các chuyến đi cần hiển thị.
+
+- `createTripCard(const Trip&)`: Tạo một widget card cho chuyến đi.
+
+- `onTripCardCreated(TripCard*, const Trip&)`: Hàm hook được gọi sau khi tạo card, cho phép lớp con kết nối các tín hiệu (signals) cụ thể.
+
+- `setupAdditionalUI()`: Hàm hook cho phép lớp con thêm các thành phần giao diện đặc thù.
+
+**Sơ đồ lớp:**
+
+```mermaid
+classDiagram
+    class BaseTripDialog {
+        <<abstract>>
+        #_tripService: TripService*
+        #_bookingService: BookingService*
+        #_reviewService: ReviewService*
+        #_gridLayout: QGridLayout*
+        #_scrollArea: QScrollArea*
+        #_contentWidget: QWidget*
+        #_initialized: bool
+        #initializeDialog()
+        #refreshTripList()
+        #initializeUI()
+        +showEvent(QShowEvent*)
+        #getWindowTitle() const =0
+        #getTripsToDisplay() =0
+        #createTripCard(const Trip&) =0
+        #onTripCardCreated(TripCard*, const Trip&)
+        #setupAdditionalUI()
+        #handleDetailsClicked(int)
+    }
+
+    class TripListDialog {
+        +getWindowTitle() const
+        +getTripsToDisplay()
+        +createTripCard(const Trip&)
+        +onTripCardCreated(TripCard*, const Trip&)
+        +handleBookClicked(int)
+    }
+
+    class BookedTripsDialog {
+        +getWindowTitle() const
+        +getTripsToDisplay()
+        +createTripCard(const Trip&)
+        +onTripCardCreated(TripCard*, const Trip&)
+        +setupAdditionalUI()
+        +handleCancelClicked(int)
+        -findBookingForTrip(int)
+    }
+
+    BaseTripDialog <|-- TripListDialog
+    BaseTripDialog <|-- BookedTripsDialog
+```
+
+**Lợi ích:**
+
+- Template Method Pattern giúp tái sử dụng mã nguồn: Các đoạn mã chung như thiết lập layout, vòng lặp hiển thị các card, xử lý sự kiện resize, ... được đặt trong lớp cơ sở `BaseTripDialog`, tránh sự trùng lặp mã nguồn ở hai lớp `TripListDialog` và `BookedTripsDialog`.
+
+- Cho phép dễ dàng mở rộng: Khi cần thêm một dạng danh sách chuyến đi mới (ví dụ: chuyến đi đã xem gần đây), ta chỉ cần tạo một lớp con mới của `BaseTripDialog` và cài đặt các phương thức ảo theo yêu cầu.
+
+- Đảm bảo cấu trúc chung: Tất cả các hộp thoại hiển thị danh sách chuyến đi đều tuân thủ một cấu trúc chung, đảm bảo tính nhất quán trong ứng dụng.
+
+**Kết luận:** Việc áp dụng Template Method Pattern trong trường hợp này giúp đồ án tuân thủ nguyên tắc DRY (Don't Repeat Yourself) và tạo ra một thiết kế linh hoạt, dễ bảo trì, mở rộng.
+
 ### Đảm bảo chất lượng
 
 **1\. Single Branch Workflow**
@@ -1548,6 +1627,925 @@ Dựa trên hàm kiểm thử ta thu được kết quả với các hàm đã �
 #### Kết luận
 
 Các chức năng đã được sử dụng hoạt động đúng theo yêu cầu, đảm bảo tính chính xác.
+
+### Các chủ đề nâng cao tự tìm hiểu
+
+**1. Repository Pattern**
+
+**Mục đích:** Tách biệt logic truy cập dữ liệu khỏi logic nghiệp vụ.
+
+**Ví dụ áp dụng trong đồ án:**
+
+- Các lớp `SqlUserRepository`, `SqlTripRepository`.
+
+  - Code minh họa:
+
+    ```cpp
+    class UserRepository {
+    public:
+       virtual bool addUser(const User& user) = 0;
+       virtual QSharedPointer<User> getUserByEmail(const QString& email) = 0;
+    };
+
+    class SqlUserRepository : public UserRepository {
+    public:
+       bool addUser(const User& user) override {
+          // Logic thêm user vào SQL database
+       }
+    };
+    ```
+
+  - Ví dụ sử dụng:
+
+    ```cpp
+    auto userRepo = QSharedPointer<SqlUserRepository>::create(DatabaseManager::getInstance());
+    AuthService authService(userRepo);
+    ```
+
+**Lợi ích:** Dễ dàng thay đổi database (SQL → NoSQL, hoặc sử dụng file text,...) mà không ảnh hưởng đến service layer. Chuyên biệt chức năng của từng tầng, giúp kiểm soát & phát triển phần mềm dễ dàng hơn.
+
+**2. Repository Abstraction Pattern với IDataProvider**
+
+**Mục đích:** Pattern này tập trung hóa việc truy cập dữ liệu thông qua một interface chung (`IDataProvider`), đóng vai trò như một **Abstract Factory** cho các repository. Thiết kế này:
+
+1. Tách biệt hoàn toàn tầng business logic khỏi cơ chế truy xuất dữ liệu cụ thể
+2. Cung cấp khả năng thay thế nguồn dữ liệu động (SQL, NoSQL, Mock data,...) mà không cần thay đổi code service
+3. Tuân thủ nguyên lý **Dependency Inversion Principle (DIP)** - module cấp cao không phụ thuộc vào module cấp thấp, cả hai phụ thuộc vào abstraction.
+
+**Cấu trúc thiết kế:**
+
+```mermaid
+classDiagram
+    class IDataProvider {
+        <<interface>>
+        +getTripRepository() TripRepository*
+        +getUserRepository() UserRepository*
+        +getBookingRepository() BookingRepository*
+        +getReviewRepository() ReviewRepository*
+    }
+
+    class SqlDao {
+        -_dbManager: DatabaseManager&
+        +getTripRepository() SqlTripRepository*
+        +getUserRepository() SqlUserRepository*
+        +getBookingRepository() SqlBookingRepository*
+        +getReviewRepository() SqlReviewRepository*
+    }
+
+    class TripService {
+        -_tripRepository: TripRepository*
+        +getAllTrips()
+        +getTripById()
+    }
+
+    class AuthService {
+        -_userRepository: UserRepository*
+        +authenticate()
+    }
+
+    IDataProvider <|.. SqlDao
+    TripRepository <.. TripService
+    UserRepository <.. AuthService
+    IDataProvider --> TripRepository : creates
+    IDataProvider --> UserRepository : creates
+    IDataProvider --> BookingRepository : creates
+    IDataProvider --> ReviewRepository : creates
+```
+
+**Triển khai trong đồ án**
+
+- Interface trung tâm `IDataProvider`
+
+```cpp
+class IDataProvider {
+public:
+    virtual QSharedPointer<TripRepository> getTripRepository() const = 0;
+    virtual QSharedPointer<UserRepository> getUserRepository() const = 0;
+    virtual QSharedPointer<BookingRepository> getBookingRepository() const = 0;
+    virtual QSharedPointer<ReviewRepository> getReviewRepository() const = 0;
+};
+```
+
+- Triển khai cụ thể (ví dụ với data từ SQL)
+
+```cpp
+class SqlDao : public IDataProvider {
+public:
+    explicit SqlDao(DatabaseManager& db);
+
+    QSharedPointer<TripRepository> getTripRepository() const override {
+        return QSharedPointer<SqlTripRepository>::create(_dbManager);
+    }
+
+    // Các phương thức repository khác...
+};
+```
+
+- Cơ chế injection vào các service
+
+```cpp
+// Khởi tạo và đăng ký DataProvider
+void App::setupDependencies() {
+    DatabaseManager& db = DatabaseManager::getInstance();
+    auto sqlProvider = QSharedPointer<SqlDao>::create(db);
+    Registry::addSingleton<IDataProvider>(sqlProvider);
+
+    // Tạo service với repository từ DataProvider
+    auto dataProvider = Registry::getSingleton<IDataProvider>();
+    auto tripService = QSharedPointer<TripService>::create(
+        dataProvider->getTripRepository()
+    );
+    Registry::addSingleton<TripService>(tripService);
+}
+```
+
+**Kết luận:** Việc áp dụng `IDataProvider` cùng với cơ chế dependency injection thông qua `Registry` tạo nên:
+
+- Hệ thống linh hoạt - thay đổi nguồn dữ liệu chỉ bằng 1 dòng code
+
+- Kiến trúc testable - dễ dàng inject mock repository cho unit test
+
+- Quản lý tập trung - kiểm soát transaction, cache, connection pooling tại một điểm duy nhất
+
+- Giảm coupling - các service không biết/nên biết về nguồn dữ liệu cụ thể
+
+**3. Áp dụng std::any (từ chuẩn C++17) và Registry Pattern; Kết hợp lớp `App` để cấu hình sẵn các dependencies và connections tương ứng**
+
+**Mục đích:** Kết hợp **Registry Pattern** với `std::any` (từ C++17) tạo thành một **Service Locator** mạnh mẽ, kết hợp với lớp `App` đóng vai trò **Composition Root** giúp:
+
+1. **Tập trung hóa** việc quản lý dependencies toàn hệ thống
+2. **Đơn giản hóa** việc truy cập dịch vụ xuyên suốt ứng dụng
+3. **Linh hoạt** trong việc cấu hình và thay thế implementation
+4. Tuân thủ nguyên tắc **Inversion of Control (IoC)** và **Dependency Inversion Principle (DIP)**
+
+**Cơ chế hoạt động:**
+
+```mermaid
+graph TD
+    A[App - Composition Root] --> B[Khởi tạo dependencies]
+    A --> C[Đăng ký vào Registry]
+    A --> D[Thiết lập connections]
+    B --> E[DatabaseManager]
+    B --> F[SqlDao]
+    B --> G[Services]
+    C --> H[Registry với std::any]
+    D --> I[Kết nối Signal-Slot]
+    H --> J[Truy cập dịch vụ từ bất kỳ đâu]
+```
+
+**Triển khai trong đồ án**
+
+- **Registry Pattern** với _std::any_
+
+```cpp
+class Registry {
+private:
+    inline static QHash<QString, std::any> _instances;
+
+public:
+    template<typename T>
+    static void addSingleton(QSharedPointer<T> instance) {
+        // Sử dụng typeid.name() làm key
+        _instances.insert(QString::fromStdString(typeid(T).name()), instance);
+    }
+
+    template<typename T>
+    static QSharedPointer<T> getSingleton() {
+        auto key = QString::fromStdString(typeid(T).name());
+        if (_instances.contains(key)) {
+            try {
+                // Ép kiểu an toàn với std::any_cast
+                return std::any_cast<QSharedPointer<T>>(_instances[key]);
+            } catch (const std::bad_any_cast& e) {
+                qWarning() << "Bad cast:" << e.what();
+            }
+        }
+        return nullptr;
+    }
+};
+```
+
+- Lớp `App` đóng vai trò **Composition Root**
+
+```cpp
+class App {
+public:
+    bool config() {
+        loadGlobalStyles();
+        setupDependencies(); // Khởi tạo và đăng ký dependencies
+        setupConnections();  // Thiết lập kết nối UI
+        return true;
+    }
+
+private:
+    void setupDependencies() {
+        // 1. Khởi tạo DatabaseManager
+        DatabaseManager& db = DatabaseManager::getInstance();
+
+        // 2. Tạo và đăng ký IDataProvider
+        auto sqlProvider = QSharedPointer<SqlDao>::create(db);
+        Registry::addSingleton<IDataProvider>(sqlProvider);
+
+        // 3. Khởi tạo các service từ DataProvider
+        auto dataProvider = Registry::getSingleton<IDataProvider>();
+        auto authService = QSharedPointer<AuthService>::create(
+            dataProvider->getUserRepository());
+        Registry::addSingleton<AuthService>(authService);
+
+        // 4. Service có dependency
+        auto bookingService = QSharedPointer<BookingService>::create(
+            dataProvider->getBookingRepository(),
+            Registry::getSingleton<TripService>(),
+            Registry::getSingleton<AuthService>()
+        );
+        Registry::addSingleton<BookingService>(bookingService);
+    }
+
+    void setupConnections() {
+        // Tạo LoginWindow với AuthService từ Registry
+        _loginWindow = QSharedPointer<LoginWindow>::create(
+            Registry::getSingleton<AuthService>()
+        );
+
+        // Kết nối signal loginSuccess
+        QObject::connect(_loginWindow.data(), &LoginWindow::loginSuccess, [this]() {
+            // Tạo MainWindow với các service từ Registry
+            _mainWindow = QSharedPointer<MainWindow>::create(
+                Registry::getSingleton<UserService>(),
+                Registry::getSingleton<AuthService>(),
+                // ... các service khác
+            );
+        });
+    }
+};
+```
+
+**Lợi ích của thiết kế**
+
+- Khởi tạo tập trung:
+
+```cpp
+int main(int argc, char *argv[]) {
+    QApplication a(argc, argv);
+
+    App app;
+    if (!app.config()) { // Composition Root
+        return -1;
+    }
+
+    return app.run();
+}
+```
+
+- Truy cập dịch vụ đơn giản:
+
+```cpp
+void AnyClass::anyMethod() {
+    auto tripService = Registry::getSingleton<TripService>();
+    auto trips = tripService->getAllTrips();
+}
+```
+
+- Thay thế implementation dễ dàng:
+
+```cpp
+// Trong unit test
+void TestCase::setUp() {
+    auto mockProvider = QSharedPointer<MockDataProvider>::create();
+    Registry::addSingleton<IDataProvider>(mockProvider);
+
+    // Khởi tạo service với mock data
+}
+```
+
+- Quản lý vòng đời tự động:
+
+```cpp
+App::~App() {
+    Registry::clear(); // Giải phóng tất cả QSharedPointer
+}
+```
+
+**Nguyên lý SOLID áp dụng:**
+
+- **Single Responsibility Principle (SRP):** Mỗi service có một trách nhiệm duy nhất, `App` chỉ chịu trách nhiệm khởi tạo và kết nối
+
+- **Dependency Inversion Principle (DIP):** Các module cấp cao (ví dụ: `MainWindow`) không phụ thuộc trực tiếp vào module cấp thấp (ví dụ: `SqlTripRepository`), mà phụ thuộc vào abstraction (interface `TripRepository`)
+
+- **Open/Closed Principle (OCP):** Có thể thêm dịch vụ mới mà không cần sửa code `Registry`
+
+**Kết luận**: Việc kết hợp Registry Pattern với std::any tạo thành một Service Locator mạnh mẽ, cùng với lớp App đóng vai trò Composition Root đã giúp:
+
+- Tổ chức mã nguồn có cấu trúc rõ ràng
+
+- Quản lý phụ thuộc hiệu quả xuyên suốt ứng dụng
+
+- Tách biệt hoàn toàn quá trình khởi tạo với logic nghiệp vụ
+
+- Tận dụng tối đa tính năng hiện đại của C++17 (std::any)
+
+- Tạo nền tảng vững chắc cho việc mở rộng và bảo trì sau này
+
+**4. Observer Pattern**
+
+**Mục đích:** Observer Pattern định nghĩa một cơ chế **một-nhiều** giữa các đối tượng, sao cho khi một đối tượng (subject) thay đổi trạng thái, tất cả các đối tượng phụ thuộc (observers) sẽ được thông báo và cập nhật tự động. Mẫu thiết kế này giúp:
+
+- Tách rời subject và observer, giảm sự phụ thuộc
+
+- Hỗ trợ truyền thông không đồng bộ, event-driven
+
+- Tuân thủ nguyên tắc **Open/Closed Principle** (dễ dàng thêm observer mới)
+
+**Sơ đồ lớp:**
+
+```mermaid
+
+classDiagram
+
+class IObserver {
+
+<<interface>>
+
++onEvent(Event&) void
+
+}
+
+class Observable {
+
+-_observers: set~IObserverPtr~
+
++subscribe(IObserverPtr) void
+
++unsubscribe(IObserverPtr) void
+
++notify(Event&) void
+
+}
+
+class Event {
+
+<<abstract>>
+
+#_timestamp: QDateTime
+
++timestamp() QDateTime
+
++name() QString
+
++data() QVariantMap
+
+}
+
+class BookingService {
+
+-_observable: Observable
+
++bookTrip(int) bool
+
++subscribe(IObserverPtr) void
+
++unsubscribe(IObserverPtr) void
+
+}
+
+class LoggingObserver {
+
++onEvent(Event&) override
+
+}
+
+class AnalyticsObserver {
+
++onEvent(Event&) override
+
+}
+
+class TripBookedEvent {
+
+-_tripId: int
+
+-_userEmail: QString
+
++name() override
+
++data() override
+
+}
+
+IObserver <|.. LoggingObserver
+
+IObserver <|.. AnalyticsObserver
+
+Event <|.. TripBookedEvent
+
+Observable <-- BookingService : composition
+
+BookingService ..> TripBookedEvent : creates
+
+Observable --> IObserver : notifies
+
+```
+
+**Triển khai trong đồ án:**
+
+1. **Interface cơ bản:**
+
+```cpp
+
+// Lớp cơ sở cho sự kiện
+
+class Event {
+
+public:
+
+Event() : _timestamp(QDateTime::currentDateTime()) {}
+
+virtual ~Event() = default;
+
+QDateTime timestamp() const { return _timestamp; }
+
+virtual QString name() const = 0;
+
+virtual QVariantMap data() const = 0;
+
+private:
+
+QDateTime _timestamp;
+
+};
+
+// Interface cho Observer
+
+class IObserver {
+
+public:
+
+virtual ~IObserver() = default;
+
+virtual void onEvent(const Event& event) = 0;
+
+};
+
+using IObserverPtr = QSharedPointer<IObserver>;
+
+// Lớp Observable (có thể tái sử dụng)
+
+class Observable {
+
+public:
+
+void subscribe(IObserverPtr observer) {
+
+_observers.insert(observer);
+
+}
+
+void unsubscribe(IObserverPtr observer) {
+
+_observers.erase(observer);
+
+}
+
+void notify(const Event& event) {
+
+for (const auto& observer : _observers) {
+
+observer->onEvent(event);
+
+}
+
+}
+
+private:
+
+std::set<IObserverPtr> _observers;
+
+};
+
+```
+
+2. **Triển khai cụ thể cho BookingService:**
+
+```cpp
+
+// Sự kiện đặt chuyến đi
+
+class TripBookedEvent : public Event {
+
+public:
+
+TripBookedEvent(int tripId, const QString& userEmail)
+
+: _tripId(tripId), _userEmail(userEmail) {}
+
+QString name() const override { return "TripBooked"; }
+
+QVariantMap data() const override {
+
+return {
+
+{"tripId", _tripId},
+
+{"userEmail", _userEmail}
+
+};
+
+}
+
+private:
+
+int _tripId;
+
+QString _userEmail;
+
+};
+
+// BookingService sử dụng composition với Observable
+
+class BookingService : public QObject {
+
+Q_OBJECT
+
+public:
+
+// ... constructor và các phương thức khác
+
+void bookTrip(int tripId) {
+
+// Logic đặt chuyến
+
+if (/* thành công */) {
+
+// Tạo sự kiện
+
+auto event = TripBookedEvent(tripId, _authService->currentUserEmail());
+
+_observable.notify(event); // Thông báo đến tất cả observers
+
+}
+
+}
+
+void subscribe(IObserverPtr observer) {
+
+_observable.subscribe(observer);
+
+}
+
+void unsubscribe(IObserverPtr observer) {
+
+_observable.unsubscribe(observer);
+
+}
+
+private:
+
+Observable _observable;
+
+// ... các thành phần khác
+
+};
+
+```
+
+3. **Triển khai Observer (Logging và Analytics):**
+
+```cpp
+
+// Observer ghi log
+
+class LoggingObserver : public IObserver {
+
+public:
+
+void onEvent(const Event& event) override {
+
+qDebug() << "[" << event.timestamp().toString(Qt::ISODate) << "]"
+
+<< event.name() << "event occurred with data:" << event.data();
+
+}
+
+};
+
+// Observer phân tích dữ liệu
+
+class AnalyticsObserver : public IObserver {
+
+public:
+
+void onEvent(const Event& event) override {
+
+if (event.name() == "TripBooked") {
+
+auto data = event.data();
+
+int tripId = data["tripId"].toInt();
+
+QString userEmail = data["userEmail"].toString();
+
+_analytics.trackBooking(tripId, userEmail);
+
+}
+
+}
+
+};
+
+```
+
+4. **Thiết lập trong Composition Root (App):**
+
+```cpp
+
+void App::setupObservers() {
+
+auto bookingService = Registry::getSingleton<BookingService>();
+
+auto logger = QSharedPointer<LoggingObserver>::create();
+
+auto analytics = QSharedPointer<AnalyticsObserver>::create();
+
+bookingService->subscribe(logger);
+
+bookingService->subscribe(analytics);
+
+// Đăng ký vào Registry nếu cần truy cập sau này
+
+Registry::addSingleton<LoggingObserver>(logger);
+
+Registry::addSingleton<AnalyticsObserver>(analytics);
+
+}
+
+```
+
+**Lợi ích:**
+
+1. **Giảm coupling:** BookingService không cần biết chi tiết về các thành phần xử lý sự kiện (log, analytics,...)
+
+2. **Mở rộng dễ dàng:** Thêm observer mới mà không sửa đổi BookingService (OCP)
+
+3. **Tái sử dụng:** Lớp Observable có thể dùng cho bất kỳ service nào
+
+4. **Quản lý sự kiện tập trung:** Mỗi sự kiện mang dữ liệu phong phú và tự mô tả
+
+5. **Hỗ trợ đa nền tảng:** Dễ dàng gửi sự kiện đến các hệ thống bên ngoài (web service, mobile push,...)
+
+**Kết luận:** Việc áp dụng Observer Pattern trong BookingService giúp đồ án đạt được:
+
+- **Kiến trúc linh hoạt:** Tách biệt nghiệp vụ đặt chuyến và các hành vi phụ trợ
+
+- **Khả năng mở rộng vô hạn:** Bằng cách thêm observer mới (ví dụ: gửi email, cập nhật real-time dashboard)
+
+- **Dễ bảo trì:** Mỗi observer có trách nhiệm đơn lẻ, dễ kiểm thử
+
+- **Tương thích với event-driven architecture:** Chuẩn bị cho kiến trúc microservice trong tương lai
+
+Pattern này kết hợp hoàn hảo với các pattern trước (Registry, Dependency Injection) tạo thành hệ thống mạnh mẽ, dễ quản lý.
+
+**5. Template Method Pattern**
+
+**Mục đích:** Template Method Pattern định nghĩa bộ khung (skeleton) của một thuật toán trong phương thức của lớp cơ sở, nhưng trì hoãn việc triển khai một số bước cụ thể cho các lớp con. Mẫu thiết kế này cho phép lớp con định nghĩa lại các bước cụ thể của thuật toán mà không làm thay đổi cấu trúc tổng thể.
+
+**Ví dụ áp dụng trong đồ án:**
+
+Lớp `BaseTripDialog` đóng vai trò là lớp cơ sở áp dụng Template Method Pattern, định nghĩa bộ khung chung cho việc hiển thị danh sách các chuyến đi. Các bước cụ thể được ủy quyền cho lớp con triển khai thông qua các phương thức ảo (virtual methods) và hook methods.
+
+**Cấu trúc lớp:**
+
+- `BaseTripDialog`: Lớp cơ sở chứa template method `refreshTripList` và `initializeDialog`. Các phương thức sau đây được khai báo ảo để lớp con tùy biến:
+
+- `getWindowTitle()`: Trả về tiêu đề cửa sổ.
+
+- `getTripsToDisplay()`: Trả về danh sách các chuyến đi cần hiển thị.
+
+- `createTripCard(const Trip&)`: Tạo một widget card cho chuyến đi.
+
+- `onTripCardCreated(TripCard*, const Trip&)`: Hàm hook được gọi sau khi tạo card, cho phép lớp con kết nối các tín hiệu (signals) cụ thể.
+
+- `setupAdditionalUI()`: Hàm hook cho phép lớp con thêm các thành phần giao diện đặc thù.
+
+**Sơ đồ lớp:**
+
+```mermaid
+classDiagram
+    class BaseTripDialog {
+        <<abstract>>
+        #_tripService: TripService*
+        #_bookingService: BookingService*
+        #_reviewService: ReviewService*
+        #_gridLayout: QGridLayout*
+        #_scrollArea: QScrollArea*
+        #_contentWidget: QWidget*
+        #_initialized: bool
+        #initializeDialog()
+        #refreshTripList()
+        #initializeUI()
+        +showEvent(QShowEvent*)
+        #getWindowTitle() const =0
+        #getTripsToDisplay() =0
+        #createTripCard(const Trip&) =0
+        #onTripCardCreated(TripCard*, const Trip&)
+        #setupAdditionalUI()
+        #handleDetailsClicked(int)
+    }
+
+    class TripListDialog {
+        +getWindowTitle() const
+        +getTripsToDisplay()
+        +createTripCard(const Trip&)
+        +onTripCardCreated(TripCard*, const Trip&)
+        +handleBookClicked(int)
+    }
+
+    class BookedTripsDialog {
+        +getWindowTitle() const
+        +getTripsToDisplay()
+        +createTripCard(const Trip&)
+        +onTripCardCreated(TripCard*, const Trip&)
+        +setupAdditionalUI()
+        +handleCancelClicked(int)
+        -findBookingForTrip(int)
+    }
+
+    BaseTripDialog <|-- TripListDialog
+    BaseTripDialog <|-- BookedTripsDialog
+```
+
+**Lợi ích:**
+
+- Template Method Pattern giúp tái sử dụng mã nguồn: Các đoạn mã chung như thiết lập layout, vòng lặp hiển thị các card, xử lý sự kiện resize, ... được đặt trong lớp cơ sở `BaseTripDialog`, tránh sự trùng lặp mã nguồn ở hai lớp `TripListDialog` và `BookedTripsDialog`.
+
+- Cho phép dễ dàng mở rộng: Khi cần thêm một dạng danh sách chuyến đi mới (ví dụ: chuyến đi đã xem gần đây), ta chỉ cần tạo một lớp con mới của `BaseTripDialog` và cài đặt các phương thức ảo theo yêu cầu.
+
+- Đảm bảo cấu trúc chung: Tất cả các hộp thoại hiển thị danh sách chuyến đi đều tuân thủ một cấu trúc chung, đảm bảo tính nhất quán trong ứng dụng.
+
+**Kết luận:** Việc áp dụng Template Method Pattern trong trường hợp này giúp đồ án tuân thủ nguyên tắc DRY (Don't Repeat Yourself) và tạo ra một thiết kế linh hoạt, dễ bảo trì, mở rộng.
+
+**6. "Composition over Inheritance" trong BookingService**
+
+**Mục đích:** Nguyên tắc **Composition over Inheritance** (Ưu tiên thành phần hơn kế thừa) khuyến khích việc xây dựng các lớp bằng cách kết hợp các đối tượng khác (composition) thay vì kế thừa từ nhiều lớp cha. Trong đồ án, nguyên tắc này được áp dụng để giải quyết các vấn đề:
+
+1. **Tránh kế thừa đa mức** (multiple inheritance) dẫn đến bài toán "kim cương" (diamond problem) trong C++.
+
+2. **Tăng tính linh hoạt**: Dễ dàng thay đổi hoặc mở rộng hành vi của lớp bằng cách thay đổi thành phần bên trong.
+
+3. **Tuân thủ nguyên tắc Single Responsibility**: Mỗi lớp chỉ nên có một lý do để thay đổi.
+
+**Vấn đề cụ thể trong đồ án:**
+
+Lớp `BookingService` cần kế thừa từ `QObject` để sử dụng cơ chế signal-slot của Qt. Đồng thời, nó cũng cần có khả năng quan sát (observable) để thông báo sự kiện. Nếu sử dụng kế thừa:
+
+```cpp
+
+class BookingService : public QObject, public Observable {
+
+// ...
+
+};
+
+```
+
+Sẽ dẫn đến hai vấn đề:
+
+1. **Kế thừa đa mức**: C++ cho phép, nhưng nếu `Observable` cũng kế thừa từ `QObject` thì sẽ dẫn đến "diamond problem" vì cả `QObject` và `Observable` đều có thể có chung một lớp cơ sở (nếu `Observable` kế thừa `QObject`).
+
+2. **Khó quản lý bộ nhớ**: Qt sử dụng cơ chế quản lý bộ nhớ dựa trên cây đối tượng (object tree) với `QObject`. Kế thừa từ nhiều lớp `QObject` sẽ gây ra xung đột.
+
+3. Sơ đồ hóa vấn đề
+
+```mermaid
+classDiagram
+    class QObject
+    class Observable {
+        +subscribe()
+        +unsubscribe()
+        +notify()
+    }
+
+    class BookingService {
+        // Nếu kế thừa cả QObject và Observable -> diamond problem!
+    }
+
+    QObject <|-- BookingService : Inheritance
+    Observable <|-- BookingService : Inheritance? (Problem!)
+```
+
+**Giải pháp: Composition over Inheritance**
+
+Thay vì kế thừa từ `Observable`, `BookingService` chứa một đối tượng `Observable` như một thành phần (composition).
+
+**Triển khai code:**
+
+```cpp
+
+class BookingService : public QObject {
+
+Q_OBJECT
+
+public:
+
+explicit BookingService(QSharedPointer<BookingRepository> bookingRepo,
+
+QSharedPointer<TripService> tripService,
+
+QSharedPointer<AuthService> authService,
+
+QObject* parent = nullptr);
+
+// Cung cấp giao diện để đăng ký observer
+
+void subscribe(IObserverPtr observer) {
+
+_observable.subscribe(observer);
+
+}
+
+void unsubscribe(IObserverPtr observer) {
+
+_observable.unsubscribe(observer);
+
+}
+
+// Ví dụ phương thức đặt chuyến
+
+bool bookTrip(int tripId) {
+
+// ... logic đặt chuyến
+
+if (bookingSuccess) {
+
+// Tạo sự kiện và thông báo
+
+auto event = TripBookedEvent(tripId, currentUserEmail);
+
+_observable.notify(event);
+
+}
+
+return bookingSuccess;
+
+}
+
+private:
+
+Observable _observable; // Thành phần Observable
+
+// ... các thành phần khác
+
+};
+
+```
+
+**Sơ đồ minh họa:**
+
+```mermaid
+
+classDiagram
+    class QObject
+    class Observable {
+        +subscribe()
+        +unsubscribe()
+        +notify()
+    }
+
+    class BookingService {
+        -_observable: Observable*
+        +subscribe()
+        +unsubscribe()
+    }
+
+    QObject <|-- BookingService : Inheritance
+    BookingService *--> Observable : Composition
+
+```
+
+**Lợi ích:**
+
+1. **Tránh diamond problem**: `BookingService` chỉ kế thừa từ `QObject`, còn `Observable` là một thành phần độc lập, không cần kế thừa từ bất kỳ lớp nào khác.
+
+2. **Tái sử dụng mã nguồn**: Lớp `Observable` có thể được sử dụng bởi bất kỳ dịch vụ nào khác (ví dụ: `ReviewService`, `TripService`) mà không cần kế thừa.
+
+3. **Linh hoạt trong thay đổi hành vi**: Có thể dễ dàng thay thế bằng một implementation khác của `Observable` (ví dụ: `ThreadSafeObservable`) mà không ảnh hưởng đến `BookingService`.
+
+4. **Tuân thủ nguyên lý SOLID**:
+
+- **Single Responsibility Principle**: `BookingService` chỉ tập trung vào nghiệp vụ đặt chuyến, còn việc quản lý observer được giao cho `Observable`.
+
+- **Open/Closed Principle**: Có thể thêm các loại observer mới mà không cần sửa `BookingService`.
+
+**Kết luận:**
+
+Việc áp dụng **Composition over Inheritance** trong thiết kế `BookingService` giúp đồ án:
+
+- **Giải quyết triệt để vấn đề kế thừa đa mức** trong C++/Qt
+
+- **Tăng tính module hóa** và khả năng tái sử dụng mã nguồn
+
+- **Bảo trì dễ dàng** khi hệ thống phát triển phức tạp
+
+- **Linh hoạt** trong việc mở rộng và thay đổi hành vi
 
 ## Hướng dẫn cài đặt & build chương trình (trên Windows)
 
