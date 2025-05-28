@@ -193,7 +193,7 @@ void SignupWindow::on_signupButton_clicked() {
         return;
     }
 
-    if (password.length() < minPasswordLength) {
+    if (password.length() < Constants::MIN_PASSWORD_LENGTH) {
         CustomMessageBox::show("Lỗi", "Mật khẩu phải có ít nhất 6 ký tự");
         return;
     }
