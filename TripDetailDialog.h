@@ -16,6 +16,8 @@
 #include <QComboBox>
 #include <QTextEdit>
 #include <QMessageBox>
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
 
 class QLabel;
 class QScrollArea;
@@ -70,6 +72,10 @@ private:
      */
     void loadExistingReviews();
 
+
+    void loadImageFromUrl(const QString &url, QLabel *imageLabel);
+    void loadDefaultImage(QLabel *imageLabel);
+
     const Trip& _trip; ///< Thông tin chuyến đi đang hiển thị
     QSharedPointer<ReviewService> _reviewService; ///< Service xử lý các thao tác với đánh giá
 
@@ -89,4 +95,6 @@ private:
     QPushButton* _submitReviewButton; ///< Nút gửi đánh giá
 
     QWidget* _reviewsContainer; ///< Container hiển thị danh sách đánh giá
+
+    QNetworkAccessManager* _networkManager;
 };

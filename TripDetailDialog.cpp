@@ -13,6 +13,7 @@ TripDetailDialog::TripDetailDialog(const Trip& trip,
                                    QWidget *parent)
     : QDialog(parent), _trip(trip), _reviewService(reviewService)
 {
+    _networkManager = new QNetworkAccessManager(this);
     setWindowTitle("Trip Details - " + trip.getTripName());
     setMinimumSize(800, 600); // 600 - 500
 
@@ -32,9 +33,19 @@ void TripDetailDialog::setupUI()
     QVBoxLayout *contentLayout = new QVBoxLayout(scrollContent);
 
     // Hiển thị ảnh lớn
+    // _imageLabel = new QLabel(scrollContent);
+    // QPixmap pixmap(_trip.getImagePath().isEmpty() ? ":/images/default-trip.jpg" : _trip.getImagePath());
+    // _imageLabel->setPixmap(pixmap.scaledToWidth(500, Qt::SmoothTransformation));
+    // _imageLabel->setAlignment(Qt::AlignCenter);
+    // contentLayout->addWidget(_imageLabel);
+
     _imageLabel = new QLabel(scrollContent);
-    QPixmap pixmap(_trip.getImagePath().isEmpty() ? ":/images/default-trip.jpg" : _trip.getImagePath());
-    _imageLabel->setPixmap(pixmap.scaledToWidth(500, Qt::SmoothTransformation));
+    if (_trip.getImagePath().startsWith("http", Qt::CaseInsensitive)) {
+        loadImageFromUrl(_trip.getImagePath(), _imageLabel);
+    } else {
+        QPixmap pixmap(_trip.getImagePath().isEmpty() ? ":/images/default-trip.jpg" : _trip.getImagePath());
+        _imageLabel->setPixmap(pixmap.scaledToWidth(500, Qt::SmoothTransformation));
+    }
     _imageLabel->setAlignment(Qt::AlignCenter);
     contentLayout->addWidget(_imageLabel);
 
@@ -226,4 +237,57 @@ void TripDetailDialog::loadStyles()
         this->setStyleSheet(styleSheet);
         styleFile.close();
     }
+}
+
+void TripDetailDialog::loadImageFromUrl(const QString &url, QLabel *imageLabel)
+{
+    const int targetWidth = 500; // Chiều rộng cố định 500px như trong code hiện tại
+
+    if (url.isEmpty()) {
+        loadDefaultImage(imageLabel);
+        return;
+    }
+
+    QNetworkRequest request(url);
+    QNetworkReply *reply = _networkManager->get(request);
+
+    connect(reply, &QNetworkReply::finished, this, [this, reply, imageLabel, targetWidth]() {
+        QScopedPointer<QNetworkReply, QScopedPointerDeleteLater> replyPtr(reply);
+
+        if (reply->error() != QNetworkReply::NoError) {
+            qWarning() << "Network error:" << reply->errorString() << "URL:" << reply->url().toString();
+            loadDefaultImage(imageLabel);
+            return;
+        }
+
+        QPixmap pixmap;
+        if (!pixmap.loadFromData(reply->readAll())) {
+            qWarning() << "Failed to load image from downloaded data";
+            loadDefaultImage(imageLabel);
+            return;
+        }
+
+        // Scale ảnh giữ nguyên tỷ lệ với chiều rộng cố định
+        QPixmap scaled = pixmap.scaledToWidth(targetWidth, Qt::SmoothTransformation);
+        imageLabel->setPixmap(scaled);
+        imageLabel->setAlignment(Qt::AlignCenter);
+        imageLabel->setMinimumWidth(targetWidth); // Đảm bảo label có đủ không gian hiển thị
+    });
+}
+
+void TripDetailDialog::loadDefaultImage(QLabel *imageLabel)
+{
+    const int targetWidth = 500;
+
+    QPixmap defaultPixmap(":/images/default-trip.jpg");
+    if (defaultPixmap.isNull()) {
+        imageLabel->setText("No Image Available");
+        imageLabel->setAlignment(Qt::AlignCenter);
+        return;
+    }
+
+    QPixmap scaled = defaultPixmap.scaledToWidth(targetWidth, Qt::SmoothTransformation);
+    imageLabel->setPixmap(scaled);
+    imageLabel->setAlignment(Qt::AlignCenter);
+    imageLabel->setMinimumWidth(targetWidth);
 }
