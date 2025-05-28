@@ -67,7 +67,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         SqlReviewRepository.cpp
         ReviewService.h
         ReviewService.cpp
-        ReviewDialog.h ReviewDialog.cpp ReviewDialog.ui
+        ReviewDialog.ui
         qaesencryption.h
         qaesencryption.cpp
         CrypToUtils.h CrypToUtils.cpp

@@ -254,7 +254,7 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
 
 void MainWindow::onLabelAddTripClicked()
 {
-    AddTripDialog dialog(_tripService, this);
+    AddTripDialog dialog(_tripService, _storageService, this);
     dialog.exec();
 }
 

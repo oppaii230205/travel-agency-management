@@ -5,6 +5,7 @@
 #include <QSharedPointer>
 #include "Trip.h"
 #include "TripService.h"
+#include "AzureStorageService.h"
 
 namespace Ui {
 class AddTripDialog;
@@ -26,7 +27,7 @@ public:
      * @param service Con trỏ thông minh đến TripService để thao tác với dữ liệu chuyến đi
      * @param parent Widget cha (mặc định là nullptr)
      */
-    explicit AddTripDialog(QSharedPointer<TripService> service, QWidget* parent = nullptr);
+    explicit AddTripDialog(QSharedPointer<TripService> tripService, QSharedPointer<AzureStorageService> storageService, QWidget* parent = nullptr);
 
     /**
      * @brief Destructor
@@ -41,6 +42,8 @@ private slots:
      * thông qua TripService nếu dữ liệu hợp lệ.
      */
     void on_btnSave_clicked();
+    void on_btnChooseImage_clicked();
+    void onImageUploaded(const QString& imageUrl);
 
     /**
      * @brief Xử lý sự kiện khi nút Cancel được click
@@ -49,6 +52,9 @@ private slots:
      */
     void on_btnCancel_clicked();
 
+signals:
+    void imageUploaded(const QString& imageUrl);
+
 private:
     /**
      * @brief Thiết lập giao diện người dùng
@@ -56,6 +62,10 @@ private:
      * Khởi tạo và cấu hình các thành phần giao diện như layout,
      * các widget nhập liệu, và style của dialog.
      */
+    QString _tempImagePath; // Đường dẫn tạm thời của ảnh
+    QString _uploadedImageUrl;
+    QSharedPointer<AzureStorageService> _storageService;
+
     void setupUI();
 
     Ui::AddTripDialog* ui;                    ///< Con trỏ đến UI được tạo bởi Qt Designer

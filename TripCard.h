@@ -13,6 +13,9 @@
 
 #include <QWidget>
 #include "Trip.h"
+#include <QNetworkAccessManager>
+#include <QLabel>
+#include <QNetworkReply>
 
 /**
  * @brief Class widget hiển thị thông tin chuyến đi dưới dạng thẻ
@@ -56,6 +59,12 @@ signals:
 
 protected:
     int _tripId; ///< ID của chuyến đi đang hiển thị
+
+private:
+    QNetworkAccessManager* _networkManager;
+
+    void loadImageFromUrl(const QString &url, QLabel *imageLabel);
+    void loadDefaultImage(QLabel *imageLabel);
 };
 
 #endif
