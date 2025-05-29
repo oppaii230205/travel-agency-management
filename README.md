@@ -1462,11 +1462,12 @@ int main() {
 }
 ```
 
-#### Thực hiện Unit Test với các lớp đã được sử dụng
+
+
+
+**3\. Thực hiện Unit Test với các lớp đã được sử dụng**
 
 \- Trước khi kiểm thử thực hiện tách phần Logic và UI để đảm bảo độ ổn định cao và dễ dàng trong quá trình kiểm thử chức năng.
-
-**3\. Thực hiện Unit Test với các lớp đã được** sử dụng
 
 **Giới Thiệu**
 
@@ -1549,22 +1550,6 @@ void testAuthService(DatabaseManager& db) {
 
 Dựa trên hàm kiểm thử ta thu được kết quả với các hàm đã được dùng với AuthService:
 
-| STT | Hàm kiểm thử | Trường hợp                        | Kết quả trả về                       | Kết quả kiểm thử |
-| --- | ------------ | --------------------------------- | ------------------------------------ | ---------------- |
-| 1   | signup       | Đăng ký hợp lệ                    | Thực thi thành công                  | PASS             |
-| 2   | signup       | Đăng ký trùng email               | Thông báo Email đã tồn tại           | PASS             |
-| 3   | login        | Đăng nhập hợp lệ                  | Thực thi thành công                  | PASS             |
-| 4   | login        | Đăng nhập sai mật khẩu            | Thông báo đăng nhập không thành công | PASS             |
-| 5   | login        | Đăng nhập với email không tồn tại | Thông báo đăng nhập không thành công | PASS             |
-
-Đánh giá kiểm thử các lớp và hàm liên quan đên AuthService
-
-- Tổng số test case: 5
-- Số lượng test case thành công: 5
-- Số lượng test case thất bại: 0
-- Tỷ lệ thành công: 100%
-
-→ Các test case thành công cho thấy các chức năng hoạt động đúng như mong đợi.
 | STT | Hàm kiểm thử | Trường hợp | Kết quả trả về | Kết quả kiểm thử |
 | --- | --- | --- | --- | --- |
 | 1 | signup | Đăng ký hợp lệ | Thực thi thành công | PASS |
@@ -1572,6 +1557,24 @@ Dựa trên hàm kiểm thử ta thu được kết quả với các hàm đã �
 | 3 | login | Đăng nhập hợp lệ | Thực thi thành công | PASS |
 | 4 | login | Đăng nhập sai mật khẩu | Thông báo đăng nhập không thành công | PASS |
 | 5 | login | Đăng nhập với email không tồn tại | Thông báo đăng nhập không thành công | PASS |
+| 6 | Update | Mật khẩu không hợp lệ | Cập nhật thành công | FAIL |
+
+Đánh giá kiểm thử các lớp và hàm liên quan đên AuthService
+
+- Tổng số test case: 6
+- Số lượng test case thành công: 5
+- Số lượng test case thất bại: 1
+- Tỷ lệ thành công: 83.33%
+
+→ Phần lớn các test case hoạt động đúng mong đợi, nhưng vẫn tồn tại lỗi.
+
+Sửa lỗi: Thêm kiểm tra mật khẩu khi cập nhật thông tin người dùng.
+```cpp
+    if (newPassword.length() < Constants::MIN_PASSWORD_LENGTH) {
+        CustomMessageBox::show("Lỗi", "Mật khẩu phải có ít nhất 6 ký tự");
+        return;
+    }
+```
 
 Thực hiện kiểm thử thủ công bằng cách tạo ra các hàm kiểm thử lớp “TripService” mô phỏng lại các hàm đã sử dụng (**createTrip**, **getAllTrips, deleteTrip**).
 Hàm thử
@@ -1638,7 +1641,47 @@ Dựa trên hàm kiểm thử ta thu được kết quả với các hàm đã �
 
 #### Kết luận
 
-Các chức năng đã được sử dụng hoạt động đúng theo yêu cầu, đảm bảo tính chính xác.
+- Các chức năng đã được sử dụng hoạt động đúng theo yêu cầu, đảm bảo tính chính xác.
+
+**4\. Thực hiện UI Test với các lớp đã được sử dụng**
+
+Kết quả kiểm thử:
+| STT | Giao diện | Tình huống | Trạng thái | Ghi chú |
+| --- | --- | --- | --- | --- |
+| 1   | Đăng nhập | Nhấn nút đăng nhập | Hoạt động | Đạt |
+| 2   | Đăng nhập | Nhấn nút đăng ký tài khoảng | Hoạt động | Đạt |
+| 3   | Đăng ký | Nhấn nút đăng ký | Hoạt động | Đạt |
+| 4   | Đăng ký | Nhấn nút quay lại đăng nhập | Hoạt động | Đạt |
+| 5   | Màn hình chính | Nhấn nút User Info | Hoạt động | Đạt |
+| 6   | Màn hình chính | Nhấn nút Show Booking | Hoạt động | Đạt |
+| 7   | Màn hình chính | Nhấn nút Show Trips | Hoạt động | Đạt |
+| 8   | Màn hình chính | Nhấn nút Add Trip | Hoạt động | Đạt |
+| 9   | Màn hình chính | Nhấn nút LogOut | Hoạt động | Đạt |
+| 10  | User Info | Hiển thị ảnh đại diện | Hoạt động | Đạt |
+| 11  | User Info | Hiển thị thông tin | Hoạt động | Đạt |
+| 12  | User Info | Nhấn nút đổi ảnh đại diện | Hoạt động | Đạt |
+| 13  | User Info | Nhấn nút Save Changes | Hoạt động | Đạt |
+| 14  | User Info | Nhấn nút Cancel | Hoạt động | Đạt |
+| 15  | Available Trips | Nhấn nút Book Now | Hoạt động | Đạt |
+| 16  | Available Trips | Nhấn nút Details | Hoạt động | Đạt |
+| 17  | Trip Details | Nhấn nút Cancel | Hoạt động | Đạt |
+| 18  | My Booked Trips | Nhấn nút Cancel Booking | Hoạt động | Đạt |
+| 19  | My Booked Trips | Nhấn nút Details | Hoạt động | Đạt |
+| 20  | Add Trip | Nhập thông tin | Hoạt động | Đạt |
+| 21  | Add Trip | Nhấn nút Choose Image | Hoạt động | Đạt |
+| 22  | Add Trip | Nhấn nút Save | Hoạt động | Đạt |
+| 23  | Add Trip | Nhấn nút Cancel | Hoạt động | Đạt |
+
+Đánh giá kết quả kiểm thử
+
+- Tổng số test case: 23
+- Số lượng test case thành công: 23
+- Số lượng test case thất bại: 0
+- Tỷ lệ thành công: 100%
+
+Kết luận
+
+- Các chức năng đã được sử dụng hoạt động đúng theo yêu cầu, đảm bảo tính chính xác.
 
 ### Các chủ đề nâng cao tự tìm hiểu
 
