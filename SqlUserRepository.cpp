@@ -4,6 +4,7 @@
 #include <QSqlError>
 #include <QDebug>
 
+
 //Do "User" là từ khóa riêng của SQL server nên đặt vào []
 
 SqlUserRepository::SqlUserRepository(DatabaseManager& dbManager) : _dbManager(dbManager){
@@ -54,6 +55,7 @@ bool SqlUserRepository::updateUser(const User& user){
         qWarning() << "Invalid user data";
         return false;
     }
+
 
     QSqlQuery query(_dbManager.getDatabase());
     query.prepare("UPDATE [USER] SET password = :password, name = :name, role = :role WHERE email = :email");

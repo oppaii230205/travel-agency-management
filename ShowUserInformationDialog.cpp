@@ -358,6 +358,11 @@ void ShowUserInformationDialog::on_btnSave_clicked()
         return;
     }
 
+    if (newPassword.length() < Constants::MIN_PASSWORD_LENGTH) {
+        CustomMessageBox::show("Lỗi", "Mật khẩu phải có ít nhất 6 ký tự");
+        return;
+    }
+
     if (!_tempAvatarPath.isEmpty()) {
         // Nếu có ảnh mới chọn nhưng chưa upload xong
         CustomMessageBox::show("Warning", "Please wait for avatar upload to complete");
