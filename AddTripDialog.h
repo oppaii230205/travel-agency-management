@@ -7,6 +7,7 @@
 #include "TripService.h"
 #include "AzureStorageService.h"
 
+
 namespace Ui {
 class AddTripDialog;
 }

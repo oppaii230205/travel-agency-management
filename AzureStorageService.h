@@ -58,10 +58,10 @@ signals:
     void uploadFailed(const QString &error);
 
 private:
-    QNetworkAccessManager *networkManager;    ///< Manager xử lý các network request
-    QString sasToken = "sv=2024-11-04&ss=bfqt&srt=co&sp=rwdctfx&se=2025-07-17T13:08:21Z&st=2025-05-17T05:08:21Z&sip=0.0.0.0-255.255.255.255&spr=https,http&sig=awquCygF%2FTINZl9iBMWbpEc09RstGlbIsRQ4cU%2FLoW8%3D";                         ///< Shared Access Signature token để xác thực với Azure
-    QString storageAccount = "tripagency";                   ///< Tên storage account trên Azure
-    QString containerName = "user-avatars";                    ///< Tên container chứa các blob
+    QNetworkAccessManager *_networkManager;    ///< Manager xử lý các network request
+    QString _sasToken = "sv=2024-11-04&ss=bfqt&srt=co&sp=rwdctfx&se=2025-07-17T13:08:21Z&st=2025-05-17T05:08:21Z&sip=0.0.0.0-255.255.255.255&spr=https,http&sig=awquCygF%2FTINZl9iBMWbpEc09RstGlbIsRQ4cU%2FLoW8%3D";                         ///< Shared Access Signature token để xác thực với Azure
+    QString _storageAccount = "tripagency";                   ///< Tên storage account trên Azure
+    QString _containerName = "user-avatars";                    ///< Tên container chứa các blob
 };
 
 #endif // AZURESTORAGESERVICE_H

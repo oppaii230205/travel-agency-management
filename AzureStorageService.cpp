@@ -8,7 +8,7 @@
 
 AzureStorageService::AzureStorageService(QObject *parent) : QObject(parent)
 {
-    networkManager = new QNetworkAccessManager(this);
+    _networkManager = new QNetworkAccessManager(this);
 }
 
 void AzureStorageService::uploadImage(const QString &filePath, const QString &blobName)
@@ -21,10 +21,10 @@ void AzureStorageService::uploadImage(const QString &filePath, const QString &bl
     }
 
     QString fullUrl = QString("https://%1.blob.core.windows.net/%2/%3?%4")
-                          .arg(storageAccount)
-                          .arg(containerName)
+                          .arg(_storageAccount)
+                          .arg(_containerName)
                           .arg(blobName)
-                          .arg(sasToken);
+                          .arg(_sasToken);
     QUrl url(fullUrl);
 
 
@@ -34,7 +34,7 @@ void AzureStorageService::uploadImage(const QString &filePath, const QString &bl
 
     request.setTransferTimeout(30000);
 
-    QNetworkReply *reply = networkManager->put(request, file);
+    QNetworkReply *reply = _networkManager->put(request, file);
 
     file->setParent(reply);
 
