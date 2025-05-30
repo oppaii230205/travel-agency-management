@@ -21,7 +21,7 @@
 ## Báo cáo tiến độ dự án
 
 **Tên dự án**: Travel Agency Management System  
-**Ngày báo cáo**: 05/05/2025  
+**Ngày báo cáo**: 30/05/2025  
 **Giai đoạn**: Phát triển chức năng sản phẩm  
 **Người phụ trách**: Nguyễn Hưng Thịnh - Võ Cao Tâm Chính
 
@@ -37,20 +37,13 @@
 | 1   | Thống nhất tài liệu mô tả coding convention | Hoàn thành        |                                                |
 | 2   | Xây dựng CSDL trên SQL Server               | Hoàn thành        |                                                |
 | 3   | Thiết kế lại mã nguồn hướng đối tượng       | Hoàn thành        |                                                |
-| 4   | Thiết kế giao diện (UI)                     | 100% (Hoàn thành) | Giao diện thân thiện, trực quan với người dùng |
+| 4   | Thiết kế giao diện (UI)                     | Hoàn thành | Giao diện thân thiện, trực quan với người dùng |
+| 5   | Viết mã nguồn cho toàn bộ dự án | Hoàn thành       | Hoàn thành tất cả các thiết kế đã đề ra. Đã có đầy đủ các chức năng cải tiến              |
+| 6   | Thiết kế giao diện cho sản phẩm | Hoàn thành      | Hoàn thành tất cả các UI/UX ở tất cả các chức năng, thân thiện & trực quan cho người dùng |
 
-**Công việc đang thực hiện**
+**Thống kê số lần commit**
 
-| STT | Hạng mục                        | Trạng thái | Ghi chú                                                                                   |
-| --- | ------------------------------- | ---------- | ----------------------------------------------------------------------------------------- |
-| 1   | Viết mã nguồn cho toàn bộ dự án | 100%       | Hoàn thành tất cả các thiết kế đã đề ra. Đã có đầy đủ các chức năng cải tiến              |
-| 2   | Thiết kế giao diện cho sản phẩm | 100%       | Hoàn thành tất cả các UI/UX ở tất cả các chức năng, thân thiện & trực quan cho người dùng |
-
-**Công việc sắp tới**
-
-- Chuẩn bị tài liệu kiểm thử sản phẩm.
-- Hoàn thành nhật kí, báo cáo, tài liệu giới thiệu.
-- Hoàn thành Auto-generated Documentation.
+![Thống kê số lần commit](images/Commit.png "Biểu đồ")
 
 **Kết luận**
 
