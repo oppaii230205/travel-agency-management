@@ -32,14 +32,14 @@
 
 **Công việc đã hoàn thành**
 
-| STT | Hạng mục                                    | Trạng thái        | Ghi chú                                        |
-| --- | ------------------------------------------- | ----------------- | ---------------------------------------------- |
-| 1   | Thống nhất tài liệu mô tả coding convention | Hoàn thành        |                                                |
-| 2   | Xây dựng CSDL trên SQL Server               | Hoàn thành        |                                                |
-| 3   | Thiết kế lại mã nguồn hướng đối tượng       | Hoàn thành        |                                                |
-| 4   | Thiết kế giao diện (UI)                     | Hoàn thành | Giao diện thân thiện, trực quan với người dùng |
-| 5   | Viết mã nguồn cho toàn bộ dự án | Hoàn thành       | Hoàn thành tất cả các thiết kế đã đề ra. Đã có đầy đủ các chức năng cải tiến              |
-| 6   | Thiết kế giao diện cho sản phẩm | Hoàn thành      | Hoàn thành tất cả các UI/UX ở tất cả các chức năng, thân thiện & trực quan cho người dùng |
+| STT | Hạng mục                                    | Trạng thái | Ghi chú                                                                                   |
+| --- | ------------------------------------------- | ---------- | ----------------------------------------------------------------------------------------- |
+| 1   | Thống nhất tài liệu mô tả coding convention | Hoàn thành |                                                                                           |
+| 2   | Xây dựng CSDL trên SQL Server               | Hoàn thành |                                                                                           |
+| 3   | Thiết kế lại mã nguồn hướng đối tượng       | Hoàn thành |                                                                                           |
+| 4   | Thiết kế giao diện (UI)                     | Hoàn thành | Giao diện thân thiện, trực quan với người dùng                                            |
+| 5   | Viết mã nguồn cho toàn bộ dự án             | Hoàn thành | Hoàn thành tất cả các thiết kế đã đề ra. Đã có đầy đủ các chức năng cải tiến              |
+| 6   | Thiết kế giao diện cho sản phẩm             | Hoàn thành | Hoàn thành tất cả các UI/UX ở tất cả các chức năng, thân thiện & trực quan cho người dùng |
 
 **Thống kê số lần commit**
 
@@ -2657,7 +2657,7 @@ Việc áp dụng **Composition over Inheritance** trong thiết kế `BookingSe
 ## Video demo chương trình
 
 - Video demo báo cáo tiến độ - Link: https://www.youtube.com/watch?v=7cq-_D9EoGc
-- Video báo cáo đồ án (final) - Link: _Thêm sau_
+- Video báo cáo đồ án (final) - Link: https://youtu.be/2wVmf62bIoU
 
 ## Tài liệu mô tả kiến trúc phần mềm, modules
 
