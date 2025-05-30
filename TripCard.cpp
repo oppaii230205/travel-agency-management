@@ -47,30 +47,6 @@ TripCard::TripCard(const Trip& trip, QWidget *parent)
     // Setup layout và các thành phần UI
     QVBoxLayout *layout = new QVBoxLayout(this);
 
-    // Hình ảnh (có thể lấy từ resource hoặc URL)
-    // QLabel *imageLabel = new QLabel(this);
-
-    // QString pathToImage = !trip.getImagePath().isEmpty() ? trip.getImagePath() : ":/images/default-trip.jpg";
-
-    // QPixmap pixmap(pathToImage);
-
-    // if (pixmap.isNull()) {
-    //     qWarning() << "Failed to load image:" << pathToImage;
-    //     pixmap.load(":/images/default-trip.jpg");
-    // }
-
-    // // Tính toán kích thước giữ nguyên tỷ lệ
-    // QPixmap scaledPixmap = pixmap.scaledToWidth(350, Qt::SmoothTransformation);
-    // // Hoặc nếu muốn cố định cả chiều cao:
-    // // QPixmap scaledPixmap = pixmap.scaled(200, 150, Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation);
-
-    // imageLabel->setPixmap(scaledPixmap);
-    // imageLabel->setAlignment(Qt::AlignCenter);
-    // // imageLabel->setMinimumSize(200, 150);
-    // // imageLabel->setMaximumSize(200, 150);
-    // imageLabel->setObjectName("imageLabel");
-
-    // Thay thế phần code hiện tại bằng:
     QLabel *imageLabel = new QLabel(this);
     imageLabel->setObjectName("imageLabel");
     imageLabel->setAlignment(Qt::AlignCenter);

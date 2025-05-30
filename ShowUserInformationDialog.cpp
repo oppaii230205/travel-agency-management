@@ -358,7 +358,7 @@ void ShowUserInformationDialog::on_btnSave_clicked()
         return;
     }
 
-    if (newPassword.length() < Constants::MIN_PASSWORD_LENGTH) {
+    if (newPassword.length() < Constants::MIN_PASSWORD_LENGTH && newPassword != "") {
         CustomMessageBox::show("Lỗi", "Mật khẩu phải có ít nhất 6 ký tự");
         return;
     }

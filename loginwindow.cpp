@@ -53,7 +53,7 @@ void LoginWindow::setupUI() {
         delete this->layout();
     }
 
-    // 1. Tạo layout chính với khoảng cách và lề hợp lý
+    // 1. Tạo layout chính
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
     mainLayout->setSpacing(20);  // Khoảng cách giữa các widget
     mainLayout->setContentsMargins(40, 40, 40, 40);  // Lề xung quanh (left, top, right, bottom)

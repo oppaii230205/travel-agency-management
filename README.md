@@ -1570,7 +1570,7 @@ Dựa trên hàm kiểm thử ta thu được kết quả với các hàm đã �
 
 Sửa lỗi: Thêm kiểm tra mật khẩu khi cập nhật thông tin người dùng.
 ```cpp
-    if (newPassword.length() < Constants::MIN_PASSWORD_LENGTH) {
+    if (newPassword.length() < Constants::MIN_PASSWORD_LENGTH && newPassword != "") {
         CustomMessageBox::show("Lỗi", "Mật khẩu phải có ít nhất 6 ký tự");
         return;
     }

@@ -33,11 +33,6 @@ void TripDetailDialog::setupUI()
     QVBoxLayout *contentLayout = new QVBoxLayout(scrollContent);
 
     // Hiển thị ảnh lớn
-    // _imageLabel = new QLabel(scrollContent);
-    // QPixmap pixmap(_trip.getImagePath().isEmpty() ? ":/images/default-trip.jpg" : _trip.getImagePath());
-    // _imageLabel->setPixmap(pixmap.scaledToWidth(500, Qt::SmoothTransformation));
-    // _imageLabel->setAlignment(Qt::AlignCenter);
-    // contentLayout->addWidget(_imageLabel);
 
     _imageLabel = new QLabel(scrollContent);
     if (_trip.getImagePath().startsWith("http", Qt::CaseInsensitive)) {

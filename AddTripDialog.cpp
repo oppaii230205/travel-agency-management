@@ -98,7 +98,7 @@ void AddTripDialog::setupUI()
         }
     )");
 
-    // Sử dụng QGridLayout thay vì QFormLayout để kiểm soát tốt hơn
+    // Sử dụng QGridLayout
     QGridLayout *formLayout = new QGridLayout();
     formLayout->setSpacing(15);
     formLayout->setHorizontalSpacing(20);
@@ -108,7 +108,7 @@ void AddTripDialog::setupUI()
     formLayout->setColumnMinimumWidth(0, 120); // Cột label
     formLayout->setColumnStretch(1, 1);        // Cột input có thể mở rộng
 
-    // Tạo các QLabel riêng thay vì dùng QFormLayout tự động
+    // Tạo các QLabel
     QLabel *lblName = new QLabel("Trip Name:");
     QLabel *lblDuration = new QLabel("Duration:");
     QLabel *lblGroupSize = new QLabel("Group Size:");

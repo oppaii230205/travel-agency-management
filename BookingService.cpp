@@ -19,22 +19,6 @@ bool BookingService::bookTrip(int tripId) {
         return false;
     }
 
-    // TODO:
-    /*
-    // Kiểm tra trip tồn tại
-    auto trip = _tripService->getTripById(tripId);
-    if (!trip.isValid()) {
-        emit bookingFailed("Trip not found");
-        return false;
-    }
-
-    // Kiểm tra slot còn trống
-    if (trip.getCurrentParticipants() >= trip.getMaxGroupSize()) {
-        emit bookingFailed("Trip is fully booked");
-        return false;
-    }
-    */
-
     // Kiểm tra đã booking chưa
     if (hasUserBooked(tripId)) {
         emit bookingFailed("You've already booked this trip");
@@ -49,12 +33,7 @@ bool BookingService::bookTrip(int tripId) {
         );
 
     if (_bookingRepo->addBooking(newBooking)) {
-        // TODO:
-        /*
-        // Cập nhật số lượng participants
-        trip.setCurrentParticipants(trip.getCurrentParticipants() + 1);
-        _tripService->updateTrip(trip);
-        */
+
         emit bookingSuccess("Booking successful!");
         emit bookingsUpdated();
 
@@ -92,15 +71,6 @@ bool BookingService::cancelBooking(int tripId) {
             tripId
             )) {
 
-        // TODO
-        /*
-        // Cập nhật số lượng participants
-        auto trip = _tripService->getTripById(tripId);
-        if (trip.isValid()) {
-            trip.setCurrentParticipants(trip.getCurrentParticipants() - 1);
-            _tripService->updateTrip(trip);
-        }
-        */
 
         emit bookingSuccess("Booking cancelled");
         emit bookingsUpdated();

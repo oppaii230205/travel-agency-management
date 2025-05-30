@@ -173,40 +173,39 @@ void MainWindow::setupUI()
 
     // Main buttons layout (centered)
     QHBoxLayout *buttonLayout = new QHBoxLayout();
-    buttonLayout->setSpacing(10);  // Giảm khoảng cách từ 20px xuống 10px
+    buttonLayout->setSpacing(10);
     buttonLayout->setAlignment(Qt::AlignCenter);
 
-    // Show Trips button - tăng kích thước lên 300x300
+
     ui->labelShowTrips->setProperty("class", "ImageButton");
-    ui->labelShowTrips->setFixedSize(300, 300);  // Tăng từ 250 lên 300
+    ui->labelShowTrips->setFixedSize(300, 300);
     ui->labelShowTrips->setAlignment(Qt::AlignCenter);
     ui->labelShowTrips->setPixmap(QPixmap(":/images/ShowTrips.png").scaled(
-        220, 220, Qt::KeepAspectRatio, Qt::SmoothTransformation));  // Tăng kích thước ảnh
+        220, 220, Qt::KeepAspectRatio, Qt::SmoothTransformation));
     ui->labelShowTrips->setToolTip("Xem danh sách các chuyến đi");
     ui->labelShowTrips->setMouseTracking(true);
     ui->labelShowTrips->installEventFilter(this);
 
-    // My Bookings button - tăng kích thước lên 300x300
     ui->labelMyBookings->setProperty("class", "ImageButton");
-    ui->labelMyBookings->setFixedSize(300, 300);  // Tăng từ 250 lên 300
+    ui->labelMyBookings->setFixedSize(300, 300);
     ui->labelMyBookings->setAlignment(Qt::AlignCenter);
     ui->labelMyBookings->setPixmap(QPixmap(":/images/default-trip.jpg").scaled(
-        220, 220, Qt::KeepAspectRatio, Qt::SmoothTransformation));  // Tăng kích thước ảnh
+        220, 220, Qt::KeepAspectRatio, Qt::SmoothTransformation));
     ui->labelMyBookings->setToolTip("Xem danh sách các chuyến đi đã đặt");
     ui->labelMyBookings->setMouseTracking(true);
     ui->labelMyBookings->installEventFilter(this);
 
     // User Info button - tăng kích thước lên 300x300
     ui->labelShowUserInfo->setProperty("class", "ImageButton");
-    ui->labelShowUserInfo->setFixedSize(300, 300);  // Tăng từ 250 lên 300
+    ui->labelShowUserInfo->setFixedSize(300, 300);
     ui->labelShowUserInfo->setAlignment(Qt::AlignCenter);
     ui->labelShowUserInfo->setPixmap(QPixmap(":/images/UserInfo.png").scaled(
-        220, 220, Qt::KeepAspectRatio, Qt::SmoothTransformation));  // Tăng kích thước ảnh
+        220, 220, Qt::KeepAspectRatio, Qt::SmoothTransformation));
     ui->labelShowUserInfo->setToolTip("Xem thông tin người dùng");
     ui->labelShowUserInfo->setMouseTracking(true);
     ui->labelShowUserInfo->installEventFilter(this);
 
-    // Add buttons to layout (chỉ còn 3 nút)
+    // Add buttons to layout
     buttonLayout->addWidget(ui->labelShowTrips);
     buttonLayout->addWidget(ui->labelMyBookings);
     buttonLayout->addWidget(ui->labelShowUserInfo);
@@ -292,21 +291,7 @@ void MainWindow::updateUI() {
         qWarning() << "No user logged in!";
     }
 }
-// void MainWindow::on_btnShowTrips_clicked() {
-//     TripListDialog dialog(_tripService, _bookingService, _reviewService, this);
-//     dialog.exec(); // Hiển thị dialog dạng modal
-// }
 
-
-// void MainWindow::on_btnShowUserInfomation_clicked()
-// {
-
-//     QString currentUserEmail = _authService->getCurrentUser()->email(); // Cần implement hàm này
-
-
-//     ShowUserInformationDialog Dialog(_userService, _storageService, currentUserEmail, this);
-//     Dialog.exec();
-// }
 
 
 void MainWindow::onTripAdded(const Trip& newTrip)

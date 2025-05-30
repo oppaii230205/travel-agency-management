@@ -7,7 +7,7 @@
 #include <QGuiApplication>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
-#include <QRegularExpression> // Thêm dòng này để sử dụng QRegularExpression
+#include <QRegularExpression>
 #include "CustomMessageBox.h"
 
 SignupWindow::SignupWindow(QSharedPointer<AuthService> authService, QWidget* parent)
