@@ -14,6 +14,10 @@
 | 1   | Nguyễn Hưng Thịnh | Nhóm trưởng | Tạo Github Repositories cho dự án, xác định kiến trúc phần mềm, tổng hợp các nguyên tắc OOP, Design Pattern cần tuân thủ, thiết kế và xây dựng các lớp, chức năng thêm chuyến đi và đặt chuyến đi. Thiết kế UI cho các chức năng đã viết, video hướng dẫn sử dụng.                                            | 50%                       |
 | 2   | Võ Cao Tâm Chính  | Thành viên  | Tạo máy chủ Azure Clouds để lưu trữ Database, tạo cơ sở dữ liệu, tổng hợp các Coding Convention cần tuân thủ, thực hiện Unit test các thành phần đã hoàn thiện. Thiết kế và xây dựng các lớp, chức năng người dùng, đăng nhập tài khoản, đăng ký tài khoản, đăng xuất. Thiết kế UI cho các chức năng đã viết. | 50%                       |
 
+## Tỉ lệ điểm
+
+**Chia đều** cho tất cả thành viên.
+
 ## Báo cáo tiến độ dự án
 
 **Tên dự án**: Travel Agency Management System  
@@ -23,24 +27,24 @@
 
 **Tóm tắt tiến độ**
 
-- Tiến độ tổng thể: 52% hoàn thành
+- Tiến độ tổng thể: 100% hoàn thành
 - Tiến độ so với kế hoạch: Đúng tiến độ
 
 **Công việc đã hoàn thành**
 
-| STT | Hạng mục                                    | Trạng thái | Ghi chú                               |
-| --- | ------------------------------------------- | ---------- | ------------------------------------- |
-| 1   | Thống nhất tài liệu mô tả coding convention | Hoàn thành |                                       |
-| 2   | Xây dựng CSDL trên SQL Server               | Hoàn thành |                                       |
-| 3   | Thiết kế lại mã nguồn hướng đối tượng       | Hoàn thành |                                       |
-| 4   | Thiết kế giao diện (UI)                     | 70%        | Bố cục chưa hợp lý cần điều chỉnh lại |
+| STT | Hạng mục                                    | Trạng thái        | Ghi chú                                        |
+| --- | ------------------------------------------- | ----------------- | ---------------------------------------------- |
+| 1   | Thống nhất tài liệu mô tả coding convention | Hoàn thành        |                                                |
+| 2   | Xây dựng CSDL trên SQL Server               | Hoàn thành        |                                                |
+| 3   | Thiết kế lại mã nguồn hướng đối tượng       | Hoàn thành        |                                                |
+| 4   | Thiết kế giao diện (UI)                     | 100% (Hoàn thành) | Giao diện thân thiện, trực quan với người dùng |
 
 **Công việc đang thực hiện**
 
-| STT | Hạng mục                        | Trạng thái | Ghi chú                                                                                          |
-| --- | ------------------------------- | ---------- | ------------------------------------------------------------------------------------------------ |
-| 1   | Viết mã nguồn cho toàn bộ dự án | 40%        | Hoàn thành các lớp cơ bản phục vụ cho chương trình. Chưa có các chức năng cải tiến               |
-| 2   | Vẽ giao diện cho sản phẩm       | 40%        | Hoàn thành đăng nhập, đăng ký, đăng xuất, thêm chuyến đi, đặt chuyến đi, lấy danh sách chuyến đi |
+| STT | Hạng mục                        | Trạng thái | Ghi chú                                                                                   |
+| --- | ------------------------------- | ---------- | ----------------------------------------------------------------------------------------- |
+| 1   | Viết mã nguồn cho toàn bộ dự án | 100%       | Hoàn thành tất cả các thiết kế đã đề ra. Đã có đầy đủ các chức năng cải tiến              |
+| 2   | Thiết kế giao diện cho sản phẩm | 100%       | Hoàn thành tất cả các UI/UX ở tất cả các chức năng, thân thiện & trực quan cho người dùng |
 
 **Công việc sắp tới**
 
@@ -48,23 +52,9 @@
 - Hoàn thành nhật kí, báo cáo, tài liệu giới thiệu.
 - Hoàn thành Auto-generated Documentation.
 
-**Đánh giá rủi ro & đề xuất**
-
-- Rủi ro
-
-  \+Chậm tiến độ do yêu cầu phức tạp khi sử dụng API lấy dữ liệu thời tiết.
-
-  \+ Thiết kế lại bố cục giao diện.
-
-- Đề xuất
-
-  \+ Tăng cường testing trước khi release.
-
-  \+ Tăng cương trao đổi giữa các thành viên để thống nhất ý tưởng.
-
 **Kết luận**
 
-Dự án đang tiến triển ổn định, cần tập trung vào các khâu **xây dựng hệ thống** và **kiểm thử** để đảm bảo đúng timeline.
+Nhóm đã hoàn thành tương đối tốt nội dung đề án. Các chức năng & cải tiến được nhóm thực hiện chỉnh chu & kĩ càng, đáp ứng tốt các yêu cầu đồ án đặt ra.
 
 ## Minh chứng họp nhóm
 
@@ -2674,6 +2664,7 @@ Việc áp dụng **Composition over Inheritance** trong thiết kế `BookingSe
 ## Video demo chương trình
 
 - Video demo báo cáo tiến độ - Link: https://www.youtube.com/watch?v=7cq-_D9EoGc
+- Video báo cáo đồ án (final) - Link: _Thêm sau_
 
 ## Tài liệu mô tả kiến trúc phần mềm, modules
 
