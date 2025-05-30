@@ -1115,7 +1115,7 @@ classDiagram
 
 ### Đảm bảo chất lượng
 
-**1\. Single Branch Workflow**
+#### 1\. Single Branch Workflow
 
 **Giới Thiệu Chung**
 
@@ -1168,16 +1168,16 @@ Single Branch Workflow là lựa chọn tối ưu cho:
 - **Team startup** cần release nhanh, ít quy trình.
 - **Prototyping** hoặc demo POC (Proof of Concept).
 
-**2\. Hướng dẫn Coding Invention**
+#### 2\. Hướng dẫn Coding Invention
 
-#### Mục đích
+**Mục đích**
 
 - Tăng tính rõ ràng, bảo trì
 - Giảm lỗi tiềm ẩn
 - Tối ưu hiệu năng
 - Tuân thủ best practices từ C++ Core Guidelines
 
-#### Các quy tắc cần tuân thủ
+**Các quy tắc cần tuân thủ**
 
 Quản lý Header Files (SF)
 
@@ -1445,7 +1445,7 @@ int main() {
 }
 ```
 
-**3\. Thực hiện Unit Test với các lớp đã được sử dụng**
+#### 3\. Thực hiện Unit Test với các lớp đã được sử dụng
 
 \- Trước khi kiểm thử thực hiện tách phần Logic và UI để đảm bảo độ ổn định cao và dễ dàng trong quá trình kiểm thử chức năng.
 
@@ -1620,11 +1620,11 @@ Dựa trên hàm kiểm thử ta thu được kết quả với các hàm đã �
 
 → Các test case thành công cho thấy các chức năng hoạt động đúng như mong đợi.
 
-#### Kết luận
+**Kết luận**
 
 - Các chức năng đã được sử dụng hoạt động đúng theo yêu cầu, đảm bảo tính chính xác.
 
-**4\. Thực hiện UI Test với các lớp đã được sử dụng**
+#### 4\. Thực hiện UI Test
 
 Kết quả kiểm thử:
 | STT | Giao diện | Tình huống | Trạng thái | Ghi chú |
