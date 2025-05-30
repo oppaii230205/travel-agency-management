@@ -189,7 +189,7 @@ void MainWindow::setupUI()
     ui->labelMyBookings->setProperty("class", "ImageButton");
     ui->labelMyBookings->setFixedSize(300, 300);
     ui->labelMyBookings->setAlignment(Qt::AlignCenter);
-    ui->labelMyBookings->setPixmap(QPixmap(":/images/default-trip.jpg").scaled(
+    ui->labelMyBookings->setPixmap(QPixmap(":/images/MyBooking.jpg").scaled(
         220, 220, Qt::KeepAspectRatio, Qt::SmoothTransformation));
     ui->labelMyBookings->setToolTip("Xem danh sách các chuyến đi đã đặt");
     ui->labelMyBookings->setMouseTracking(true);

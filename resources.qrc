@@ -5,6 +5,7 @@
 	<file>images/ShowTrips.png</file>
 	<file>images/AddTrip.png</file>
 	<file>images/LogOut.jpg</file>
+	<file>images/MyBooking.jpg</file>
 	<file>styles/style.css</file>
     </qresource>
 </RCC>
