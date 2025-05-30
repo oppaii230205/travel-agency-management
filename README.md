@@ -43,7 +43,7 @@
 
 **Thống kê số lần commit**
 
-![Thống kê số lần commit](images/Commit.png "Biểu đồ")
+![Thống kê số lần commit](Commit.png "Biểu đồ")
 
 **Kết luận**
 
